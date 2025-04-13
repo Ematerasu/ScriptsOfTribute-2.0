@@ -1,0 +1,41 @@
+# Text files
+*.cs               text diff=csharp
+*.shader           text
+*.cginc            text
+*.compute          text
+*.hlsl             text
+
+# Yaml handled
+*.unity            text merge=unityyamlmerge eol=lf
+*.prefab           text merge=unityyamlmerge eol=lf
+*.asset            text merge=unityyamlmerge eol=lf
+*.mat              text merge=unityyamlmerge eol=lf
+*.anim             text merge=unityyamlmerge eol=lf
+*.controller       text merge=unityyamlmerge eol=lf
+*.overrideController text merge=unityyamlmerge eol=lf
+*.physicMaterial2D text merge=unityyamlmerge eol=lf
+*.spriteatlas      text merge=unityyamlmerge eol=lf
+*.mask             text merge=unityyamlmerge eol=lf
+
+# Binary
+*.png              binary
+*.jpg              binary
+*.jpeg             binary
+*.tga              binary
+*.psd              binary
+*.exr              binary
+*.svg              binary
+*.mp3              binary
+*.wav              binary
+*.ogg              binary
+*.ttf              binary
+*.fbx              binary
+*.dll              binary
+*.exe              binary
+*.mp4              binary
+
+# EOL normalization
+* text=auto
+
+# --- Optional: ignore merge conflicts on meta files (leave as text to track GUIDs)
+*.meta             text merge=unityyamlmerge eol=lf

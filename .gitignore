@@ -1,0 +1,88 @@
+# === Unity generated files ===
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+UserSettings/
+MemoryCaptures/
+
+Assets/Plugins/
+Assets/TextMesh Pro/
+
+# Visual Studio / JetBrains Rider
+.vscode/
+.idea/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.opendb
+.vs/
+.vsconfig
+
+# Rider specific
+*.sln.iml
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Unity Cache Server
+unitycache/
+
+# Crash logs
+sysinfo.txt
+
+# Build results
+*.apk
+*.aab
+*.unitypackage
+*.app
+*.exe
+*.dll
+
+# Unity Collaborate
+.collabignore
+.Collab/
+
+# Addressables build
+Assets/AddressableAssetsData/*/AssetGroups/*.bin*
+Assets/AddressableAssetsData/*/AssetGroups/*.catalog*
+Assets/AddressableAssetsData/*/AssetGroups/*.hash
+Assets/AddressableAssetsData/*/AssetGroups/*.json
+Assets/AddressableAssetsData/*/AssetGroups/*.linker
+
+# Auto-generated lighting data
+Assets/**/LightingData.asset
+Assets/**/Lightmap-*.exr
+Assets/**/ReflectionProbe-*.exr
+
+# Shader cache
+Assets/**/.shadercache/
+
+# Shader variants cache
+*.shadervariants
+
+# Unity's cache
+*.unitypackage
+*.generated.cs
+
+# Unity Cloud Build
+/UnityCloudBuild/
+
+# Temporary files
+*.bak
+*.swp
+*.tmp
+
+# Optional: ignore personal Unity analytics settings
+AnalyticsSettings.asset
