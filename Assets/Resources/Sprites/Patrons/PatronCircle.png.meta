@@ -142,13 +142,13 @@ TextureImporter:
       name: PatronCircle_0
       rect:
         serializedVersion: 2
-        x: 3
-        y: 0
-        width: 1019
-        height: 1019
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+        x: 107
+        y: 62
+        width: 915
+        height: 957
+      alignment: 9
+      pivot: {x: 0.44310898, y: 0.42747423}
+      border: {x: 0, y: 0, z: 107, w: 25}
       customData: 
       outline: []
       physicsShape: []
@@ -164,7 +164,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 84afa0921e70b144892b9a8211c6832b
     internalID: 0
     vertices: []
     indices: 
@@ -173,7 +173,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      PatronCircle_0: -9180147282632349868
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

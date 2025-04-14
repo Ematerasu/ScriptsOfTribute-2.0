@@ -29,13 +29,12 @@ public class AIManager : MonoBehaviour
         Instance = this;
     }
 
-    public void InitializeBot(AI bot, PlayerEnum botId, SoTGameManager gameManager)
+    public void InitializeBot(AI bot, PlayerEnum botId)
     {
         _bot = bot;
         _aiPlayer = botId;
         _bot.Id = botId;
-        _gameManager = gameManager;
-
+        
         try
         {
             _bot.PregamePrepare();
@@ -46,11 +45,21 @@ public class AIManager : MonoBehaviour
         }
     }
 
+    public void InitializeManager(SoTGameManager gameManager)
+    {
+        _gameManager = gameManager;
+    }
+
     public bool IsAITurn()
     {
         return _gameManager.CurrentPlayer == _aiPlayer;
     }
 
+    public void PickOnePatron(List<PatronId> availablePatrons, int round, Action<PatronId> onResult)
+    {
+        BotIsPlaying = true;
+        StartCoroutine(SelectPatronCoroutine(availablePatrons, round, onResult));
+    }
     public void PlaySingleMove()
     {
         BotIsPlaying = true;
@@ -178,8 +187,8 @@ public class AIManager : MonoBehaviour
 
             while(completedActionProcessor.IsBusy)
             {
-                Debug.Log("Kolejka wisi");
-                Debug.Log($"W kolejce jest {completedActionProcessor.ElementsInQueue} elementów");
+                // Debug.Log("Kolejka wisi");
+                // Debug.Log($"W kolejce jest {completedActionProcessor.ElementsInQueue} elementów");
                 yield return null;
             }
             //yield return new WaitUntil(() => );
@@ -214,7 +223,9 @@ public class AIManager : MonoBehaviour
         onResult?.Invoke(move);
     }
 
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     public IEnumerator GameEndCoroutine(EndGameState result, FullGameState? finalBoardState)
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     {
         bool finished = false;
 

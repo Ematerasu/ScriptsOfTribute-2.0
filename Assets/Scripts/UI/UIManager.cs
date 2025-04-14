@@ -1,6 +1,10 @@
+using System.Collections;
+using System.Collections.Generic;
 using ScriptsOfTribute;
 using ScriptsOfTribute.Serializers;
+using TMPro;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -14,6 +18,15 @@ public class UIManager : MonoBehaviour
     [Header("Choice Panels")]
     [SerializeField] private CardChoicePanelController cardChoicePanel;
     [SerializeField] private EffectChoicePanelController effectChoicePanel;
+    [SerializeField] private PatronSelectionPanel patronSelectionPanel;
+
+    [Header("Text objects")]
+    [SerializeField] private GameObject YourTurnImage;
+
+    [Header("Patrons")]
+    [SerializeField] private GameObject PatronTooltipPanel;
+    [SerializeField] private TextMeshProUGUI PatronTooltipTitle;
+    [SerializeField] private TextMeshProUGUI PatronTooltipText;
 
     private void Awake()
     {
@@ -29,6 +42,11 @@ public class UIManager : MonoBehaviour
 
         aiMoveButton.onClick.AddListener(OnAiMoveClicked);
         aiMoveFullTurnButton.onClick.AddListener(OnAiFullTurnClicked);
+    }
+
+    public void ShowPatronDraft(List<PatronId> patrons)
+    {
+        patronSelectionPanel.ShowPatronDraft(patrons);
     }
 
     public void ShowAiButtons(bool show)
@@ -69,5 +87,50 @@ public class UIManager : MonoBehaviour
                 Debug.LogError($"Unsupported choice type: {choice.Type}");
                 break;
         }
+    }
+
+    public IEnumerator ShowYourTurnMessage()
+    {
+        CanvasGroup group = YourTurnImage.GetComponent<CanvasGroup>();
+        if (group == null)
+        {
+            group = YourTurnImage.AddComponent<CanvasGroup>();
+        }
+
+        YourTurnImage.SetActive(true);
+        group.alpha = 0;
+
+        float duration = 0.5f;
+        float elapsed = 0;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            group.alpha = Mathf.Clamp01(elapsed / duration);
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(1.0f);
+
+        elapsed = 0;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            group.alpha = 1.0f - Mathf.Clamp01(elapsed / duration);
+            yield return null;
+        }
+
+        YourTurnImage.SetActive(false);
+    }
+
+    public void ShowPatronTooltip(string name, string text)
+    {
+        PatronTooltipText.SetText(text);
+        PatronTooltipTitle.SetText(name);
+        PatronTooltipPanel.SetActive(true);
+    }
+
+    public void HidePatronTooltip()
+    {
+        PatronTooltipPanel.SetActive(false);
     }
 }

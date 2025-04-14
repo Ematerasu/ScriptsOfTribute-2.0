@@ -6,6 +6,7 @@ using System.Collections;
 using Bots;
 using ScriptsOfTribute.AI;
 using System.Collections.Generic;
+using System.Linq;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
@@ -14,6 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private UIManager _uiManager;
     // [SerializeField] private AudioManager _audioManager;
     [SerializeField] private AIManager _aiManager;
+    [SerializeField] private PatronManager _patronManager;
 
     [SerializeField] private PlayerEnum CurrentTurn = PlayerEnum.NO_PLAYER_SELECTED;
     [SerializeField] public PlayerEnum HumanPlayer = PlayerEnum.PLAYER1;
@@ -27,21 +29,52 @@ public class GameManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
-
     private void Start()
     {
-        PatronId[] selectedPatrons = { PatronId.DUKE_OF_CROWS, PatronId.ANSEI, PatronId.TREASURY, PatronId.RED_EAGLE, PatronId.HLAALU};
-        _soTGameManager.InitializeGame(selectedPatrons);
+        AI bot = new MCTSBot();
+        _aiManager.InitializeBot(bot, AIPlayer);
+        CurrentTurn = PlayerEnum.PLAYER1;
+        List<PatronId> patronsAvailable = new List<PatronId>()
+        { 
+            PatronId.ANSEI,
+            PatronId.DUKE_OF_CROWS,
+            PatronId.RAJHIN, 
+            PatronId.PSIJIC, 
+            PatronId.ORGNUM, 
+            PatronId.HLAALU, 
+            PatronId.PELIN, 
+            PatronId.RED_EAGLE,
+        };
+        _uiManager.ShowPatronDraft(patronsAvailable);
+    }
+
+    public void StartGameWithPatrons(PatronId[] patrons)
+    {
+        _soTGameManager.InitializeGame(patrons);
+        _patronManager.InitializePatrons(patrons);
         CurrentTurn = _soTGameManager.CurrentPlayer;
 
-        AI bot = new MCTSBot();
-        _aiManager.InitializeBot(bot, AIPlayer, _soTGameManager);
+        _aiManager.InitializeManager(_soTGameManager);
+
+        if (CurrentTurn == HumanPlayer)
+            StartCoroutine(_uiManager.ShowYourTurnMessage());
     }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F1))
         {
             Debug.Log(_soTGameManager.GetCurrentGameState().ToString());
+            Debug.Log("=============");
+        }
+
+        if (Input.GetKeyDown(KeyCode.F3))
+        {
+            var state = _soTGameManager.GetCurrentGameState();
+            BoardManager.Instance.DebugCheckHandSync(state);
+        }
+        if (Input.GetKeyDown(KeyCode.F4))
+        {
+            Debug.Log(string.Join("\n", _soTGameManager.GetCurrentGameState().CompletedActions.Select(action => action.ToString()).ToList()));
             Debug.Log("=============");
         }
     }
@@ -75,16 +108,13 @@ public class GameManager : MonoBehaviour
             Debug.Log("END GAME");
             // _uiManager.ShowEndGameScreen(endGameState);
         }
-        if (IsHumanPlayersTurn && _soTGameManager.IsChoicePending())
-        {
-            var choice = _soTGameManager.GetPendingChoice();
-            if (choice != null)
-            {
-                _uiManager.ShowChoice(choice);
-            }
-        }
         CurrentTurn = _soTGameManager.CurrentPlayer;
         _uiManager.ShowAiButtons(CurrentTurn == AIPlayer);
+
+        if (IsHumanPlayersTurn)
+        {
+            StartCoroutine(ShowStartOfHumanTurnRoutine());
+        }
     }
 
     public void ExecuteMove(Move move, PlayerEnum player)
@@ -144,9 +174,6 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning($"Move {move} is not legal");
             return;
         }
-        //Debug.Log($"Played Card {card.CommonId}");
-        // var sourceTransform = BoardManager.Instance.GetZoneTransform(ZoneType.PlayedPile, side);
-        // BoardManager.Instance.MoveCardToZone(card.UniqueId, sourceTransform, ZoneType.PlayedPile, side);
         var result = _soTGameManager.PlayCard(card);
         if (result is EndGameState end)
         {
@@ -170,13 +197,6 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning($"Move {move} is not legal");
             return;
         }
-        //Debug.Log($"Bought Card {card.CommonId}");
-        
-        // (ZoneType type, ZoneSide side) targetZone = (type == CardType.CONTRACT_ACTION) ? 
-        //                                             (ZoneType.Tavern, ZoneSide.Neutral) : 
-        //                                             (ZoneType.CooldownPile, side);
-        // Transform visualTarget = BoardManager.Instance.GetZoneTransform(targetZone.type, targetZone.side);
-        // BoardManager.Instance.MoveCardToZone(card.UniqueId, visualTarget, targetZone.type, targetZone.side);
         var result = _soTGameManager.BuyCard(card);
         if (result is EndGameState end)
         {
@@ -227,6 +247,7 @@ public class GameManager : MonoBehaviour
         }
 
         var result = _soTGameManager.AttackAgent(card);
+        BoardManager.Instance.PlayPowerAttackEffect(card.UniqueId, side);
         if (result is EndGameState end)
         {
             HandleEndGame(end, move);
@@ -254,6 +275,7 @@ public class GameManager : MonoBehaviour
         {
             HandleEndGame(end, move);
         }
+        _patronManager.UpdateObjects(_soTGameManager.PatronStates);
         if (IsHumanPlayersTurn && _soTGameManager.IsChoicePending())
         {
             var choice = _soTGameManager.GetPendingChoice();
@@ -277,7 +299,8 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning($"Effect choice is pending and we try to make card choice");
             return;
         }
-        if (_soTGameManager.GetPendingChoice().ChoiceFollowUp == ChoiceFollowUp.DESTROY_CARDS)
+        var followUp = _soTGameManager.GetPendingChoice().ChoiceFollowUp;
+        if (followUp == ChoiceFollowUp.DESTROY_CARDS || followUp == ChoiceFollowUp.COMPLETE_TREASURY || followUp == ChoiceFollowUp.COMPLETE_HLAALU)
         {
             BoardManager.Instance.DestroyCards(selectedCards);
         }
@@ -333,4 +356,19 @@ public class GameManager : MonoBehaviour
             Debug.LogError($"Engine refused {triggeringMove}, even though we thought its legal!");
         }
     }
+
+    private IEnumerator ShowStartOfHumanTurnRoutine()
+    {
+        yield return StartCoroutine(_uiManager.ShowYourTurnMessage());
+
+        if (_soTGameManager.IsChoicePending())
+        {
+            var choice = _soTGameManager.GetPendingChoice();
+            if (choice != null)
+            {
+                _uiManager.ShowChoice(choice);
+            }
+        }
+    }
+
 }

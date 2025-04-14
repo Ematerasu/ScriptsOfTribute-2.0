@@ -26,7 +26,8 @@ public class Card : MonoBehaviour
     public ZoneType ZoneType => _zoneType;
     public ZoneSide ZoneSide => _zoneSide;
     [SerializeField] private Sprite backSprite;
-
+    [SerializeField] private GameObject agentActivateEffectPrefab;
+    private GameObject activeGlowEffect;
     private Vector3 _layoutPosition;
     public void SetLayoutPosition(Vector3 pos) => _layoutPosition = pos;
     public Vector3 GetLayoutPosition() => _layoutPosition;
@@ -137,5 +138,24 @@ public class Card : MonoBehaviour
                 (_zoneType == ZoneType.PlayedPile && _zoneSide == ZoneSide.Player1) ||
                 (_zoneType == ZoneType.CooldownPile && _zoneSide == ZoneSide.Player1) ||
                 (_zoneType == ZoneType.Agents);
+    }
+
+    public void ShowActivationEffect()
+    {
+        if (activeGlowEffect != null)
+        {
+            activeGlowEffect.SetActive(true);
+            return;
+        }
+        activeGlowEffect = Instantiate(agentActivateEffectPrefab, transform);
+        var renderer = activeGlowEffect.GetComponent<ParticleSystemRenderer>();
+        if (renderer != null) renderer.enabled = true;
+        activeGlowEffect.SetActive(true);
+        activeGlowEffect.transform.localPosition = Vector3.zero;
+    }
+
+    public void RemoveActivationEffect()
+    {
+        activeGlowEffect.SetActive(false);
     }
 }

@@ -18,6 +18,8 @@ public class CardChoicePanelController : MonoBehaviour
 
     private SerializedChoice currentChoice;
     private List<UniqueCard> selectedCards = new();
+    private int minChoices;
+    private int maxChoices;
 
     private void Awake()
     {
@@ -44,20 +46,47 @@ public class CardChoicePanelController : MonoBehaviour
             var controller = btn.GetComponent<CardChoiceButton>();
             controller.Initialize(card, OnCardClicked);
         }
-
+        minChoices = choice.MinChoices;
+        maxChoices = choice.MaxChoices;
         cardChoicePanel.SetActive(true);
     }
 
     private void OnCardClicked(UniqueCard card)
     {
-        if (selectedCards.Contains(card))
-            selectedCards.Remove(card);
-        else if (selectedCards.Count < currentChoice.MaxChoices)
-            selectedCards.Add(card);
+        bool wasSelected = selectedCards.Contains(card);
+        bool selectionChanged = false;
 
-        int count = selectedCards.Count;
-        progressSlider.SetSelectedCount(count);
-        confirmButton.interactable = count >= currentChoice.MinChoices;
+        if (wasSelected)
+        {
+            selectedCards.Remove(card);
+            selectionChanged = true;
+        }
+        else if (selectedCards.Count < maxChoices)
+        {
+            selectedCards.Add(card);
+            selectionChanged = true;
+        }
+        else
+        {
+            // Max reached
+            var allButtons = cardContentParent.GetComponentsInChildren<CardChoiceButton>();
+            foreach (var btn in allButtons)
+            {
+                if (btn.Card == card)
+                {
+                    btn.FlashRedOutline();
+                    break;
+                }
+            }
+            return;
+        }
+
+        if (selectionChanged)
+        {
+            int count = selectedCards.Count;
+            progressSlider.SetSelectedCount(count);
+            confirmButton.interactable = count >= minChoices;
+        }
     }
 
     public void OnConfirmCardChoice()

@@ -8,18 +8,17 @@ public class CardChoiceButton : MonoBehaviour
 {
     [SerializeField] private Image cardImage;
 
-    [Header("Glow Settings")]
-    [SerializeField] private Color selectedGlowColor = new Color(0.2f, 1f, 0.2f, 1f);
-    [SerializeField] private float selectedGlowIntensity = 0f;
-    [SerializeField] private float unselectedGlowIntensity = 0f;
-
     [Header("Outline Settings")]
+    [SerializeField] private Color selectedOutlineColor = new Color(0.2f, 1f, 0.2f, 1f);
+    [SerializeField] private Color errorOutlineColor = new Color(1f, 0.2f, 0.2f, 1f);
     [SerializeField] private float outlineAlpha = 0.255f;
     [SerializeField] private float outlineGlow = 45.0f;
     [SerializeField] private float outlineWidth = 0.083f;
     [SerializeField] private int outlinePixelWidth = 2;
 
     private UniqueCard _card;
+
+    public UniqueCard Card => _card;
     private System.Action<UniqueCard> _onClick;
     private bool _selected = false;
     private Material _materialInstance;
@@ -59,7 +58,8 @@ public class CardChoiceButton : MonoBehaviour
     }
 
     private void SetSelected(bool selected)
-    {
+    {   
+        _selected = selected;
         if (_materialInstance == null) return;
 
         if (selected)
@@ -67,10 +67,7 @@ public class CardChoiceButton : MonoBehaviour
             _materialInstance.EnableKeyword("GLOW_ON");
             _materialInstance.EnableKeyword("OUTBASE_ON");
 
-            _materialInstance.SetFloat("_Glow", selectedGlowIntensity);
-            _materialInstance.SetColor("_GlowColor", selectedGlowColor);
-
-            _materialInstance.SetColor("_OutlineColor", selectedGlowColor);
+            _materialInstance.SetColor("_OutlineColor", selectedOutlineColor);
             _materialInstance.SetFloat("_OutlineAlpha", outlineAlpha);
             _materialInstance.SetFloat("_OutlineGlow", outlineGlow);
             _materialInstance.SetFloat("_OutlineWidth", outlineWidth);
@@ -109,5 +106,21 @@ public class CardChoiceButton : MonoBehaviour
         }
 
         cardImage.sprite = sprite;
+    }
+
+    public void FlashRedOutline()
+    {
+        if (_materialInstance == null) return;
+
+        SetSelected(false);
+        _materialInstance.EnableKeyword("GLOW_ON");
+        _materialInstance.EnableKeyword("OUTBASE_ON");
+        _materialInstance.SetColor("_OutlineColor", errorOutlineColor);
+        _materialInstance.SetFloat("_OutlineAlpha", 0.4f);
+        _materialInstance.SetFloat("_OutlineGlow", 55f);
+        _materialInstance.SetFloat("_OutlineWidth", 0.1f);
+        _materialInstance.SetInt("_OutlinePixelWidth", 3);
+
+        LeanTween.delayedCall(0.4f, () => DisableAllEffects());
     }
 } 

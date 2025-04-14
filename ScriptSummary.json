@@ -1,0 +1,476 @@
+{
+    "scripts": [
+        {
+            "fileName": "AIManager.cs",
+            "path": "Assets\\Scripts\\AI\\AIManager.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "AIManager",
+            "methods": [
+                "private void Awake()",
+                "public void InitializeBot(AI bot, PlayerEnum botId, SoTGameManager gameManager)",
+                "public bool IsAITurn()",
+                "public void PlaySingleMove()",
+                "public void PlayFullTurn()",
+                "public IEnumerator PregamePrepareCoroutine()",
+                "public IEnumerator SelectPatronCoroutine(List<PatronId> availablePatrons, int round, Action<PatronId> onResult)",
+                "private IEnumerator PlaySingleMoveCoroutine()",
+                "private IEnumerator PlayFullTurnCoroutine()",
+                "private IEnumerator GetMoveFromBotCoroutine(GameState state, List<Move> legalMoves, Action<Move> onResult)",
+                "public IEnumerator GameEndCoroutine(EndGameState result, FullGameState? finalBoardState)"
+            ],
+            "fields": [
+                "[SerializeField] private CompletedActionProcessor completedActionProcessor; private AI _bot;",
+                "private PlayerEnum _aiPlayer;",
+                "private SoTGameManager _gameManager;"
+            ]
+        },
+        {
+            "fileName": "BoardManager.cs",
+            "path": "Assets\\Scripts\\Board\\BoardManager.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "BoardManager",
+            "methods": [
+                "[Header(\"Player 1 Zones\")] [SerializeField] private Transform p1DrawPile; [SerializeField] private Transform p1Cooldown; [SerializeField] private Transform p1Hand; [SerializeField] private Transform p1Played; [SerializeField] private Transform p1Agents; [Header(\"Player 2 Zones\")] [SerializeField] private Transform p2DrawPile; [SerializeField] private Transform p2Cooldown; [SerializeField] private Transform p2Hand; [SerializeField] private Transform p2Played; [SerializeField] private Transform p2Agents; [Header(\"Tavern\")] [SerializeField] private Transform tavernPile; [SerializeField] private List<Transform> tavernCardSpots; [Header(\"UI\")] [SerializeField] private TextMeshProUGUI Player1Gold; [SerializeField] private TextMeshProUGUI Player1Prestige; [SerializeField] private TextMeshProUGUI Player1Power; [SerializeField] private TextMeshProUGUI Player2Gold; [SerializeField] private TextMeshProUGUI Player2Prestige; [SerializeField] private TextMeshProUGUI Player2Power; [Header(\"Prefabs / Pool\")] [SerializeField] private GameObject cardPrefab; [SerializeField] private Transform offscreenCardContainer; public bool HasCardObject(UniqueId id) => cardObjects.ContainsKey(id);",
+                "private void Awake()",
+                "public void InitializeBoard(FullGameState state)",
+                "public void UpdateBoard(FullGameState state, UpdateReason reason)",
+                "private void SetupPlayer(SerializedPlayer playerData, bool isPlayer1)",
+                "private void SetupTavern(FullGameState state)",
+                "private void SetUpUI(FullGameState state)",
+                "private GameObject CreateCardObject(UniqueCard cardData, Transform parentTransform)",
+                "public void CreateCardObjectFromRuntime(UniqueCard card, ZoneType initialZone, ZoneSide side)",
+                "public void ArrangeCardsInHand(Transform handTransform)",
+                "public void ArrangeAgentsInZone(Transform zoneTransform)",
+                "public void MoveCardToZone(UniqueId cardId, Transform targetZone, ZoneType zoneType, ZoneSide zoneSide, System.Action? onComplete = null)",
+                "public Transform GetZoneTransform(ZoneType zone, ZoneSide side)",
+                "public List<Card> GetCardsInZone(ZoneType zone, ZoneSide side)",
+                "private Transform FindFirstFreeTavernSpot()",
+                "public IEnumerator AnimateAddCardToTavernDelayed(UniqueId card)",
+                "public void DestroyCards(List<UniqueCard> cardsToDestroy)",
+                "private IEnumerator UpdateAgentHealthCoroutine(FullGameState state)",
+                "public void DebugCheckHandSync(FullGameState state)"
+            ],
+            "fields": []
+        },
+        {
+            "fileName": "BoardManager.cs",
+            "path": "Assets\\Scripts\\Board\\BoardManager.cs",
+            "namespaceName": "",
+            "kind": "enum",
+            "typeName": "UpdateReason",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "CardZone.cs",
+            "path": "Assets\\Scripts\\Board\\CardZone.cs",
+            "namespaceName": "",
+            "kind": "enum",
+            "typeName": "ZoneType",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "CardZone.cs",
+            "path": "Assets\\Scripts\\Board\\CardZone.cs",
+            "namespaceName": "",
+            "kind": "enum",
+            "typeName": "ZoneSide",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "CardZone.cs",
+            "path": "Assets\\Scripts\\Board\\CardZone.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "CardZone",
+            "methods": [],
+            "fields": [
+                "public ZoneType zoneType;",
+                "public ZoneSide zoneSide;"
+            ]
+        },
+        {
+            "fileName": "CompletedActionProcessor.cs",
+            "path": "Assets\\Scripts\\Board\\CompletedActionProcessor.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "CompletedActionProcessor",
+            "methods": [
+                "private void Update()",
+                "public void SetInitialSnapshot(FullGameState state)",
+                "public void CompareAndQueueChanges(FullGameState newState)",
+                "private void CompareAndQueue(HashSet<UniqueId> previousSet, List<UniqueCard> currentList, ZoneType zoneType, ZoneSide zoneSide, HashSet<UniqueId> storage)",
+                "private void Start()",
+                "private IEnumerator ConsumeQueue()"
+            ],
+            "fields": [
+                "private Queue<MoveVisualCommand> _visualQueue = new();",
+                "private HashSet<UniqueId> _prevPlayer1Hand = new();",
+                "private HashSet<UniqueId> _prevPlayer1Played = new();",
+                "private HashSet<UniqueId> _prevPlayer1Cooldown = new();",
+                "private HashSet<UniqueId> _prevPlayer1Draw = new();",
+                "private HashSet<UniqueId> _prevPlayer1Agents = new();",
+                "private HashSet<UniqueId> _prevPlayer2Hand = new();",
+                "private HashSet<UniqueId> _prevPlayer2Played = new();",
+                "private HashSet<UniqueId> _prevPlayer2Cooldown = new();",
+                "private HashSet<UniqueId> _prevPlayer2Draw = new();",
+                "private HashSet<UniqueId> _prevPlayer2Agents = new();",
+                "private HashSet<UniqueId> _prevTavernAvailable = new();",
+                "private HashSet<UniqueId> _prevTavernPile = new();",
+                "public bool IsBusy => _visualQueue.Count > 0;",
+                "public int ElementsInQueue => _visualQueue.Count;"
+            ]
+        },
+        {
+            "fileName": "CompletedActionProcessor.cs",
+            "path": "Assets\\Scripts\\Board\\CompletedActionProcessor.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "MoveVisualCommand",
+            "methods": [],
+            "fields": [
+                "public UniqueId CardId;",
+                "public ZoneType Zone;",
+                "public ZoneSide Side;"
+            ]
+        },
+        {
+            "fileName": "PatronManager.cs",
+            "path": "Assets\\Scripts\\Board\\PatronManager.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "PatronManager",
+            "methods": [
+                "[SerializeField] private GameObject patronPrefab; [SerializeField] private Transform[] patronSlots = new Transform[5]; [SerializeField] private SoTGameManager soTGameManager; public void InitializePatrons(PatronId[] patronIds)",
+                "public PlayerEnum GetFavorable(PatronId patronId)",
+                "public void UpdateObjects(PatronStates newStates)",
+                "private Sprite LoadPatronSprite(PatronId patronId)"
+            ],
+            "fields": []
+        },
+        {
+            "fileName": "CameraDrag.cs",
+            "path": "Assets\\Scripts\\Camera\\CameraDrag.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "CameraDrag",
+            "methods": [],
+            "fields": [
+                "public float moveSpeed = 5f;",
+                "public float edgeThreshold = 50f;",
+                "public SpriteRenderer BoardSprite;",
+                "private Vector3 lowBounds => BoardSprite.bounds.min;",
+                "private Vector3 highBounds => BoardSprite.bounds.max;"
+            ]
+        },
+        {
+            "fileName": "Card.cs",
+            "path": "Assets\\Scripts\\Cards\\Card.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "Card",
+            "methods": [
+                "public void SetLayoutPosition(Vector3 pos) => _layoutPosition = pos;",
+                "public Vector3 GetLayoutPosition() => _layoutPosition;",
+                "public void Start()",
+                "public UniqueCard GetCard()",
+                "public void SetAnimating(bool value)",
+                "public bool IsAnimating()",
+                "public void SetVisible(bool visible)",
+                "public bool IsVisible()",
+                "public void InitializeCard(UniqueCard card)",
+                "public void UpdateAgentHealth(SerializedAgent agent)",
+                "private void LoadCardSprite(PatronId deck, CardId cardId)",
+                "private void ClearTextFields()",
+                "public void SetZoneInfo(ZoneType type, ZoneSide side)",
+                "public bool IsInPlayerHand()",
+                "public bool IsInEnemyHand()",
+                "public bool IsInTavern()",
+                "public bool IsInZone(ZoneType type, ZoneSide side)",
+                "public bool ShouldBeVisible()",
+                "public void ShowActivationEffect()",
+                "public void RemoveActivationEffect()"
+            ],
+            "fields": [
+                "public SpriteRenderer spriteRenderer;",
+                "public TextMeshPro hpText;",
+                "public Vector3 DefaultScale => _scale;",
+                "public Vector3 ShrinkedScale => _scale * 0.6f;",
+                "private UniqueCard _card;",
+                "[field: SerializeField] private bool _isAnimating = false;",
+                "private bool _isVisible = true;",
+                "private Sprite _originalSprite;",
+                "private Vector3 _scale;",
+                "[SerializeField] private ZoneType _zoneType; [SerializeField] private ZoneSide _zoneSide; public ZoneType ZoneType => _zoneType;",
+                "public ZoneSide ZoneSide => _zoneSide;",
+                "[SerializeField] private Sprite backSprite; [SerializeField] private GameObject agentActivateEffectPrefab; private GameObject activeGlowEffect;",
+                "private Vector3 _layoutPosition;"
+            ]
+        },
+        {
+            "fileName": "CardLayoutBehaviour.cs",
+            "path": "Assets\\Scripts\\Cards\\CardLayoutBehaviour.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "CardLayoutBehaviour",
+            "methods": [
+                "private void Awake()",
+                "private void Start()",
+                "public void ApplyLayout()",
+                "public void OnPointerEnter(PointerEventData eventData)",
+                "public void OnPointerExit(PointerEventData eventData)"
+            ],
+            "fields": [
+                "[SerializeField] private float playerHandScale = 1.0f; [SerializeField] private float playerPlayedScale = 0.7f; [SerializeField] private float playerAgentScale = 0.8f; [SerializeField] private float enemyHandScale =  0.65f; [SerializeField] private float enemyPlayedScale = 0.5f; [SerializeField] private float enemyAgentScale = 0.575f; private Vector3 defaultScale;",
+                "private int _originalSortingOrder;",
+                "private bool _isHovered;",
+                "private SpriteRenderer _spriteRenderer;",
+                "[SerializeField] private TextMeshPro _hpText; [SerializeField] private float defaultPlayerRotation = 0f; [SerializeField] private float defaultEnemyRotation = 180f; [SerializeField] private float scaleFactor = 1.5f; [SerializeField] private int hoverSortingOrder = 100; private Card _card;"
+            ]
+        },
+        {
+            "fileName": "CardController.cs",
+            "path": "Assets\\Scripts\\Controllers\\CardController.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "CardController",
+            "methods": [
+                "public void OnPointerClick(PointerEventData eventData)"
+            ],
+            "fields": [
+                "public Card card;"
+            ]
+        },
+        {
+            "fileName": "GameManager.cs",
+            "path": "Assets\\Scripts\\Gameplay\\GameManager.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "GameManager",
+            "methods": [
+                "private void Awake()",
+                "private void Start()",
+                "private void Update()",
+                "public void OnEndTurnButtonClicked()",
+                "public void PlaySingleAIMove()",
+                "public void PlayAiTurn()",
+                "public void HandleEndTurn(ZoneSide sideCalling)",
+                "public void ExecuteMove(Move move, PlayerEnum player)",
+                "public void PlayCard(UniqueCard card, ZoneSide side)",
+                "public void BuyCard(UniqueCard card, ZoneSide side)",
+                "public void ActivateAgent(UniqueCard card, ZoneSide side)",
+                "public void AttackAgent(UniqueCard card, ZoneSide side)",
+                "public void CallPatron(PatronId patron, ZoneSide side)",
+                "public void MakeChoice(List<UniqueCard> selectedCards)",
+                "public void MakeChoice(UniqueEffect selectedEffect)",
+                "private void HandleEndGame(EndGameState end, Move triggeringMove)",
+                "private IEnumerator ShowStartOfHumanTurnRoutine()"
+            ],
+            "fields": [
+                "[SerializeField] private SoTGameManager _soTGameManager; [SerializeField] private UIManager _uiManager; // [SerializeField] private AudioManager _audioManager;",
+                "[SerializeField] private AIManager _aiManager; [SerializeField] private PatronManager _patronManager; [SerializeField] private PlayerEnum CurrentTurn = PlayerEnum.NO_PLAYER_SELECTED; [SerializeField] public PlayerEnum HumanPlayer = PlayerEnum.PLAYER1; [SerializeField] public PlayerEnum AIPlayer => HumanPlayer == PlayerEnum.PLAYER1 ? PlayerEnum.PLAYER2 : PlayerEnum.PLAYER1; public bool IsHumanPlayersTurn => CurrentTurn == HumanPlayer;"
+            ]
+        },
+        {
+            "fileName": "SoTGameManager.cs",
+            "path": "Assets\\Scripts\\Gameplay\\SoTGameManager.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "SoTGameManager",
+            "methods": [
+                "[SerializeField] private CompletedActionProcessor completedActionProcessor; public void InitializeGame(PatronId[] patrons, ulong seed = 0)",
+                "public void RefreshCache(FullGameState newState)",
+                "public FullGameState GetCurrentGameState()",
+                "public bool IsMoveLegal(Move move)",
+                "public bool IsChoicePending()",
+                "public void DebugPrintHands(FullGameState state)"
+            ],
+            "fields": [
+                "private IScriptsOfTributeApi _api;",
+                "private List<Move> _cachedLegalMoves = new();",
+                "private PatronStates _patronStates;",
+                "public PatronStates PatronStates => _patronStates;",
+                "public List<Move> LegalMoves => _cachedLegalMoves;",
+                "public PlayerEnum CurrentPlayer => _api.CurrentPlayerId;"
+            ]
+        },
+        {
+            "fileName": "PatronClickable.cs",
+            "path": "Assets\\Scripts\\Patrons\\PatronClickable.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "PatronClickable",
+            "methods": [
+                "public void Initialize(PatronId id)",
+                "public void OnPointerClick(PointerEventData eventData)",
+                "public void OnPointerExit(PointerEventData eventData)",
+                "public void UpdatePatronCircleRotation()",
+                "private string GetPatronName(PatronId id)",
+                "private string GetTooltipText(PatronId id)"
+            ],
+            "fields": [
+                "private PatronId _patronId;",
+                "private string _tooltipText;",
+                "[SerializeField] private GameObject patronCircle; public PlayerEnum favoring;",
+                "private Vector3 _neutralRotate = new Vector3(0f, 0f, 90f);",
+                "private Vector3 _player1FavorRotate = new Vector3(0f, 0f, 180f);",
+                "private Vector3 _player2FavorRotate = new Vector3(0f, 0f, 0f);"
+            ]
+        },
+        {
+            "fileName": "EndTurnHover.cs",
+            "path": "Assets\\Scripts\\UI\\EndTurnHover.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "EndTurnHover",
+            "methods": [
+                "public void OnPointerEnter(PointerEventData eventData)",
+                "public void OnPointerExit(PointerEventData eventData)",
+                "public void OnPointerClick(PointerEventData eventData)",
+                "private void StartFade(float fromAlpha, float toAlpha, System.Action onComplete = null)"
+            ],
+            "fields": [
+                "[SerializeField] private TextMeshProUGUI hoverText; [SerializeField] private float fadeDuration = 0.2f; private Coroutine currentFade;"
+            ]
+        },
+        {
+            "fileName": "UIManager.cs",
+            "path": "Assets\\Scripts\\UI\\UIManager.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "UIManager",
+            "methods": [
+                "[Header(\"AI Buttons\")] [SerializeField] private Button aiMoveButton; [SerializeField] private Button aiMoveFullTurnButton; [Header(\"Choice Panels\")] [SerializeField] private CardChoicePanelController cardChoicePanel; [SerializeField] private EffectChoicePanelController effectChoicePanel; [Header(\"Text objects\")] [SerializeField] private GameObject YourTurnImage; [Header(\"Patrons\")] [SerializeField] private GameObject PatronTooltipPanel; [SerializeField] private TextMeshProUGUI PatronTooltipTitle; [SerializeField] private TextMeshProUGUI PatronTooltipText; private void Awake()",
+                "public void ShowAiButtons(bool show)",
+                "private void OnAiMoveClicked()",
+                "private void OnAiFullTurnClicked()",
+                "public void ShowChoice(SerializedChoice choice)",
+                "public IEnumerator ShowYourTurnMessage()",
+                "public void ShowPatronTooltip(string name, string text)",
+                "public void HidePatronTooltip()"
+            ],
+            "fields": []
+        },
+        {
+            "fileName": "AutoVerticalCenter.cs",
+            "path": "Assets\\Scripts\\UI\\ChoicePanel\\AutoVerticalCenter.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "AutoVerticalCenter",
+            "methods": [
+                "private void Awake()",
+                "private void LateUpdate()"
+            ],
+            "fields": [
+                "[SerializeField] private RectTransform content; [SerializeField] private RectTransform viewport; [SerializeField] private ScrollRect scrollRect; [SerializeField] private bool centerWhenTooSmall = true; private RectTransform _wrapper;"
+            ]
+        },
+        {
+            "fileName": "CardChoiceButton.cs",
+            "path": "Assets\\Scripts\\UI\\ChoicePanel\\CardChoiceButton.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "CardChoiceButton",
+            "methods": [
+                "[SerializeField] private Material OGMaterial; private void Awake()",
+                "public void Initialize(UniqueCard card, System.Action<UniqueCard> onClick)",
+                "private void HandleClick()",
+                "private void SetSelected(bool selected)",
+                "private void DisableAllEffects()",
+                "private void LoadCardSprite(PatronId deck, CardId cardId)"
+            ],
+            "fields": [
+                "[SerializeField] private Image cardImage; [Header(\"Outline Settings\")] [SerializeField] private Color selectedOutlineColor = new Color(0.2f, 1f, 0.2f, 1f); [SerializeField] private float outlineAlpha = 0.255f; [SerializeField] private float outlineGlow = 45.0f; [SerializeField] private float outlineWidth = 0.083f; [SerializeField] private int outlinePixelWidth = 2; private UniqueCard _card;",
+                "private bool _selected = false;",
+                "private Material _materialInstance;"
+            ]
+        },
+        {
+            "fileName": "CardChoicePanelController.cs",
+            "path": "Assets\\Scripts\\UI\\ChoicePanel\\CardChoicePanelController.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "CardChoicePanelController",
+            "methods": [
+                "private void Awake()",
+                "public void ShowCardChoice(SerializedChoice choice)",
+                "private void OnCardClicked(UniqueCard card)",
+                "public void OnConfirmCardChoice()",
+                "public void HideCardChoice()",
+                "private string ToDisplayString(ChoiceFollowUp followUp)"
+            ],
+            "fields": [
+                "[Header(\"UI Elements\")] [SerializeField] private GameObject cardChoicePanel; [SerializeField] private TextMeshProUGUI cardChoiceTitle; [SerializeField] private Transform cardContentParent; [SerializeField] private GameObject cardChoiceButtonPrefab; [SerializeField] private ChoiceProgressSlider progressSlider; [SerializeField] private Button confirmButton; private SerializedChoice currentChoice;",
+                "private List<UniqueCard> selectedCards = new();"
+            ]
+        },
+        {
+            "fileName": "ChoiceProgressSlider.cs",
+            "path": "Assets\\Scripts\\UI\\ChoicePanel\\ChoiceProgressSlider.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "ChoiceProgressSlider",
+            "methods": [
+                "[Header(\"Config\")] [SerializeField] private int minChoices = 1; [SerializeField] private int maxChoices = 5; [SerializeField] private int selectedCount = 0; [Header(\"References\")] [SerializeField] private Slider slider; [SerializeField] private Image fillImage; [SerializeField] private TextMeshProUGUI sliderText; [Header(\"Colors\")] [SerializeField] private Color tooFewColor = Color.gray; [SerializeField] private Color enoughColor = new Color(0.6f, 1f, 0.6f); // light green [SerializeField] private Color maxedColor = new Color(0.2f, 0.6f, 0.2f); // dark green private void Reset()",
+                "public void SetBounds(int min, int max)",
+                "public void SetSelectedCount(int count)",
+                "private void UpdateVisuals()"
+            ],
+            "fields": []
+        },
+        {
+            "fileName": "EffectChoiceButton.cs",
+            "path": "Assets\\Scripts\\UI\\ChoicePanel\\EffectChoiceButton.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "EffectChoiceButton",
+            "methods": [
+                "public void Initialize(UniqueEffect effect, Action<UniqueEffect> onClick)",
+                "private void OnClick()",
+                "public void OnPointerEnter(PointerEventData eventData)",
+                "public void OnPointerExit(PointerEventData eventData)",
+                "private string GetShortEffectLabel(UniqueEffect effect)",
+                "private string GetLongEffectDescription(UniqueEffect effect)"
+            ],
+            "fields": [
+                "[SerializeField] private TextMeshProUGUI effectLabel; [SerializeField] private Button button; [SerializeField] private GameObject tooltipPanel; [SerializeField] private TextMeshProUGUI tooltipText; private UniqueEffect effect;",
+                "private Action<UniqueEffect> onClickCallback;"
+            ]
+        },
+        {
+            "fileName": "EffectChoicePanelController.cs",
+            "path": "Assets\\Scripts\\UI\\ChoicePanel\\EffectChoicePanelController.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "EffectChoicePanelController",
+            "methods": [
+                "private void Awake()",
+                "public void ShowEffectChoice(SerializedChoice choice)",
+                "private void OnEffectClicked(UniqueEffect effect)",
+                "public void HideEffectChoice()",
+                "private string ToDisplayString(ChoiceFollowUp followUp)"
+            ],
+            "fields": [
+                "[Header(\"UI Elements\")] [SerializeField] private GameObject effectChoicePanel; [SerializeField] private TextMeshProUGUI effectChoiceTitle; [SerializeField] private Transform effectContentParent; [SerializeField] private GameObject effectChoiceButtonPrefab; private SerializedChoice currentChoice;"
+            ]
+        },
+        {
+            "fileName": "ScrollContentAutoCenter.cs",
+            "path": "Assets\\Scripts\\UI\\ChoicePanel\\ScrollContentAutoCenter.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "ScrollContentAutoCenter",
+            "methods": [
+                "private void Awake()",
+                "private void LateUpdate()"
+            ],
+            "fields": [
+                "[SerializeField] private RectTransform content; [SerializeField] private RectTransform viewport; private ScrollRect scrollRect;"
+            ]
+        }
+    ]
+}

@@ -248,7 +248,11 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Hlaalu_0: -6187867315529183387
+      Hlaalu_1: -6062930319723164181
+      Hlaalu_2: -4126496503874358715
+      Hlaalu_3: -1883846077119936337
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

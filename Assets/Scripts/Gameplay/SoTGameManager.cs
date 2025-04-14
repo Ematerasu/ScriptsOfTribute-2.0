@@ -11,7 +11,9 @@ public class SoTGameManager : MonoBehaviour
 {
     private IScriptsOfTributeApi _api;
     private List<Move> _cachedLegalMoves = new();
+    private PatronStates _patronStates;
 
+    public PatronStates PatronStates => _patronStates;
     public List<Move> LegalMoves => _cachedLegalMoves;
 
     public PlayerEnum CurrentPlayer => _api.CurrentPlayerId;
@@ -24,17 +26,17 @@ public class SoTGameManager : MonoBehaviour
         {
             seed = (ulong)Random.Range(int.MinValue, int.MaxValue);
         }
-
         _api = new ScriptsOfTributeApi(patrons, seed);
         FullGameState initialState = _api.GetFullGameState();
         BoardManager.Instance.InitializeBoard(initialState);
         completedActionProcessor.SetInitialSnapshot(initialState);
-        RefreshMoveList();
+        RefreshCache(initialState);
     }
 
-    public void RefreshMoveList()
+    public void RefreshCache(FullGameState newState)
     {
         _cachedLegalMoves = _api.GetListOfPossibleMoves();
+        _patronStates = newState.PatronStates;
     }
 
     public FullGameState GetCurrentGameState()
@@ -52,88 +54,106 @@ public class SoTGameManager : MonoBehaviour
         return _api.PendingChoice is not null;
     }
 
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     public SerializedChoice? GetPendingChoice()
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     {
         return _api.PendingChoice;
     }
 
     public Choice.DataType PendingChoiceType => _api.PendingChoice.Type;
 
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     public EndGameState? PlayCard(UniqueCard card)
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     {
         var endGame = _api.PlayCard(card);
-        RefreshMoveList();            
         var newState = _api.GetFullGameState();
+        RefreshCache(newState);            
         BoardManager.Instance.UpdateBoard(newState, UpdateReason.PLAY_CARD);
         completedActionProcessor.CompareAndQueueChanges(newState);
         return endGame;
     }
 
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     public EndGameState? BuyCard(UniqueCard card)
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     {
         var endGame = _api.BuyCard(card);
-        RefreshMoveList();
         var newState = _api.GetFullGameState();
+        RefreshCache(newState);
         BoardManager.Instance.UpdateBoard(newState, UpdateReason.BUY_CARD);
         completedActionProcessor.CompareAndQueueChanges(newState);
         return endGame;
     }
 
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     public EndGameState? ActivateAgent(UniqueCard agent)
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     {
         var endGame = _api.ActivateAgent(agent);
-        RefreshMoveList();
         var newState = _api.GetFullGameState();
+        RefreshCache(newState);
         BoardManager.Instance.UpdateBoard(newState, UpdateReason.AGENT_ACTIVATION);
         completedActionProcessor.CompareAndQueueChanges(newState);
         return endGame;
     }
 
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     public EndGameState? EndTurn(ZoneSide side)
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     {
         var endGame = _api.EndTurn();
-        RefreshMoveList();
         var newState = _api.GetFullGameState();
+        RefreshCache(newState);
         BoardManager.Instance.UpdateBoard(newState, UpdateReason.END_TURN);
         completedActionProcessor.CompareAndQueueChanges(newState);
         return endGame;
     }
 
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     public EndGameState? ActivatePatron(PatronId patron)
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     {
         var endGame = _api.PatronActivation(patron);
-        RefreshMoveList();
         var newState = _api.GetFullGameState();
+        RefreshCache(newState);
         BoardManager.Instance.UpdateBoard(newState, UpdateReason.PATRON_ACTIVATION);
         completedActionProcessor.CompareAndQueueChanges(newState);
         return endGame;
     }
 
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     public EndGameState? MakeChoice(List<UniqueCard> selectedCards)
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     {
         var endGame = _api.MakeChoice(selectedCards);
-        RefreshMoveList();
         var newState = _api.GetFullGameState();
+        RefreshCache(newState);
         BoardManager.Instance.UpdateBoard(newState, UpdateReason.CHOICE_MADE);
         completedActionProcessor.CompareAndQueueChanges(newState);
         return endGame;
     }
 
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     public EndGameState? MakeChoice(UniqueEffect selectedEffect)
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     {
         var endGame = _api.MakeChoice(selectedEffect);
-        RefreshMoveList();
         var newState = _api.GetFullGameState();
+        RefreshCache(newState);
         BoardManager.Instance.UpdateBoard(newState, UpdateReason.CHOICE_MADE);
         completedActionProcessor.CompareAndQueueChanges(newState);
         return endGame;
     }
 
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     public EndGameState? AttackAgent(UniqueCard agent)
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     {
         var endGame = _api.AttackAgent(agent);
-        RefreshMoveList();
         var newState = _api.GetFullGameState();
+        RefreshCache(newState);
         BoardManager.Instance.UpdateBoard(newState, UpdateReason.AGENT_ATTACK);
         completedActionProcessor.CompareAndQueueChanges(newState);
         return endGame;

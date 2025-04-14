@@ -1,16 +1,10 @@
 fileFormatVersion: 2
-guid: a245ff63f2959ff4fb3fe8dbea0511a4
+guid: eb6eb6b8d258c554e83e46925696a20f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5317334584819627766
-    second: DukeOfCrows_0
-  - first:
-      213: 3638737310008870648
-    second: DukeOfCrows_1
-  - first:
-      213: -3941741583793167371
-    second: DukeOfCrows_2
+      213: 8438829031036452451
+    second: Power_icon_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -145,34 +139,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: DukeOfCrows_0
+      name: Power_icon_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1168
-        height: 1168
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 6f6b218e1a7fac940800000000000000
-      internalID: 5317334584819627766
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: DukeOfCrows_1
-      rect:
-        serializedVersion: 2
-        x: 7
-        y: 0
-        width: 24
+        x: 3
+        y: 7
+        width: 26
         height: 17
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -182,30 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8f60a0afd446f7230800000000000000
-      internalID: 3638737310008870648
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: DukeOfCrows_2
-      rect:
-        serializedVersion: 2
-        x: 159
-        y: 0
-        width: 128
-        height: 19
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5f36f9de9ee1c49c0800000000000000
-      internalID: -3941741583793167371
+      spriteID: 36e7e2bfa4ebc1570800000000000000
+      internalID: 8438829031036452451
       vertices: []
       indices: 
       edges: []

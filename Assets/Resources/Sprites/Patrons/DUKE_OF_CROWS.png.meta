@@ -1,13 +1,16 @@
 fileFormatVersion: 2
-guid: 8ed89c55e359a484b93a711810af2444
+guid: a245ff63f2959ff4fb3fe8dbea0511a4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2555901941206397031
-    second: SaintAlessia_0
+      213: 5317334584819627766
+    second: DukeOfCrows_0
   - first:
-      213: -5228259362455834510
-    second: SaintAlessia_1
+      213: 3638737310008870648
+    second: DukeOfCrows_1
+  - first:
+      213: -3941741583793167371
+    second: DukeOfCrows_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -142,13 +145,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SaintAlessia_0
+      name: DukeOfCrows_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1024
-        height: 1024
+        width: 1168
+        height: 1168
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -157,20 +160,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 99f49a9e9bc978cd0800000000000000
-      internalID: -2555901941206397031
+      spriteID: 6f6b218e1a7fac940800000000000000
+      internalID: 5317334584819627766
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SaintAlessia_1
+      name: DukeOfCrows_1
       rect:
         serializedVersion: 2
-        x: 433
-        y: 161
-        width: 374
-        height: 210
+        x: 7
+        y: 0
+        width: 24
+        height: 17
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -179,8 +182,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 270b5337fcd7177b0800000000000000
-      internalID: -5228259362455834510
+      spriteID: 8f60a0afd446f7230800000000000000
+      internalID: 3638737310008870648
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DukeOfCrows_2
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 0
+        width: 128
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f36f9de9ee1c49c0800000000000000
+      internalID: -3941741583793167371
       vertices: []
       indices: 
       edges: []
@@ -198,7 +223,10 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      DukeOfCrows_0: 5317334584819627766
+      DukeOfCrows_1: 3638737310008870648
+      DukeOfCrows_2: -3941741583793167371
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

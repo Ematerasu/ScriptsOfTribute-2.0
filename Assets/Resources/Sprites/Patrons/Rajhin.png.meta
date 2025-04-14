@@ -248,7 +248,11 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Rajhin_0: 886061056142426469
+      Rajhin_1: -434861879154183256
+      Rajhin_2: -4746479044930159372
+      Rajhin_3: 171734770486304992
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

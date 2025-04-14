@@ -42,11 +42,16 @@ public class BoardManager : MonoBehaviour
     [Header("Prefabs / Pool")]
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private Transform offscreenCardContainer;
+    [SerializeField] private Transform powerOriginPointPlayer1;
+    [SerializeField] private Transform powerOriginPointPlayer2;
+    [SerializeField] private GameObject powerProjectilePrefab;
 
     // Tracking which UniqueCard -> the instantiated card object
     private Dictionary<UniqueId, GameObject> cardObjects = new Dictionary<UniqueId, GameObject>();
+    public bool HasCardObject(UniqueId id) => cardObjects.ContainsKey(id);
 
-    private List<UniqueId> currentTavernCards;
+    private HashSet<Transform> reservedTavernSpots = new();
+
 
     private void Awake()
     {
@@ -56,7 +61,6 @@ public class BoardManager : MonoBehaviour
 
     public void InitializeBoard(FullGameState state)
     {
-        currentTavernCards = state.TavernAvailableCards.Select(c => c.UniqueId).ToList();
         foreach (var kvp in cardObjects)
         {
             Destroy(kvp.Value);
@@ -172,6 +176,19 @@ public class BoardManager : MonoBehaviour
         return cardObj;
     }
 
+    public void CreateCardObjectFromRuntime(UniqueCard card, ZoneType initialZone, ZoneSide side)
+    {
+        if (cardObjects.ContainsKey(card.UniqueId))
+        {
+            Debug.LogWarning($"[BoardManager] Tried to create duplicate card object for {card.UniqueId.Value}");
+            return;
+        }
+
+        var parentTransform = GetZoneTransform(initialZone, side);
+        var obj = CreateCardObject(card, parentTransform);
+        Debug.Log($"[BoardManager] [RUNTIME] Created card object: {card.Name} ({card.UniqueId.Value}) in {initialZone} ({side})");
+    }
+
     public void ArrangeCardsInHand(Transform handTransform)
     {
         float cardSpacing = 0.8f;
@@ -218,7 +235,9 @@ public class BoardManager : MonoBehaviour
         }
     }
 
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     public void MoveCardToZone(UniqueId cardId, Transform targetZone, ZoneType zoneType, ZoneSide zoneSide, System.Action? onComplete = null)
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     {
         if (!cardObjects.TryGetValue(cardId, out var cardObj))
             return;
@@ -226,7 +245,22 @@ public class BoardManager : MonoBehaviour
         var card = cardObj.GetComponent<Card>();
         if (card != null)
             card.SetAnimating(true);
-        LeanTween.move(cardObj, targetZone.position, 0.2f).setEase(LeanTweenType.easeInOutQuad).setOnComplete(() =>
+
+        if (zoneType == ZoneType.Hand && (card.ZoneType == ZoneType.PlayedPile || card.ZoneType == ZoneType.CooldownPile))
+        {
+            Transform drawTransform = GetZoneTransform(ZoneType.DrawPile, zoneSide);
+            LeanTween.move(cardObj, drawTransform.position, 0.25f)
+                .setEase(LeanTweenType.easeInOutSine)
+                .setOnComplete(() =>
+                {
+                    cardObj.transform.SetParent(drawTransform, false);
+                    cardObj.transform.localPosition = Vector3.zero;
+                    card.SetZoneInfo(ZoneType.DrawPile, zoneSide);
+                    MoveCardToZone(cardId, targetZone, zoneType, zoneSide, onComplete);
+                });
+            return;
+        }
+        LeanTween.move(cardObj, targetZone.position, 0.4f).setEase(LeanTweenType.easeInOutQuad).setOnComplete(() =>
         {
             cardObj.transform.SetParent(targetZone, false);
             cardObj.transform.localPosition = Vector3.zero;
@@ -289,7 +323,11 @@ public class BoardManager : MonoBehaviour
     {
         foreach (var spot in tavernCardSpots)
         {
-            if (spot.childCount == 0) return spot;
+            bool isEmpty = spot.GetComponentInChildren<Card>() == null;
+            if (isEmpty && !reservedTavernSpots.Contains(spot))
+            {
+                return spot;
+            }
         }
 
         Debug.LogWarning("Nie znaleziono wolnego slotu w tawernie!");
@@ -306,8 +344,8 @@ public class BoardManager : MonoBehaviour
             Debug.LogError("Slot powinien być wolny, ale nie jest!");
             yield break;
         }
-
-        MoveCardToZone(card, freeSpot, ZoneType.TavernAvailable, ZoneSide.Neutral);
+        reservedTavernSpots.Add(freeSpot);
+        MoveCardToZone(card, freeSpot, ZoneType.TavernAvailable, ZoneSide.Neutral, () => reservedTavernSpots.Remove(freeSpot));
     }
 
     public void DestroyCards(List<UniqueCard> cardsToDestroy)
@@ -323,8 +361,8 @@ public class BoardManager : MonoBehaviour
     {
         yield return null;
 
-        SerializedPlayer p1 = GameManager.Instance.HumanPlayer == PlayerEnum.PLAYER1 ? state.CurrentPlayer : state.EnemyPlayer;
-        SerializedPlayer p2 = GameManager.Instance.HumanPlayer == PlayerEnum.PLAYER2 ? state.CurrentPlayer : state.EnemyPlayer;
+        SerializedPlayer p1 = GameManager.Instance.IsHumanPlayersTurn ? state.CurrentPlayer : state.EnemyPlayer;
+        SerializedPlayer p2 = GameManager.Instance.IsHumanPlayersTurn ? state.EnemyPlayer : state.CurrentPlayer;
 
         foreach (Transform child in p1Agents)
         {
@@ -335,6 +373,10 @@ public class BoardManager : MonoBehaviour
                 if (matching != null)
                 {
                     card.UpdateAgentHealth(matching);
+                    if (matching.Activated)
+                        card.ShowActivationEffect();
+                    else
+                        card.RemoveActivationEffect();
                 }
             }
             yield return null;
@@ -349,12 +391,71 @@ public class BoardManager : MonoBehaviour
                 if (matching != null)
                 {
                     card.UpdateAgentHealth(matching);
+                    if (matching.Activated)
+                        card.ShowActivationEffect();
+                    else
+                        card.RemoveActivationEffect();
                 }
             }
             yield return null;
         }
     }
 
+    public void DebugCheckHandSync(FullGameState state)
+    {
+        var correctHand = state.EnemyPlayer.Hand.Select(c => c.UniqueId.Value).OrderBy(x => x).ToList();
+        var visualHand = GetCardsInZone(ZoneType.Hand, ZoneSide.Player2).Select(c => c.GetCard().UniqueId.Value).OrderBy(x => x).ToList();
+
+        Debug.Log($"[SYNC] Engine hand (P2): {string.Join(", ", correctHand)}");
+        Debug.Log($"[SYNC] Unity  hand (P2): {string.Join(", ", visualHand)}");
+
+        var extras = visualHand.Except(correctHand).ToList();
+        if (extras.Count > 0)
+        {
+            Debug.LogWarning($"[DESYNC] Extra card(s) in Unity hand: {string.Join(", ", extras)}");
+        }
+
+        var missing = correctHand.Except(visualHand).ToList();
+        if (missing.Count > 0)
+        {
+            Debug.LogWarning($"[DESYNC] Missing card(s) in Unity hand: {string.Join(", ", missing)}");
+        }
+    }
+
+    public void PlayPowerAttackEffect(UniqueId cardId, ZoneSide side, System.Action? onComplete = null)
+    {
+        Vector3 targetPosition = cardObjects[cardId].transform.position;
+        Transform powerOrigin = side == ZoneSide.Player1 ? powerOriginPointPlayer1 : powerOriginPointPlayer2;
+        GameObject projectile = Instantiate(powerProjectilePrefab, powerOrigin.position, Quaternion.identity, transform);
+
+        float travelTime = 0.5f;
+
+        Vector3 midPoint = Vector3.Lerp(powerOrigin.position, targetPosition, 0.5f);
+
+        Vector3 curveOffset = new Vector3(-2f, 0, 0);
+        if (side == ZoneSide.Player2) curveOffset *= -1f;
+
+        midPoint += curveOffset;
+
+        Vector3[] path = new Vector3[] {
+            powerOrigin.position,
+            powerOrigin.position,
+            midPoint,
+            targetPosition,
+            targetPosition
+        };
+
+        LeanTween.moveSpline(projectile, path, travelTime)
+            .setEase(LeanTweenType.easeInOutSine)
+            .setOnComplete(() =>
+            {
+                LeanTween.scale(projectile, Vector3.zero, 0.1f).setEase(LeanTweenType.easeInQuad).setOnComplete(() =>
+                {
+                    Destroy(projectile);
+                    onComplete?.Invoke();
+                });
+            });
+    }
 }
 
 public enum UpdateReason

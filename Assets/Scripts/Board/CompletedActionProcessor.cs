@@ -89,7 +89,19 @@ public class CompletedActionProcessor : MonoBehaviour
 
         foreach (var id in added)
         {
-            //Debug.Log($"[VisualQueue] Card {id.Value} added to {zoneType} ({zoneSide})");
+            if (!BoardManager.Instance.HasCardObject(id))
+            {
+                var card = currentList.FirstOrDefault(c => c.UniqueId == id);
+                if (card != null)
+                {
+                    BoardManager.Instance.CreateCardObjectFromRuntime(card, zoneType, zoneSide);
+                }
+                else
+                {
+                    Debug.LogError($"[CompletedActionProcessor] Missing UniqueCard for ID: {id.Value}");
+                }
+            }
+            //Debug.Log($"[QUEUE] Enqueuing move: {id.Value} → {zoneType} ({zoneSide})");
             _visualQueue.Enqueue(new MoveVisualCommand(id, zoneType, zoneSide));
         }
 

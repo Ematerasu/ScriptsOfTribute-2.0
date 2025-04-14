@@ -111,6 +111,7 @@ MonoBehaviour:
   _zoneType: 0
   _zoneSide: 0
   backSprite: {fileID: -8622259438476403829, guid: de0d361f7516f794eb2081053f45a82b, type: 3}
+  agentActivateEffectPrefab: {fileID: 5786281538786357987, guid: 72a072ad287a75e43a720254b4d38bfc, type: 3}
 --- !u!114 &400410025059632294
 MonoBehaviour:
   m_ObjectHideFlags: 0
