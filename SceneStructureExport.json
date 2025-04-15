@@ -500,6 +500,173 @@
             "hasCustomScript": false
         },
         {
+            "name": "CardTooltip",
+            "path": "UI/Canvas/CardTooltip",
+            "components": [
+                "UnityEngine.RectTransform"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Panel",
+            "path": "UI/Canvas/CardTooltip/Panel",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Border",
+            "path": "UI/Canvas/CardTooltip/Border",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Deco",
+            "path": "UI/Canvas/CardTooltip/Deco",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Text",
+            "path": "UI/Canvas/CardTooltip/Text",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "TMPro.TextMeshProUGUI"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "CardName",
+            "path": "UI/Canvas/CardTooltip/CardName",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "TMPro.TextMeshProUGUI"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "CardDeck",
+            "path": "UI/Canvas/CardTooltip/CardDeck",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "TMPro.TextMeshProUGUI"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Card",
+            "path": "UI/Canvas/CardTooltip/Card",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "PatronSelectionPanelController",
+            "path": "UI/Canvas/PatronSelectionPanelController",
+            "components": [
+                "UnityEngine.RectTransform",
+                "PatronSelectionPanel"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "PatronSelectionPanel",
+            "path": "UI/Canvas/PatronSelectionPanelController/PatronSelectionPanel",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Border",
+            "path": "UI/Canvas/PatronSelectionPanelController/PatronSelectionPanel/Border",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Panel",
+            "path": "UI/Canvas/PatronSelectionPanelController/PatronSelectionPanel/Panel",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Container",
+            "path": "UI/Canvas/PatronSelectionPanelController/PatronSelectionPanel/Panel/Container",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.GridLayoutGroup",
+                "UnityEngine.UI.ContentSizeFitter"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Deco",
+            "path": "UI/Canvas/PatronSelectionPanelController/PatronSelectionPanel/Deco",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Deco (1)",
+            "path": "UI/Canvas/PatronSelectionPanelController/PatronSelectionPanel/Deco (1)",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Title",
+            "path": "UI/Canvas/PatronSelectionPanelController/PatronSelectionPanel/Title",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "TMPro.TextMeshProUGUI"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Who's picking text",
+            "path": "UI/Canvas/PatronSelectionPanelController/PatronSelectionPanel/Who's picking text",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "TMPro.TextMeshProUGUI"
+            ],
+            "hasCustomScript": false
+        },
+        {
             "name": "EventSystem",
             "path": "EventSystem",
             "components": [
@@ -625,6 +792,14 @@
             "hasCustomScript": false
         },
         {
+            "name": "PowerOrigin",
+            "path": "Player1/PowerOrigin",
+            "components": [
+                "UnityEngine.Transform"
+            ],
+            "hasCustomScript": false
+        },
+        {
             "name": "Player2",
             "path": "Player2",
             "components": [
@@ -674,6 +849,14 @@
             "components": [
                 "UnityEngine.Transform",
                 "CardZone"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "PowerOrigin",
+            "path": "Player2/PowerOrigin",
+            "components": [
+                "UnityEngine.Transform"
             ],
             "hasCustomScript": false
         },

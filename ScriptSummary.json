@@ -8,8 +8,10 @@
             "typeName": "AIManager",
             "methods": [
                 "private void Awake()",
-                "public void InitializeBot(AI bot, PlayerEnum botId, SoTGameManager gameManager)",
+                "public void InitializeBot(AI bot, PlayerEnum botId)",
+                "public void InitializeManager(SoTGameManager gameManager)",
                 "public bool IsAITurn()",
+                "public void PickOnePatron(List<PatronId> availablePatrons, int round, Action<PatronId> onResult)",
                 "public void PlaySingleMove()",
                 "public void PlayFullTurn()",
                 "public IEnumerator PregamePrepareCoroutine()",
@@ -32,7 +34,7 @@
             "kind": "class",
             "typeName": "BoardManager",
             "methods": [
-                "[Header(\"Player 1 Zones\")] [SerializeField] private Transform p1DrawPile; [SerializeField] private Transform p1Cooldown; [SerializeField] private Transform p1Hand; [SerializeField] private Transform p1Played; [SerializeField] private Transform p1Agents; [Header(\"Player 2 Zones\")] [SerializeField] private Transform p2DrawPile; [SerializeField] private Transform p2Cooldown; [SerializeField] private Transform p2Hand; [SerializeField] private Transform p2Played; [SerializeField] private Transform p2Agents; [Header(\"Tavern\")] [SerializeField] private Transform tavernPile; [SerializeField] private List<Transform> tavernCardSpots; [Header(\"UI\")] [SerializeField] private TextMeshProUGUI Player1Gold; [SerializeField] private TextMeshProUGUI Player1Prestige; [SerializeField] private TextMeshProUGUI Player1Power; [SerializeField] private TextMeshProUGUI Player2Gold; [SerializeField] private TextMeshProUGUI Player2Prestige; [SerializeField] private TextMeshProUGUI Player2Power; [Header(\"Prefabs / Pool\")] [SerializeField] private GameObject cardPrefab; [SerializeField] private Transform offscreenCardContainer; public bool HasCardObject(UniqueId id) => cardObjects.ContainsKey(id);",
+                "[Header(\"Player 1 Zones\")] [SerializeField] private Transform p1DrawPile; [SerializeField] private Transform p1Cooldown; [SerializeField] private Transform p1Hand; [SerializeField] private Transform p1Played; [SerializeField] private Transform p1Agents; [Header(\"Player 2 Zones\")] [SerializeField] private Transform p2DrawPile; [SerializeField] private Transform p2Cooldown; [SerializeField] private Transform p2Hand; [SerializeField] private Transform p2Played; [SerializeField] private Transform p2Agents; [Header(\"Tavern\")] [SerializeField] private Transform tavernPile; [SerializeField] private List<Transform> tavernCardSpots; [Header(\"UI\")] [SerializeField] private TextMeshProUGUI Player1Gold; [SerializeField] private TextMeshProUGUI Player1Prestige; [SerializeField] private TextMeshProUGUI Player1Power; [SerializeField] private TextMeshProUGUI Player2Gold; [SerializeField] private TextMeshProUGUI Player2Prestige; [SerializeField] private TextMeshProUGUI Player2Power; [Header(\"Prefabs / Pool\")] [SerializeField] private GameObject cardPrefab; [SerializeField] private Transform offscreenCardContainer; [SerializeField] private Transform powerOriginPointPlayer1; [SerializeField] private Transform powerOriginPointPlayer2; [SerializeField] private GameObject powerProjectilePrefab; public bool HasCardObject(UniqueId id) => cardObjects.ContainsKey(id);",
                 "private void Awake()",
                 "public void InitializeBoard(FullGameState state)",
                 "public void UpdateBoard(FullGameState state, UpdateReason reason)",
@@ -50,9 +52,12 @@
                 "public IEnumerator AnimateAddCardToTavernDelayed(UniqueId card)",
                 "public void DestroyCards(List<UniqueCard> cardsToDestroy)",
                 "private IEnumerator UpdateAgentHealthCoroutine(FullGameState state)",
-                "public void DebugCheckHandSync(FullGameState state)"
+                "public void DebugCheckHandSync(FullGameState state)",
+                "public void PlayPowerAttackEffect(UniqueId cardId, ZoneSide side, System.Action? onComplete = null)"
             ],
-            "fields": []
+            "fields": [
+                "private HashSet<Transform> reservedTavernSpots = new();"
+            ]
         },
         {
             "fileName": "BoardManager.cs",
@@ -177,6 +182,7 @@
                 "public void SetLayoutPosition(Vector3 pos) => _layoutPosition = pos;",
                 "public Vector3 GetLayoutPosition() => _layoutPosition;",
                 "public void Start()",
+                "[ContextMenu(\"Test Activation Effect\")] public void TestActivationEffect()",
                 "public UniqueCard GetCard()",
                 "public void SetAnimating(bool value)",
                 "public bool IsAnimating()",
@@ -204,11 +210,11 @@
                 "[field: SerializeField] private bool _isAnimating = false;",
                 "private bool _isVisible = true;",
                 "private Sprite _originalSprite;",
+                "private Material _originalMaterial;",
                 "private Vector3 _scale;",
                 "[SerializeField] private ZoneType _zoneType; [SerializeField] private ZoneSide _zoneSide; public ZoneType ZoneType => _zoneType;",
                 "public ZoneSide ZoneSide => _zoneSide;",
-                "[SerializeField] private Sprite backSprite; [SerializeField] private GameObject agentActivateEffectPrefab; private GameObject activeGlowEffect;",
-                "private Vector3 _layoutPosition;"
+                "[SerializeField] private Sprite backSprite; [SerializeField] private Material activationMaterial; private Vector3 _layoutPosition;"
             ]
         },
         {
@@ -239,7 +245,9 @@
             "kind": "class",
             "typeName": "CardController",
             "methods": [
-                "public void OnPointerClick(PointerEventData eventData)"
+                "public void OnPointerClick(PointerEventData eventData)",
+                "private string GetCardTooltipText(UniqueCard card)",
+                "private string EffectToString(UniqueComplexEffect effect)"
             ],
             "fields": [
                 "public Card card;"
@@ -254,6 +262,7 @@
             "methods": [
                 "private void Awake()",
                 "private void Start()",
+                "public void StartGameWithPatrons(PatronId[] patrons)",
                 "private void Update()",
                 "public void OnEndTurnButtonClicked()",
                 "public void PlaySingleAIMove()",
@@ -309,7 +318,6 @@
                 "public void OnPointerClick(PointerEventData eventData)",
                 "public void OnPointerExit(PointerEventData eventData)",
                 "public void UpdatePatronCircleRotation()",
-                "private string GetPatronName(PatronId id)",
                 "private string GetTooltipText(PatronId id)"
             ],
             "fields": [
@@ -344,15 +352,31 @@
             "kind": "class",
             "typeName": "UIManager",
             "methods": [
-                "[Header(\"AI Buttons\")] [SerializeField] private Button aiMoveButton; [SerializeField] private Button aiMoveFullTurnButton; [Header(\"Choice Panels\")] [SerializeField] private CardChoicePanelController cardChoicePanel; [SerializeField] private EffectChoicePanelController effectChoicePanel; [Header(\"Text objects\")] [SerializeField] private GameObject YourTurnImage; [Header(\"Patrons\")] [SerializeField] private GameObject PatronTooltipPanel; [SerializeField] private TextMeshProUGUI PatronTooltipTitle; [SerializeField] private TextMeshProUGUI PatronTooltipText; private void Awake()",
+                "public bool IsCardTooltipVisible() => isCardTooltipVisible;",
+                "private void Awake()",
+                "private void Update()",
+                "public void ShowPatronDraft(List<PatronId> patrons)",
                 "public void ShowAiButtons(bool show)",
                 "private void OnAiMoveClicked()",
                 "private void OnAiFullTurnClicked()",
                 "public void ShowChoice(SerializedChoice choice)",
                 "public IEnumerator ShowYourTurnMessage()",
                 "public void ShowPatronTooltip(string name, string text)",
-                "public void HidePatronTooltip()"
+                "public void HidePatronTooltip()",
+                "public void ShowCardTooltip(string name, string deckName, string text, Sprite sprite)",
+                "public void HideCardTooltip()"
             ],
+            "fields": [
+                "[Header(\"AI Buttons\")] [SerializeField] private Button aiMoveButton; [SerializeField] private Button aiMoveFullTurnButton; [Header(\"Choice Panels\")] [SerializeField] private CardChoicePanelController cardChoicePanel; [SerializeField] private EffectChoicePanelController effectChoicePanel; [SerializeField] private PatronSelectionPanel patronSelectionPanel; [Header(\"Text objects\")] [SerializeField] private GameObject YourTurnImage; [Header(\"Patrons\")] [SerializeField] private GameObject PatronTooltipPanel; [SerializeField] private TextMeshProUGUI PatronTooltipTitle; [SerializeField] private TextMeshProUGUI PatronTooltipText; [Header(\"Card Tooltip\")] [SerializeField] private GameObject CardTooltipPanel; [SerializeField] private TextMeshProUGUI CardTooltipTitle; [SerializeField] private TextMeshProUGUI CardDeckTooltipTitle; [SerializeField] private TextMeshProUGUI CardTooltipText; [SerializeField] private Image cardTooltipImage; private bool isCardTooltipVisible = false;"
+            ]
+        },
+        {
+            "fileName": "CardUtils.cs",
+            "path": "Assets\\Scripts\\Utilities\\CardUtils.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "CardUtils",
+            "methods": [],
             "fields": []
         },
         {
@@ -381,10 +405,12 @@
                 "private void HandleClick()",
                 "private void SetSelected(bool selected)",
                 "private void DisableAllEffects()",
-                "private void LoadCardSprite(PatronId deck, CardId cardId)"
+                "private void LoadCardSprite(PatronId deck, CardId cardId)",
+                "public void FlashRedOutline()"
             ],
             "fields": [
-                "[SerializeField] private Image cardImage; [Header(\"Outline Settings\")] [SerializeField] private Color selectedOutlineColor = new Color(0.2f, 1f, 0.2f, 1f); [SerializeField] private float outlineAlpha = 0.255f; [SerializeField] private float outlineGlow = 45.0f; [SerializeField] private float outlineWidth = 0.083f; [SerializeField] private int outlinePixelWidth = 2; private UniqueCard _card;",
+                "[SerializeField] private Image cardImage; [Header(\"Outline Settings\")] [SerializeField] private Color selectedOutlineColor = new Color(0.2f, 1f, 0.2f, 1f); [SerializeField] private Color errorOutlineColor = new Color(1f, 0.2f, 0.2f, 1f); [SerializeField] private float outlineAlpha = 0.255f; [SerializeField] private float outlineGlow = 45.0f; [SerializeField] private float outlineWidth = 0.083f; [SerializeField] private int outlinePixelWidth = 2; private UniqueCard _card;",
+                "public UniqueCard Card => _card;",
                 "private bool _selected = false;",
                 "private Material _materialInstance;"
             ]
@@ -405,7 +431,9 @@
             ],
             "fields": [
                 "[Header(\"UI Elements\")] [SerializeField] private GameObject cardChoicePanel; [SerializeField] private TextMeshProUGUI cardChoiceTitle; [SerializeField] private Transform cardContentParent; [SerializeField] private GameObject cardChoiceButtonPrefab; [SerializeField] private ChoiceProgressSlider progressSlider; [SerializeField] private Button confirmButton; private SerializedChoice currentChoice;",
-                "private List<UniqueCard> selectedCards = new();"
+                "private List<UniqueCard> selectedCards = new();",
+                "private int minChoices;",
+                "private int maxChoices;"
             ]
         },
         {
@@ -470,6 +498,45 @@
             ],
             "fields": [
                 "[SerializeField] private RectTransform content; [SerializeField] private RectTransform viewport; private ScrollRect scrollRect;"
+            ]
+        },
+        {
+            "fileName": "PatronGlowPulsing.cs",
+            "path": "Assets\\Scripts\\UI\\PatronSelection\\PatronGlowPulsing.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "PatronGlowPulsing",
+            "methods": [
+                "public void Initialize(Color color, float glow, float speed = 1f)",
+                "private void Update()"
+            ],
+            "fields": [
+                "private Material runtimeMat;",
+                "private float speed = 1f;",
+                "private Color targetColor;",
+                "private float targetGlow;",
+                "private float startTimeOffset;"
+            ]
+        },
+        {
+            "fileName": "PatronSelectionPanel.cs",
+            "path": "Assets\\Scripts\\UI\\PatronSelection\\PatronSelectionPanel.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "PatronSelectionPanel",
+            "methods": [
+                "public void ShowPatronDraft(List<PatronId> patrons)",
+                "private void SetUpUI()",
+                "private void RefreshUI()",
+                "private void OnPatronClicked(PatronId patron)",
+                "private IEnumerator HandlePatronPickCoroutine(PatronId patron)",
+                "private Sprite LoadPatronSprite(PatronId patronId)"
+            ],
+            "fields": [
+                "[SerializeField] private GameObject panelRoot; [SerializeField] private TextMeshProUGUI draftText; [SerializeField] private Transform patronButtonContainer; [SerializeField] private GameObject patronButtonPrefab; private List<PatronId> availablePatrons;",
+                "private List<PatronId> selectedPatrons = new();",
+                "private int pickIndex = 0;",
+                "private PlayerEnum[] pickOrder = new[] {"
             ]
         }
     ]

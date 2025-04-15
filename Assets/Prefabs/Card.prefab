@@ -61,7 +61,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: cc460e5b1c6c0bd498b44195a0c3da99, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -81,8 +81,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
-  m_Sprite: {fileID: -1231669868655315321, guid: 363eb44d1f663d34e82e52d573d36120, type: 3}
+  m_SortingOrder: 2
+  m_Sprite: {fileID: -2939531917092581599, guid: 8e2878d11f7e06b428b8ff6eb7664dac, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -111,7 +111,7 @@ MonoBehaviour:
   _zoneType: 0
   _zoneSide: 0
   backSprite: {fileID: -8622259438476403829, guid: de0d361f7516f794eb2081053f45a82b, type: 3}
-  agentActivateEffectPrefab: {fileID: 5786281538786357987, guid: 72a072ad287a75e43a720254b4d38bfc, type: 3}
+  activationMaterial: {fileID: 2100000, guid: c3c3ee2332a4a24488c2cac57690059d, type: 2}
 --- !u!114 &400410025059632294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -290,7 +290,7 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 3
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &1132276403684690567
 MonoBehaviour:

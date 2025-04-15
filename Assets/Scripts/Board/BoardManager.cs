@@ -359,7 +359,7 @@ public class BoardManager : MonoBehaviour
 
     private IEnumerator UpdateAgentHealthCoroutine(FullGameState state)
     {
-        yield return null;
+        yield return new WaitForSeconds(0.7f);
 
         SerializedPlayer p1 = GameManager.Instance.IsHumanPlayersTurn ? state.CurrentPlayer : state.EnemyPlayer;
         SerializedPlayer p2 = GameManager.Instance.IsHumanPlayersTurn ? state.EnemyPlayer : state.CurrentPlayer;

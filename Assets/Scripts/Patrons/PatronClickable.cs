@@ -27,7 +27,7 @@ public class PatronClickable : MonoBehaviour, IPointerClickHandler, IPointerExit
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
-            UIManager.Instance.ShowPatronTooltip(GetPatronName(_patronId), _tooltipText);
+            UIManager.Instance.ShowPatronTooltip(CardUtils.GetFullDeckDisplayName(_patronId), _tooltipText);
         }
     }
 
@@ -50,23 +50,6 @@ public class PatronClickable : MonoBehaviour, IPointerClickHandler, IPointerExit
                 LeanTween.rotate(patronCircle, _player2FavorRotate, 0.5f);
                 break;
         }
-    }
-
-    private string GetPatronName(PatronId id)
-    {
-        return id switch
-        {
-            PatronId.ANSEI => "Ansei Frandar Hunding",
-            PatronId.DUKE_OF_CROWS => "Duke of Crows",
-            PatronId.RAJHIN => "Rajhin, the Purring Liar",
-            PatronId.PSIJIC => "Psijic Loremaster Celarus",
-            PatronId.ORGNUM => "Sorcerer-King Orgnum",
-            PatronId.HLAALU => "Grandmaster Delmene Hlaalu",
-            PatronId.PELIN => "Saint Pelin",
-            PatronId.RED_EAGLE => "Red Eagle, King of the Reach",
-            PatronId.TREASURY => "Treasury",
-            _ => "Treasury"
-        };
     }
 
     private string GetTooltipText(PatronId id)

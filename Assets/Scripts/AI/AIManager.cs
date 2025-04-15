@@ -121,6 +121,7 @@ public class AIManager : MonoBehaviour
         }
 
         onResult?.Invoke(chosen);
+        BotIsPlaying = false;
     }
 
     private IEnumerator PlaySingleMoveCoroutine()

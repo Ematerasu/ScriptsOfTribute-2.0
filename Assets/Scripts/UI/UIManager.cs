@@ -28,6 +28,17 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI PatronTooltipTitle;
     [SerializeField] private TextMeshProUGUI PatronTooltipText;
 
+    [Header("Card Tooltip")]
+    [SerializeField] private GameObject CardTooltipPanel;
+    [SerializeField] private TextMeshProUGUI CardTooltipTitle;
+    [SerializeField] private TextMeshProUGUI CardDeckTooltipTitle;
+    [SerializeField] private TextMeshProUGUI CardTooltipText;
+    [SerializeField] private Image cardTooltipImage;
+    private bool isCardTooltipVisible = false;
+
+    public bool IsCardTooltipVisible() => isCardTooltipVisible;
+
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -42,6 +53,15 @@ public class UIManager : MonoBehaviour
 
         aiMoveButton.onClick.AddListener(OnAiMoveClicked);
         aiMoveFullTurnButton.onClick.AddListener(OnAiFullTurnClicked);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            HideCardTooltip();
+            HidePatronTooltip();
+        }
     }
 
     public void ShowPatronDraft(List<PatronId> patrons)
@@ -132,5 +152,21 @@ public class UIManager : MonoBehaviour
     public void HidePatronTooltip()
     {
         PatronTooltipPanel.SetActive(false);
+    }
+
+    public void ShowCardTooltip(string name, string deckName, string text, Sprite sprite)
+    {
+        CardTooltipTitle.text = name;
+        CardTooltipText.text = text;
+        CardDeckTooltipTitle.text = deckName;
+        cardTooltipImage.sprite = sprite;
+        CardTooltipPanel.SetActive(true);
+        isCardTooltipVisible = true;
+    }
+
+    public void HideCardTooltip()
+    {
+        CardTooltipPanel.SetActive(false);
+        isCardTooltipVisible = false;
     }
 }

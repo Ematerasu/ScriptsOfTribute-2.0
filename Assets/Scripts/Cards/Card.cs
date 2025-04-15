@@ -19,6 +19,7 @@ public class Card : MonoBehaviour
     private bool _isAnimating = false;
     private bool _isVisible = true;
     private Sprite _originalSprite;
+    private Material _originalMaterial;
     private Vector3 _scale;
 
     [SerializeField] private ZoneType _zoneType;
@@ -26,8 +27,7 @@ public class Card : MonoBehaviour
     public ZoneType ZoneType => _zoneType;
     public ZoneSide ZoneSide => _zoneSide;
     [SerializeField] private Sprite backSprite;
-    [SerializeField] private GameObject agentActivateEffectPrefab;
-    private GameObject activeGlowEffect;
+    [SerializeField] private Material activationMaterial;
     private Vector3 _layoutPosition;
     public void SetLayoutPosition(Vector3 pos) => _layoutPosition = pos;
     public Vector3 GetLayoutPosition() => _layoutPosition;
@@ -35,7 +35,16 @@ public class Card : MonoBehaviour
     public void Start()
     {
         _scale = gameObject.transform.localScale;
+        _originalMaterial = spriteRenderer.sharedMaterial;
     }
+
+#if UNITY_EDITOR
+    [ContextMenu("Test Activation Effect")]
+    public void TestActivationEffect()
+    {
+        ShowActivationEffect();
+    }
+#endif
 
     public UniqueCard GetCard()
     {
@@ -87,15 +96,7 @@ public class Card : MonoBehaviour
 
     private void LoadCardSprite(PatronId deck, CardId cardId)
     {
-        string deckName = deck.ToString().Replace("_", string.Empty).ToLower().FirstCharacterToUpper();
-        string cardName = cardId.ToString().ToLower().Replace("_", "-");
-        string path = $"Sprites/Cards/{deckName}/{cardName}";
-        Sprite sprite = Resources.Load<Sprite>(path);
-
-        if (sprite == null)
-        {
-            Debug.LogError($"Nie znaleziono sprite'a dla ścieżki: {path}");
-        }
+        Sprite sprite = CardUtils.LoadCardSprite(deck, cardId);
         spriteRenderer.sprite = sprite;
         _originalSprite = sprite;
     }
@@ -142,20 +143,18 @@ public class Card : MonoBehaviour
 
     public void ShowActivationEffect()
     {
-        if (activeGlowEffect != null)
+        if (activationMaterial != null)
         {
-            activeGlowEffect.SetActive(true);
-            return;
+            spriteRenderer.material = activationMaterial;
         }
-        activeGlowEffect = Instantiate(agentActivateEffectPrefab, transform);
-        var renderer = activeGlowEffect.GetComponent<ParticleSystemRenderer>();
-        if (renderer != null) renderer.enabled = true;
-        activeGlowEffect.SetActive(true);
-        activeGlowEffect.transform.localPosition = Vector3.zero;
+        else
+        {
+            Debug.LogWarning("Brak przypisanego activationMaterial w inspectorze!");
+        }
     }
 
     public void RemoveActivationEffect()
     {
-        activeGlowEffect.SetActive(false);
+        spriteRenderer.material = _originalMaterial;
     }
 }

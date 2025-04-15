@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
             PatronId.ANSEI,
             PatronId.DUKE_OF_CROWS,
             PatronId.RAJHIN, 
-            PatronId.PSIJIC, 
+            //PatronId.PSIJIC, 
             PatronId.ORGNUM, 
             PatronId.HLAALU, 
             PatronId.PELIN, 
