@@ -10,8 +10,8 @@ public class PatronClickable : MonoBehaviour, IPointerClickHandler, IPointerExit
     public PlayerEnum favoring;
 
     private Vector3 _neutralRotate = new Vector3(0f, 0f, 90f);
-    private Vector3 _player1FavorRotate = new Vector3(0f, 0f, 180f);
-    private Vector3 _player2FavorRotate = new Vector3(0f, 0f, 0f);
+    private Vector3 _player1FavorRotate = new Vector3(0f, 0f, 179f);
+    private Vector3 _player2FavorRotate = new Vector3(0f, 0f, 1f);
 
     public void Initialize(PatronId id)
     {
@@ -127,6 +127,15 @@ public class PatronClickable : MonoBehaviour, IPointerClickHandler, IPointerExit
 
     UNFAVORED
     Pay 2 Power: <sprite name=""Draw_icon""> Draw 1 card. This Patron is now NEUTRAL.",
+
+            PatronId.SAINT_ALESSIA => @"FAVORED
+    Pay 4 Coin: <sprite name=""CreateCards_icon""> Create 1 Chainbreaker Sergeant card and place it in your cooldown pile.
+
+    NEUTRAL
+    Pay 4 Coin: <sprite name=""CreateCards_icon""> Create 1 Soldier of the Empire card and place it in your cooldown pile.
+
+    UNFAVORED
+    Pay 4 Coin: <sprite name=""Power_icon""> Gain 2 Power.",
 
             PatronId.TREASURY => @"Pay 2 Coin, Sacrifice 1 card from your hand or your played cards: <sprite name=""CreateCards_icon""> Create 1 Writ of Coin card and place it in your cooldown pile.",
 

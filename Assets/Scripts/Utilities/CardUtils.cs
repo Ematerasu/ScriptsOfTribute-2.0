@@ -31,6 +31,7 @@ public static class CardUtils
             PatronId.HLAALU => "Hlaalu",
             PatronId.PELIN => "Pelin",
             PatronId.RED_EAGLE => "Red Eagle",
+            PatronId.SAINT_ALESSIA => "Saint Alessia",
             PatronId.TREASURY => "Treasury",
             _ => "Unknown"
         };
@@ -48,6 +49,7 @@ public static class CardUtils
             PatronId.HLAALU => "Grandmaster Delmene Hlaalu",
             PatronId.PELIN => "Saint Pelin",
             PatronId.RED_EAGLE => "Red Eagle, King of the Reach",
+            PatronId.SAINT_ALESSIA => "Saint Alessia",
             PatronId.TREASURY => "Treasury",
             _ => "Treasury"
         };

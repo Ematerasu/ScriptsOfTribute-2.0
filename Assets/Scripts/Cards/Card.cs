@@ -32,6 +32,7 @@ public class Card : MonoBehaviour
     public void SetLayoutPosition(Vector3 pos) => _layoutPosition = pos;
     public Vector3 GetLayoutPosition() => _layoutPosition;
 
+    public Sprite GetOriginalSprite() => _originalSprite;
     public void Start()
     {
         _scale = gameObject.transform.localScale;

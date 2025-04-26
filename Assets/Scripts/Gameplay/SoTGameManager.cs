@@ -33,6 +33,14 @@ public class SoTGameManager : MonoBehaviour
         RefreshCache(initialState);
     }
 
+    public void InitializeDebugGame(FullGameState debugState)
+    {
+        _api = ScriptsOfTributeApi.FromSerializedBoard(debugState);
+        BoardManager.Instance.InitializeBoard(debugState);
+        completedActionProcessor.SetInitialSnapshot(debugState);
+        RefreshCache(debugState);
+    }
+
     public void RefreshCache(FullGameState newState)
     {
         _cachedLegalMoves = _api.GetListOfPossibleMoves();

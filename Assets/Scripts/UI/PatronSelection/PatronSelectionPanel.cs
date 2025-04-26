@@ -83,8 +83,6 @@ public class PatronSelectionPanel : MonoBehaviour
 
             btnGO.GetComponent<PatronGlowPulsing>().Initialize(color, glow);
             btnGO.GetComponent<Button>().interactable = false;
-
-            btnGO.GetComponent<Button>().interactable = false;
         }
 
         yield return new WaitForSeconds(0.5f);

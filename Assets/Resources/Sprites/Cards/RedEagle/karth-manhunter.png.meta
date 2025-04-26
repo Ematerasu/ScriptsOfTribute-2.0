@@ -3,8 +3,8 @@ guid: 6cc3a1e22722e2e4392ecd80563ac2e7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -9129782843845913594
-    second: karth-man-hunter_0
+      213: 3674942042090360822
+    second: karth-manhunter_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -48,7 +48,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 0
+  spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -139,7 +139,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: karth-man-hunter_0
+      name: karth-manhunter_0
       rect:
         serializedVersion: 2
         x: 0
@@ -154,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 604db1c00ee7c4180800000000000000
-      internalID: -9129782843845913594
+      spriteID: 6ffc1fc0154000330800000000000000
+      internalID: 3674942042090360822
       vertices: []
       indices: 
       edges: []
@@ -173,8 +173,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      karth-man-hunter_0: -9129782843845913594
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

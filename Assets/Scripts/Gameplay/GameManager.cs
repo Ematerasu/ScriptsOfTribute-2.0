@@ -7,6 +7,8 @@ using Bots;
 using ScriptsOfTribute.AI;
 using System.Collections.Generic;
 using System.Linq;
+using ScriptsOfTribute.Serializers;
+using System;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
@@ -21,6 +23,26 @@ public class GameManager : MonoBehaviour
     [SerializeField] public PlayerEnum HumanPlayer = PlayerEnum.PLAYER1;
     [SerializeField] public PlayerEnum AIPlayer => HumanPlayer == PlayerEnum.PLAYER1 ? PlayerEnum.PLAYER2 : PlayerEnum.PLAYER1;
 
+    [Header("Debug mode")]
+    [SerializeField] private bool debugMode = false;
+    [SerializeField] private bool debugPlayerStartsFirst = true;
+
+    [SerializeField] private List<CardId> debugPlayer1Hand = new();
+    [SerializeField] private List<CardId> debugPlayer2Hand = new();
+    [SerializeField] private List<CardId> debugPlayer1DrawPile = new();
+    [SerializeField] private List<CardId> debugPlayer2DrawPile = new();
+    [SerializeField] private List<CardId> debugTavernCards = new();
+    [SerializeField] private List<PatronId> debugPatrons = new();
+
+    [SerializeField] private int debugPlayer1Prestige = 0;
+    [SerializeField] private int debugPlayer2Prestige = 0;
+    [SerializeField] private int debugPlayer1Power = 0;
+    [SerializeField] private int debugPlayer2Power = 0;
+    [SerializeField] private int debugPlayer1Coins = 0;
+    [SerializeField] private int debugPlayer2Coins = 0;
+
+    public bool IsDebugMode => debugMode;
+
     public bool IsHumanPlayersTurn => CurrentTurn == HumanPlayer;
 
     private void Awake()
@@ -31,7 +53,18 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        AI bot = new MCTSBot();
+        if (debugMode)
+        {
+            InitializeDebugGame();
+        }
+        else
+        {
+            NormalStart();
+        }
+    }
+    private void NormalStart()
+    {
+        AI bot = new MaxPrestigeBot();
         _aiManager.InitializeBot(bot, AIPlayer);
         CurrentTurn = PlayerEnum.PLAYER1;
         List<PatronId> patronsAvailable = new List<PatronId>()
@@ -44,6 +77,7 @@ public class GameManager : MonoBehaviour
             PatronId.HLAALU, 
             PatronId.PELIN, 
             PatronId.RED_EAGLE,
+            PatronId.SAINT_ALESSIA,
         };
         _uiManager.ShowPatronDraft(patronsAvailable);
     }
@@ -58,6 +92,8 @@ public class GameManager : MonoBehaviour
 
         if (CurrentTurn == HumanPlayer)
             StartCoroutine(_uiManager.ShowYourTurnMessage());
+        
+        _uiManager.ShowAiButtons(CurrentTurn == AIPlayer);
     }
     private void Update()
     {
@@ -105,8 +141,9 @@ public class GameManager : MonoBehaviour
         var endGameState = _soTGameManager.EndTurn(sideCalling);
         if (endGameState != null)
         {
-            Debug.Log("END GAME");
-            // _uiManager.ShowEndGameScreen(endGameState);
+            _uiManager.ShowAiButtons(false);
+            _uiManager.HandleEndGame(endGameState, _soTGameManager.GetCurrentGameState());
+            return;
         }
         CurrentTurn = _soTGameManager.CurrentPlayer;
         _uiManager.ShowAiButtons(CurrentTurn == AIPlayer);
@@ -119,7 +156,6 @@ public class GameManager : MonoBehaviour
 
     public void ExecuteMove(Move move, PlayerEnum player)
     {
-        Debug.Log($"Execute move: {move}");
         ZoneSide side = player == PlayerEnum.PLAYER1 ? ZoneSide.Player1 : ZoneSide.Player2;
         switch(move.Command)
         {
@@ -355,6 +391,8 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError($"Engine refused {triggeringMove}, even though we thought its legal!");
         }
+
+        _uiManager.HandleEndGame(end, _soTGameManager.GetCurrentGameState());
     }
 
     private IEnumerator ShowStartOfHumanTurnRoutine()
@@ -371,4 +409,93 @@ public class GameManager : MonoBehaviour
         }
     }
 
+// DEBUG
+    public void InitializeDebugGame()
+    {
+        if (debugPatrons.Count != 4)
+        {
+            Debug.LogError("You must select exactly 4 patrons (excluding Treasury)!");
+            return;
+        }
+        List<PatronId> patronsWithTreasury = new List<PatronId>(debugPatrons);
+        patronsWithTreasury.Insert(2, PatronId.TREASURY);
+        var patrons = patronsWithTreasury.Select(pid => Patron.FromId(pid)).ToList();
+        var patronStates = new PatronStates(patrons);
+
+        var availableCards = GlobalCardDatabase.Instance.GetCardsByPatron(patronsWithTreasury.ToArray(), Array.Empty<CardId>());
+        
+        var player1Hand = debugPlayer1Hand.Select(id => FindAndRemoveCard(id, availableCards)).ToList();
+        var player2Hand = debugPlayer2Hand.Select(id => FindAndRemoveCard(id, availableCards)).ToList();
+        var player1DrawPile = debugPlayer1DrawPile.Select(id => FindAndRemoveCard(id, availableCards)).ToList();
+        var player2DrawPile = debugPlayer2DrawPile.Select(id => FindAndRemoveCard(id, availableCards)).ToList();
+        var tavernAvailable = debugTavernCards.Select(id => FindAndRemoveCard(id, availableCards)).ToList();
+
+        if (tavernAvailable.Count != 5)
+        {
+            Debug.LogError("Tavern must have exactly 5 cards selected!");
+            return;
+        }
+
+        var tavernPile = availableCards;
+
+        var player1 = new SerializedPlayer(
+            PlayerEnum.PLAYER1,
+            hand: player1Hand,
+            drawPile: player1DrawPile,
+            cooldownPile: new List<UniqueCard>(),
+            played: new List<UniqueCard>(),
+            agents: new List<SerializedAgent>(),
+            power: debugPlayer1Power,
+            patronCalls: 1,
+            coins: debugPlayer1Coins,
+            prestige: debugPlayer1Prestige
+        );
+
+        var player2 = new SerializedPlayer(
+            PlayerEnum.PLAYER2,
+            hand: player2Hand,
+            drawPile: player2DrawPile,
+            cooldownPile: new List<UniqueCard>(),
+            played: new List<UniqueCard>(),
+            agents: new List<SerializedAgent>(),
+            power: debugPlayer2Power,
+            patronCalls: 1,
+            coins: debugPlayer2Coins,
+            prestige: debugPlayer2Prestige
+        );
+
+        var debugState = new FullGameState(
+            currentPlayer: debugPlayerStartsFirst ? player1 : player2,
+            enemyPlayer: debugPlayerStartsFirst ? player2 : player1,
+            patronStates: patronStates,
+            tavernAvailableCards: tavernAvailable,
+            tavernCards: tavernPile,
+            currentSeed: (ulong)UnityEngine.Random.Range(0, int.MaxValue),
+            cheats: true
+        );
+
+        _soTGameManager.InitializeDebugGame(debugState);
+        _patronManager.InitializePatrons(patronsWithTreasury.ToArray());
+        CurrentTurn = debugState.CurrentPlayer.PlayerID;
+        HumanPlayer = PlayerEnum.PLAYER1;
+
+        AI bot = new MCTSBot();
+        _aiManager.InitializeBot(bot, AIPlayer);
+        _aiManager.InitializeManager(_soTGameManager);
+
+        if (CurrentTurn == HumanPlayer)
+            StartCoroutine(_uiManager.ShowYourTurnMessage());
+        _uiManager.ShowAiButtons(CurrentTurn == AIPlayer);
+    }
+
+    private UniqueCard FindAndRemoveCard(CardId id, List<UniqueCard> availableCards)
+    {
+        var card = availableCards.FirstOrDefault(c => c.CommonId == id);
+        if (card == null)
+        {
+            throw new Exception($"Card {id} not found in available cards! Check if your debug selection matches the chosen patrons.");
+        }
+        availableCards.Remove(card);
+        return card;
+    }
 }

@@ -9,6 +9,21 @@ public class CardController : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (card.IsInZone(ZoneType.PlayedPile, ZoneSide.Player1) ||
+            card.IsInZone(ZoneType.PlayedPile, ZoneSide.Player2) ||
+            card.IsInZone(ZoneType.CooldownPile, ZoneSide.Player1) ||
+            card.IsInZone(ZoneType.CooldownPile, ZoneSide.Player2) ||
+            card.IsInZone(ZoneType.DrawPile, ZoneSide.Player1) ||
+            card.IsInZone(ZoneType.DrawPile, ZoneSide.Player2))
+        {
+            PileZoneClickable pileClickable = transform.parent.GetComponent<PileZoneClickable>();
+            if (pileClickable != null)
+            {
+                pileClickable.OnClickedFromCard();
+                return;
+            }
+        }
+
         if (card.IsAnimating() || !card.IsVisible()) return;
 
         if (eventData.button == PointerEventData.InputButton.Left)
@@ -32,7 +47,12 @@ public class CardController : MonoBehaviour, IPointerClickHandler
                 GameManager.Instance.AttackAgent(card.GetCard(), ZoneSide.Player1);
             }
         }
-        else if (eventData.button == PointerEventData.InputButton.Right)
+        else if (eventData.button == PointerEventData.InputButton.Right && (
+                card.IsInZone(ZoneType.Hand, ZoneSide.Player1) ||
+                card.IsInZone(ZoneType.Agents, ZoneSide.Player1) ||
+                card.IsInZone(ZoneType.Agents, ZoneSide.Player2) ||
+                card.IsInZone(ZoneType.TavernAvailable, ZoneSide.Neutral)
+            ))
         {
             if (UIManager.Instance.IsCardTooltipVisible())
             {
@@ -60,6 +80,11 @@ public class CardController : MonoBehaviour, IPointerClickHandler
         {
             if (effects[i] != null)
                 parts.Add($"<b>Combo {i + 1}:</b> {EffectToString(effects[i])}");
+        }
+
+        if (card.CommonId == CardId.MORIHAUS_SACRED_BULL || card.CommonId == CardId.MORIHAUS_THE_ARCHER)
+        {
+            parts.Add($"<b>Trigger</b> When an agent other than this one is Knocked Out: Gain 1 Coin.");
         }
 
         return string.Join("\n\n", parts);

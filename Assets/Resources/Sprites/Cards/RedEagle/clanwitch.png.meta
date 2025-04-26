@@ -3,8 +3,8 @@ guid: 9d47ca281e841444b9c73c99b068c0fa
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6760604941548556405
-    second: clan-witch_0
+      213: 5492582326299655095
+    second: clanwitch_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -48,7 +48,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 0
+  spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -139,7 +139,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: clan-witch_0
+      name: clanwitch_0
       rect:
         serializedVersion: 2
         x: 0
@@ -154,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b8f6f38ff918d22a0800000000000000
-      internalID: -6760604941548556405
+      spriteID: 7bbfdaa5682993c40800000000000000
+      internalID: 5492582326299655095
       vertices: []
       indices: 
       edges: []
@@ -173,8 +173,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      clan-witch_0: -6760604941548556405
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

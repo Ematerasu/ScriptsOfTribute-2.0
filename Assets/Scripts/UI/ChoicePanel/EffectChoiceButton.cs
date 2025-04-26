@@ -63,6 +63,9 @@ public class EffectChoiceButton : MonoBehaviour, IPointerEnterHandler, IPointerE
             EffectType.KNOCKOUT => $"Knockout {effect.Amount} Agents",
             EffectType.PATRON_CALL => $"+{effect.Amount} Patron Call",
             EffectType.CREATE_SUMMERSET_SACKING => "Add Summerset Sacking",
+            EffectType.DONATE => $"Swap {effect.Amount} cards",
+            EffectType.KNOCKOUT_ALL => "Knockout all agents",
+            EffectType.RETURN_AGENT_TOP => $"Return {effect.Amount} agents to Draw Pile",
             EffectType.HEAL => $"Heal {effect.Amount}",
             _ => effect.Type.ToString()
         };
@@ -86,6 +89,9 @@ public class EffectChoiceButton : MonoBehaviour, IPointerEnterHandler, IPointerE
             EffectType.KNOCKOUT => $"Knockout up to {effect.Amount} enemy agent(s).",
             EffectType.PATRON_CALL => $"Gain {effect.Amount} Patron Call(s).",
             EffectType.CREATE_SUMMERSET_SACKING => $"Add {effect.Amount} Summerset Sacking card(s) to your cooldown pile.",
+            EffectType.DONATE => $"Discard {effect.Amount} cards, then draw the same amount.",
+            EffectType.KNOCKOUT_ALL => "Knockout all agents from board.",
+            EffectType.RETURN_AGENT_TOP => $"Return {effect.Amount} agents to top of the Draw Pile.",
             EffectType.HEAL => $"Heal this agent by {effect.Amount} HP.",
             _ => effect.Type.ToString()
         };

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using ScriptsOfTribute;
+using ScriptsOfTribute.Board;
 using ScriptsOfTribute.Serializers;
 using TMPro;
 using UnityEngine;
@@ -20,6 +21,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private EffectChoicePanelController effectChoicePanel;
     [SerializeField] private PatronSelectionPanel patronSelectionPanel;
 
+    [Header("Normal panels")]
+    [SerializeField] private CardLookupPanelController cardLookupPanel;
+
     [Header("Text objects")]
     [SerializeField] private GameObject YourTurnImage;
 
@@ -34,6 +38,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI CardDeckTooltipTitle;
     [SerializeField] private TextMeshProUGUI CardTooltipText;
     [SerializeField] private Image cardTooltipImage;
+
+    [Header("End game")]
+    [SerializeField] private EndGameController endGameController;
     private bool isCardTooltipVisible = false;
 
     public bool IsCardTooltipVisible() => isCardTooltipVisible;
@@ -168,5 +175,15 @@ public class UIManager : MonoBehaviour
     {
         CardTooltipPanel.SetActive(false);
         isCardTooltipVisible = false;
+    }
+
+    public void HandleEndGame(EndGameState endGameState, FullGameState finalState)
+    {
+        endGameController.Initialize(endGameState, finalState);
+    }
+
+    public void CardLookup(ZoneSide side, PileType startingPile)
+    {
+        cardLookupPanel.Show(side, startingPile);
     }
 }

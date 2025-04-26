@@ -35,9 +35,11 @@ public class BoardManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI Player1Gold;
     [SerializeField] private TextMeshProUGUI Player1Prestige;
     [SerializeField] private TextMeshProUGUI Player1Power;
+    [SerializeField] private TextMeshProUGUI Player1PatronCalls;
     [SerializeField] private TextMeshProUGUI Player2Gold;
     [SerializeField] private TextMeshProUGUI Player2Prestige;
     [SerializeField] private TextMeshProUGUI Player2Power;
+    [SerializeField] private TextMeshProUGUI Player2PatronCalls;
     
     [Header("Prefabs / Pool")]
     [SerializeField] private GameObject cardPrefab;
@@ -68,10 +70,10 @@ public class BoardManager : MonoBehaviour
         cardObjects.Clear();
 
         // 1) Setup Player 1
-        SetupPlayer(state.CurrentPlayer, isPlayer1: true);
+        SetupPlayer(state.CurrentPlayer, isPlayer1: state.CurrentPlayer.PlayerID == PlayerEnum.PLAYER1);
 
         // 2) Setup Player 2
-        SetupPlayer(state.EnemyPlayer, isPlayer1: false);
+        SetupPlayer(state.EnemyPlayer, isPlayer1: state.EnemyPlayer.PlayerID == PlayerEnum.PLAYER1);
 
         // 3) Setup Tavern
         SetupTavern(state);
@@ -144,9 +146,11 @@ public class BoardManager : MonoBehaviour
         Player1Gold.SetText(player1.Coins.ToString());
         Player1Prestige.SetText(player1.Prestige.ToString());
         Player1Power.SetText(player1.Power.ToString());
+        Player1PatronCalls.SetText(player1.PatronCalls.ToString());
         Player2Gold.SetText(player2.Coins.ToString());
         Player2Prestige.SetText(player2.Prestige.ToString());
         Player2Power.SetText(player2.Power.ToString());
+        Player2PatronCalls.SetText(player2.PatronCalls.ToString());
     }
 
     private GameObject CreateCardObject(UniqueCard cardData, Transform parentTransform)

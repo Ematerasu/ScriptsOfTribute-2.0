@@ -109,6 +109,46 @@
             "hasCustomScript": false
         },
         {
+            "name": "Player1PatronCallsIcon",
+            "path": "UI/Player1PatronCallsIcon",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Player1PatronCalls",
+            "path": "UI/Player1PatronCallsIcon/Player1PatronCalls",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "TMPro.TextMeshProUGUI"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Player2PatronCallsIcon",
+            "path": "UI/Player2PatronCallsIcon",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Player2PatronCalls",
+            "path": "UI/Player2PatronCallsIcon/Player2PatronCalls",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "TMPro.TextMeshProUGUI"
+            ],
+            "hasCustomScript": false
+        },
+        {
             "name": "EndTurn",
             "path": "UI/EndTurn",
             "components": [
@@ -131,8 +171,8 @@
             "hasCustomScript": false
         },
         {
-            "name": "Canvas",
-            "path": "UI/Canvas",
+            "name": "Container",
+            "path": "UI/Container",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.Canvas",
@@ -143,7 +183,7 @@
         },
         {
             "name": "AIMoveOnce",
-            "path": "UI/Canvas/AIMoveOnce",
+            "path": "UI/Container/AIMoveOnce",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -155,7 +195,7 @@
         },
         {
             "name": "Text",
-            "path": "UI/Canvas/AIMoveOnce/Text",
+            "path": "UI/Container/AIMoveOnce/Text",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -165,7 +205,7 @@
         },
         {
             "name": "AIMoveTurn",
-            "path": "UI/Canvas/AIMoveTurn",
+            "path": "UI/Container/AIMoveTurn",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -177,7 +217,7 @@
         },
         {
             "name": "Text",
-            "path": "UI/Canvas/AIMoveTurn/Text",
+            "path": "UI/Container/AIMoveTurn/Text",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -187,7 +227,7 @@
         },
         {
             "name": "CardChoicePanelController",
-            "path": "UI/Canvas/CardChoicePanelController",
+            "path": "UI/Container/CardChoicePanelController",
             "components": [
                 "UnityEngine.RectTransform",
                 "CardChoicePanelController"
@@ -196,7 +236,7 @@
         },
         {
             "name": "CardChoicePanel",
-            "path": "UI/Canvas/CardChoicePanelController/CardChoicePanel",
+            "path": "UI/Container/CardChoicePanelController/CardChoicePanel",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -206,7 +246,7 @@
         },
         {
             "name": "Title",
-            "path": "UI/Canvas/CardChoicePanelController/CardChoicePanel/Title",
+            "path": "UI/Container/CardChoicePanelController/CardChoicePanel/Title",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -216,7 +256,7 @@
         },
         {
             "name": "Progress",
-            "path": "UI/Canvas/CardChoicePanelController/CardChoicePanel/Progress",
+            "path": "UI/Container/CardChoicePanelController/CardChoicePanel/Progress",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.UI.Slider",
@@ -226,7 +266,7 @@
         },
         {
             "name": "Bg",
-            "path": "UI/Canvas/CardChoicePanelController/CardChoicePanel/Progress/Bg",
+            "path": "UI/Container/CardChoicePanelController/CardChoicePanel/Progress/Bg",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -236,7 +276,7 @@
         },
         {
             "name": "FillArea",
-            "path": "UI/Canvas/CardChoicePanelController/CardChoicePanel/Progress/FillArea",
+            "path": "UI/Container/CardChoicePanelController/CardChoicePanel/Progress/FillArea",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -247,7 +287,7 @@
         },
         {
             "name": "Fill",
-            "path": "UI/Canvas/CardChoicePanelController/CardChoicePanel/Progress/FillArea/Fill",
+            "path": "UI/Container/CardChoicePanelController/CardChoicePanel/Progress/FillArea/Fill",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -257,7 +297,7 @@
         },
         {
             "name": "Borer",
-            "path": "UI/Canvas/CardChoicePanelController/CardChoicePanel/Progress/Borer",
+            "path": "UI/Container/CardChoicePanelController/CardChoicePanel/Progress/Borer",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -268,7 +308,7 @@
         },
         {
             "name": "DecoTop",
-            "path": "UI/Canvas/CardChoicePanelController/CardChoicePanel/Progress/Borer/DecoTop",
+            "path": "UI/Container/CardChoicePanelController/CardChoicePanel/Progress/Borer/DecoTop",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -278,7 +318,7 @@
         },
         {
             "name": "DecoBottom",
-            "path": "UI/Canvas/CardChoicePanelController/CardChoicePanel/Progress/Borer/DecoBottom",
+            "path": "UI/Container/CardChoicePanelController/CardChoicePanel/Progress/Borer/DecoBottom",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -289,7 +329,7 @@
         },
         {
             "name": "Text",
-            "path": "UI/Canvas/CardChoicePanelController/CardChoicePanel/Progress/Text",
+            "path": "UI/Container/CardChoicePanelController/CardChoicePanel/Progress/Text",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -299,7 +339,7 @@
         },
         {
             "name": "Scroll View",
-            "path": "UI/Canvas/CardChoicePanelController/CardChoicePanel/Scroll View",
+            "path": "UI/Container/CardChoicePanelController/CardChoicePanel/Scroll View",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -311,7 +351,7 @@
         },
         {
             "name": "Viewport",
-            "path": "UI/Canvas/CardChoicePanelController/CardChoicePanel/Scroll View/Viewport",
+            "path": "UI/Container/CardChoicePanelController/CardChoicePanel/Scroll View/Viewport",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -322,7 +362,7 @@
         },
         {
             "name": "CenterWrapper",
-            "path": "UI/Canvas/CardChoicePanelController/CardChoicePanel/Scroll View/Viewport/CenterWrapper",
+            "path": "UI/Container/CardChoicePanelController/CardChoicePanel/Scroll View/Viewport/CenterWrapper",
             "components": [
                 "UnityEngine.RectTransform",
                 "AutoVerticalCenter"
@@ -331,7 +371,7 @@
         },
         {
             "name": "Content",
-            "path": "UI/Canvas/CardChoicePanelController/CardChoicePanel/Scroll View/Viewport/CenterWrapper/Content",
+            "path": "UI/Container/CardChoicePanelController/CardChoicePanel/Scroll View/Viewport/CenterWrapper/Content",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.UI.GridLayoutGroup",
@@ -342,7 +382,7 @@
         },
         {
             "name": "Button_Rectangle_03_Green",
-            "path": "UI/Canvas/CardChoicePanelController/CardChoicePanel/Button_Rectangle_03_Green",
+            "path": "UI/Container/CardChoicePanelController/CardChoicePanel/Button_Rectangle_03_Green",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -354,7 +394,7 @@
         },
         {
             "name": "Text (TMP)",
-            "path": "UI/Canvas/CardChoicePanelController/CardChoicePanel/Button_Rectangle_03_Green/Text (TMP)",
+            "path": "UI/Container/CardChoicePanelController/CardChoicePanel/Button_Rectangle_03_Green/Text (TMP)",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -364,7 +404,7 @@
         },
         {
             "name": "EffectChoicePanelController",
-            "path": "UI/Canvas/EffectChoicePanelController",
+            "path": "UI/Container/EffectChoicePanelController",
             "components": [
                 "UnityEngine.RectTransform",
                 "EffectChoicePanelController"
@@ -373,7 +413,7 @@
         },
         {
             "name": "EffectChoicePanel",
-            "path": "UI/Canvas/EffectChoicePanelController/EffectChoicePanel",
+            "path": "UI/Container/EffectChoicePanelController/EffectChoicePanel",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -383,7 +423,7 @@
         },
         {
             "name": "Title",
-            "path": "UI/Canvas/EffectChoicePanelController/EffectChoicePanel/Title",
+            "path": "UI/Container/EffectChoicePanelController/EffectChoicePanel/Title",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -393,7 +433,7 @@
         },
         {
             "name": "EffectGridContainer",
-            "path": "UI/Canvas/EffectChoicePanelController/EffectChoicePanel/EffectGridContainer",
+            "path": "UI/Container/EffectChoicePanelController/EffectChoicePanel/EffectGridContainer",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -404,7 +444,7 @@
         },
         {
             "name": "YourTurnText",
-            "path": "UI/Canvas/YourTurnText",
+            "path": "UI/Container/YourTurnText",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasGroup"
@@ -413,7 +453,7 @@
         },
         {
             "name": "BackGlow",
-            "path": "UI/Canvas/YourTurnText/BackGlow",
+            "path": "UI/Container/YourTurnText/BackGlow",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -423,7 +463,7 @@
         },
         {
             "name": "LineFrame",
-            "path": "UI/Canvas/YourTurnText/LineFrame",
+            "path": "UI/Container/YourTurnText/LineFrame",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -433,7 +473,7 @@
         },
         {
             "name": "Text",
-            "path": "UI/Canvas/YourTurnText/Text",
+            "path": "UI/Container/YourTurnText/Text",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -443,7 +483,7 @@
         },
         {
             "name": "PatronTooltip",
-            "path": "UI/Canvas/PatronTooltip",
+            "path": "UI/Container/PatronTooltip",
             "components": [
                 "UnityEngine.RectTransform"
             ],
@@ -451,7 +491,7 @@
         },
         {
             "name": "Panel",
-            "path": "UI/Canvas/PatronTooltip/Panel",
+            "path": "UI/Container/PatronTooltip/Panel",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -461,7 +501,7 @@
         },
         {
             "name": "Border",
-            "path": "UI/Canvas/PatronTooltip/Border",
+            "path": "UI/Container/PatronTooltip/Border",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -471,7 +511,7 @@
         },
         {
             "name": "Deco",
-            "path": "UI/Canvas/PatronTooltip/Deco",
+            "path": "UI/Container/PatronTooltip/Deco",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -481,7 +521,7 @@
         },
         {
             "name": "Text",
-            "path": "UI/Canvas/PatronTooltip/Text",
+            "path": "UI/Container/PatronTooltip/Text",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -491,7 +531,7 @@
         },
         {
             "name": "Title",
-            "path": "UI/Canvas/PatronTooltip/Title",
+            "path": "UI/Container/PatronTooltip/Title",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -501,7 +541,7 @@
         },
         {
             "name": "CardTooltip",
-            "path": "UI/Canvas/CardTooltip",
+            "path": "UI/Container/CardTooltip",
             "components": [
                 "UnityEngine.RectTransform"
             ],
@@ -509,7 +549,7 @@
         },
         {
             "name": "Panel",
-            "path": "UI/Canvas/CardTooltip/Panel",
+            "path": "UI/Container/CardTooltip/Panel",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -519,7 +559,7 @@
         },
         {
             "name": "Border",
-            "path": "UI/Canvas/CardTooltip/Border",
+            "path": "UI/Container/CardTooltip/Border",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -529,7 +569,7 @@
         },
         {
             "name": "Deco",
-            "path": "UI/Canvas/CardTooltip/Deco",
+            "path": "UI/Container/CardTooltip/Deco",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -539,7 +579,7 @@
         },
         {
             "name": "Text",
-            "path": "UI/Canvas/CardTooltip/Text",
+            "path": "UI/Container/CardTooltip/Text",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -549,7 +589,7 @@
         },
         {
             "name": "CardName",
-            "path": "UI/Canvas/CardTooltip/CardName",
+            "path": "UI/Container/CardTooltip/CardName",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -559,7 +599,7 @@
         },
         {
             "name": "CardDeck",
-            "path": "UI/Canvas/CardTooltip/CardDeck",
+            "path": "UI/Container/CardTooltip/CardDeck",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -569,7 +609,7 @@
         },
         {
             "name": "Card",
-            "path": "UI/Canvas/CardTooltip/Card",
+            "path": "UI/Container/CardTooltip/Card",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -579,7 +619,7 @@
         },
         {
             "name": "PatronSelectionPanelController",
-            "path": "UI/Canvas/PatronSelectionPanelController",
+            "path": "UI/Container/PatronSelectionPanelController",
             "components": [
                 "UnityEngine.RectTransform",
                 "PatronSelectionPanel"
@@ -588,7 +628,7 @@
         },
         {
             "name": "PatronSelectionPanel",
-            "path": "UI/Canvas/PatronSelectionPanelController/PatronSelectionPanel",
+            "path": "UI/Container/PatronSelectionPanelController/PatronSelectionPanel",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer"
@@ -597,7 +637,7 @@
         },
         {
             "name": "Border",
-            "path": "UI/Canvas/PatronSelectionPanelController/PatronSelectionPanel/Border",
+            "path": "UI/Container/PatronSelectionPanelController/PatronSelectionPanel/Border",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -607,7 +647,7 @@
         },
         {
             "name": "Panel",
-            "path": "UI/Canvas/PatronSelectionPanelController/PatronSelectionPanel/Panel",
+            "path": "UI/Container/PatronSelectionPanelController/PatronSelectionPanel/Panel",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -617,7 +657,7 @@
         },
         {
             "name": "Container",
-            "path": "UI/Canvas/PatronSelectionPanelController/PatronSelectionPanel/Panel/Container",
+            "path": "UI/Container/PatronSelectionPanelController/PatronSelectionPanel/Panel/Container",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -628,7 +668,7 @@
         },
         {
             "name": "Deco",
-            "path": "UI/Canvas/PatronSelectionPanelController/PatronSelectionPanel/Deco",
+            "path": "UI/Container/PatronSelectionPanelController/PatronSelectionPanel/Deco",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -638,7 +678,7 @@
         },
         {
             "name": "Deco (1)",
-            "path": "UI/Canvas/PatronSelectionPanelController/PatronSelectionPanel/Deco (1)",
+            "path": "UI/Container/PatronSelectionPanelController/PatronSelectionPanel/Deco (1)",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -648,7 +688,7 @@
         },
         {
             "name": "Title",
-            "path": "UI/Canvas/PatronSelectionPanelController/PatronSelectionPanel/Title",
+            "path": "UI/Container/PatronSelectionPanelController/PatronSelectionPanel/Title",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
@@ -658,7 +698,665 @@
         },
         {
             "name": "Who's picking text",
-            "path": "UI/Canvas/PatronSelectionPanelController/PatronSelectionPanel/Who's picking text",
+            "path": "UI/Container/PatronSelectionPanelController/PatronSelectionPanel/Who's picking text",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "TMPro.TextMeshProUGUI"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "EndGamePanelController",
+            "path": "UI/Container/EndGamePanelController",
+            "components": [
+                "UnityEngine.RectTransform",
+                "EndGameController"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "VictoryDefeatText",
+            "path": "UI/Container/EndGamePanelController/VictoryDefeatText",
+            "components": [
+                "UnityEngine.RectTransform"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Bg",
+            "path": "UI/Container/EndGamePanelController/VictoryDefeatText/Bg",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Line",
+            "path": "UI/Container/EndGamePanelController/VictoryDefeatText/Line",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "IconGlow",
+            "path": "UI/Container/EndGamePanelController/VictoryDefeatText/IconGlow",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Icon",
+            "path": "UI/Container/EndGamePanelController/VictoryDefeatText/Icon",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Text",
+            "path": "UI/Container/EndGamePanelController/VictoryDefeatText/Text",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "TMPro.TextMeshProUGUI"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "EndGamePanel",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel",
+            "components": [
+                "UnityEngine.RectTransform"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Background",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Background",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "TopBar",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/TopBar",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.UI.HorizontalLayoutGroup",
+                "UnityEngine.UI.ContentSizeFitter"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Button_Back",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/TopBar/Button_Back",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.UI.Button"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "BackGlow",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/TopBar/Button_Back/BackGlow",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Icon_Arrow",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/TopBar/Button_Back/Icon_Arrow",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.UI.Shadow"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Text_Title",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/TopBar/Button_Back/Text_Title",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "TMPro.TextMeshProUGUI"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Button_Home",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/TopBar/Button_Home",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.UI.Button"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Icon",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/TopBar/Button_Home/Icon",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.UI.Shadow"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Seed",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/TopBar/Seed",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.UI.HorizontalLayoutGroup",
+                "SeedDisplayController"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Text (TMP)",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/TopBar/Seed/Text (TMP)",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "TMPro.TextMeshProUGUI",
+                "UnityEngine.UI.LayoutElement"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Button_Copy",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/TopBar/Seed/Button_Copy",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.UI.LayoutElement",
+                "UnityEngine.UI.Button"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Icon",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/TopBar/Seed/Button_Copy/Icon",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Text",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/TopBar/Text",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "TMPro.TextMeshProUGUI"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Left_Panel",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Left_Panel",
+            "components": [
+                "UnityEngine.RectTransform",
+                "CompletedActionHistoryBuilder"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Text",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Left_Panel/Text",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "TMPro.TextMeshProUGUI"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Button_Search",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Left_Panel/Button_Search",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.UI.Button",
+                "UnityEngine.UI.Shadow"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Icon",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Left_Panel/Button_Search/Icon",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Text",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Left_Panel/Button_Search/Text",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "TMPro.TextMeshProUGUI"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "ScrollRect_Guild",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Left_Panel/ScrollRect_Guild",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.UI.ScrollRect"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Veiwport",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Left_Panel/ScrollRect_Guild/Veiwport",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.UI.Mask"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Content",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Left_Panel/ScrollRect_Guild/Veiwport/Content",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.UI.VerticalLayoutGroup",
+                "UnityEngine.UI.ContentSizeFitter"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Loading_Rotate_Blur",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Left_Panel/Loading_Rotate_Blur",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.Animation"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "loading_rotate_00",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Left_Panel/Loading_Rotate_Blur/loading_rotate_00",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.Animator"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "loading_rotate_01",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Left_Panel/Loading_Rotate_Blur/loading_rotate_01",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.Animator"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "loading_rotate_02",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Left_Panel/Loading_Rotate_Blur/loading_rotate_02",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.Animator"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "loading_rotate_03",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Left_Panel/Loading_Rotate_Blur/loading_rotate_03",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.Animator"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "loading_rotate_04",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Left_Panel/Loading_Rotate_Blur/loading_rotate_04",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.Animator"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "loading_rotate_05",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Left_Panel/Loading_Rotate_Blur/loading_rotate_05",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.Animator"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "loading_rotate_06",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Left_Panel/Loading_Rotate_Blur/loading_rotate_06",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.Animator"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "loading_rotate_07",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Left_Panel/Loading_Rotate_Blur/loading_rotate_07",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.Animator"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "loading_rotate_08",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Left_Panel/Loading_Rotate_Blur/loading_rotate_08",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.Animator"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "loading_rotate_09",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Left_Panel/Loading_Rotate_Blur/loading_rotate_09",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.Animator"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "loading_rotate_10",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Left_Panel/Loading_Rotate_Blur/loading_rotate_10",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.Animator"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "loading_rotate_11",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Left_Panel/Loading_Rotate_Blur/loading_rotate_11",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.Animator"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Right_Panel",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Right_Panel",
+            "components": [
+                "UnityEngine.RectTransform"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Falg",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Right_Panel/Falg",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.UI.Shadow"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Text_Guild_Name",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Right_Panel/Text_Guild_Name",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "TMPro.TextMeshProUGUI"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Text_Guild_Name_Info",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Right_Panel/Text_Guild_Name_Info",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "TMPro.TextMeshProUGUI"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "LineShadow",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Right_Panel/LineShadow",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Group_Level_Exp",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Right_Panel/Group_Level_Exp",
+            "components": [
+                "UnityEngine.RectTransform"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Text_Level",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Right_Panel/Group_Level_Exp/Text_Level",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "TMPro.TextMeshProUGUI"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Slider",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Right_Panel/Group_Level_Exp/Slider",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.UI.Slider"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "FillArea",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Right_Panel/Group_Level_Exp/Slider/FillArea",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.UI.Slider",
+                "UnityEngine.UI.Mask"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Fill",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Right_Panel/Group_Level_Exp/Slider/FillArea/Fill",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "TextLevel",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Right_Panel/Group_Level_Exp/Slider/TextLevel",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "TMPro.TextMeshProUGUI"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "TextExp",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Right_Panel/Group_Level_Exp/Slider/TextExp",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "TMPro.TextMeshProUGUI"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Text_Exp",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Right_Panel/Group_Level_Exp/Text_Exp",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "TMPro.TextMeshProUGUI"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Group_IMembers_GuildPower",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Right_Panel/Group_IMembers_GuildPower",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Icon_Members",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Right_Panel/Group_IMembers_GuildPower/Icon_Members",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.UI.Shadow"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Text_Value",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Right_Panel/Group_IMembers_GuildPower/Text_Value",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "TMPro.TextMeshProUGUI"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Text_Members",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Right_Panel/Group_IMembers_GuildPower/Text_Members",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "TMPro.TextMeshProUGUI"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Icon_GuildPower",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Right_Panel/Group_IMembers_GuildPower/Icon_GuildPower",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.UI.Shadow"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Text_GuildPower",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Right_Panel/Group_IMembers_GuildPower/Text_GuildPower",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "TMPro.TextMeshProUGUI"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Text_Value",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Right_Panel/Group_IMembers_GuildPower/Text_Value",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "TMPro.TextMeshProUGUI"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Button_Join",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Right_Panel/Button_Join",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.UI.Button",
+                "UnityEngine.UI.Shadow"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Text (TMP)",
+            "path": "UI/Container/EndGamePanelController/EndGamePanel/Right_Panel/Button_Join/Text (TMP)",
             "components": [
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
