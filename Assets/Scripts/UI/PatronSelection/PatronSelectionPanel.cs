@@ -92,7 +92,7 @@ public class PatronSelectionPanel : MonoBehaviour
         if (selectedPatrons.Count == 5)
         {
             panelRoot.SetActive(false);
-            GameManager.Instance.StartGameWithPatrons(selectedPatrons.ToArray());
+            GameSetupManager.Instance.StartGameWithPatrons(selectedPatrons);
         }
         else if (selectedPatrons.Count == 2)
         {

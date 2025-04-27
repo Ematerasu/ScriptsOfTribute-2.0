@@ -30,7 +30,7 @@ public class BoardManager : MonoBehaviour
     [Header("Tavern")]
     [SerializeField] private Transform tavernPile;
     [SerializeField] private List<Transform> tavernCardSpots;
-    
+        
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI Player1Gold;
     [SerializeField] private TextMeshProUGUI Player1Prestige;
@@ -51,6 +51,8 @@ public class BoardManager : MonoBehaviour
     // Tracking which UniqueCard -> the instantiated card object
     private Dictionary<UniqueId, GameObject> cardObjects = new Dictionary<UniqueId, GameObject>();
     public bool HasCardObject(UniqueId id) => cardObjects.ContainsKey(id);
+    public GameObject GetCardObject(UniqueId id) => cardObjects[id];
+    private Dictionary<PatronId, Transform> patronTransforms = new();
 
     private HashSet<Transform> reservedTavernSpots = new();
 
@@ -61,14 +63,23 @@ public class BoardManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    public void InitializeBoard(FullGameState state)
+    public void RegisterPatronTransform(PatronId patronId, Transform transform)
+    {
+        patronTransforms[patronId] = transform;
+    }
+
+    public void ClearBoard()
     {
         foreach (var kvp in cardObjects)
         {
             Destroy(kvp.Value);
         }
         cardObjects.Clear();
+    }
 
+    public void InitializeBoard(FullGameState state)
+    {
+        ClearBoard();
         // 1) Setup Player 1
         SetupPlayer(state.CurrentPlayer, isPlayer1: state.CurrentPlayer.PlayerID == PlayerEnum.PLAYER1);
 
@@ -96,6 +107,7 @@ public class BoardManager : MonoBehaviour
         Transform cooldown   = isPlayer1 ? p1Cooldown   : p2Cooldown;
         Transform hand       = isPlayer1 ? p1Hand       : p2Hand;
         Transform played     = isPlayer1 ? p1Played     : p2Played;
+        Transform agents     = isPlayer1 ? p1Agents     : p2Agents;
 
         // Draw Pile
         foreach (var card in playerData.DrawPile)
@@ -118,6 +130,12 @@ public class BoardManager : MonoBehaviour
         {
             CreateCardObject(card, played);
         }
+
+        foreach (var agent in playerData.Agents)
+        {
+            CreateCardObject(agent.RepresentingCard, agents);
+        }
+        ArrangeAgentsInZone(agents);
 
     }
 
@@ -189,8 +207,7 @@ public class BoardManager : MonoBehaviour
         }
 
         var parentTransform = GetZoneTransform(initialZone, side);
-        var obj = CreateCardObject(card, parentTransform);
-        Debug.Log($"[BoardManager] [RUNTIME] Created card object: {card.Name} ({card.UniqueId.Value}) in {initialZone} ({side})");
+        CreateCardObject(card, parentTransform);
     }
 
     public void ArrangeCardsInHand(Transform handTransform)
@@ -291,6 +308,15 @@ public class BoardManager : MonoBehaviour
 
     public Transform GetZoneTransform(ZoneType zone, ZoneSide side)
     {
+        if (zone == ZoneType.RAJHIN && patronTransforms.TryGetValue(PatronId.RAJHIN, out var rajhinTransform))
+            return rajhinTransform;
+        if (zone == ZoneType.SAINT_ALESSIA && patronTransforms.TryGetValue(PatronId.SAINT_ALESSIA, out var alessiaTransform))
+            return alessiaTransform;
+        if (zone == ZoneType.ORGNUM && patronTransforms.TryGetValue(PatronId.ORGNUM, out var orgnumTransform))
+            return orgnumTransform;
+        if (zone == ZoneType.TREASURY && patronTransforms.TryGetValue(PatronId.TREASURY, out var treasuryTransform))
+            return treasuryTransform;
+
         return (zone, side) switch
         {
             (ZoneType.Hand, ZoneSide.Player1) => p1Hand,
@@ -377,10 +403,6 @@ public class BoardManager : MonoBehaviour
                 if (matching != null)
                 {
                     card.UpdateAgentHealth(matching);
-                    if (matching.Activated)
-                        card.ShowActivationEffect();
-                    else
-                        card.RemoveActivationEffect();
                 }
             }
             yield return null;
@@ -395,10 +417,6 @@ public class BoardManager : MonoBehaviour
                 if (matching != null)
                 {
                     card.UpdateAgentHealth(matching);
-                    if (matching.Activated)
-                        card.ShowActivationEffect();
-                    else
-                        card.RemoveActivationEffect();
                 }
             }
             yield return null;
@@ -424,41 +442,6 @@ public class BoardManager : MonoBehaviour
         {
             Debug.LogWarning($"[DESYNC] Missing card(s) in Unity hand: {string.Join(", ", missing)}");
         }
-    }
-
-    public void PlayPowerAttackEffect(UniqueId cardId, ZoneSide side, System.Action? onComplete = null)
-    {
-        Vector3 targetPosition = cardObjects[cardId].transform.position;
-        Transform powerOrigin = side == ZoneSide.Player1 ? powerOriginPointPlayer1 : powerOriginPointPlayer2;
-        GameObject projectile = Instantiate(powerProjectilePrefab, powerOrigin.position, Quaternion.identity, transform);
-
-        float travelTime = 0.5f;
-
-        Vector3 midPoint = Vector3.Lerp(powerOrigin.position, targetPosition, 0.5f);
-
-        Vector3 curveOffset = new Vector3(-2f, 0, 0);
-        if (side == ZoneSide.Player2) curveOffset *= -1f;
-
-        midPoint += curveOffset;
-
-        Vector3[] path = new Vector3[] {
-            powerOrigin.position,
-            powerOrigin.position,
-            midPoint,
-            targetPosition,
-            targetPosition
-        };
-
-        LeanTween.moveSpline(projectile, path, travelTime)
-            .setEase(LeanTweenType.easeInOutSine)
-            .setOnComplete(() =>
-            {
-                LeanTween.scale(projectile, Vector3.zero, 0.1f).setEase(LeanTweenType.easeInQuad).setOnComplete(() =>
-                {
-                    Destroy(projectile);
-                    onComplete?.Invoke();
-                });
-            });
     }
 }
 

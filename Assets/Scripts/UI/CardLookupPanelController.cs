@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Linq;
 using System;
+using TMPro;
 
 public class CardLookupPanelController : MonoBehaviour
 {
@@ -86,16 +87,16 @@ public class CardLookupPanelController : MonoBehaviour
         if (pileTransform != null)
         {
             cardContentParent.gameObject.SetActive(false);
-            List<Sprite> sprites = new List<Sprite>();
+            List<(int id, Sprite sprite, string hpText)> sprites = new ();
 
             foreach (Transform child in pileTransform)
             {
                 if (child.TryGetComponent(out Card cardScript))
                 {
-                    sprites.Add(cardScript.GetOriginalSprite());
+                    sprites.Add((cardScript.UniqueId, cardScript.GetOriginalSprite(), cardScript.hpText.text));
                 }
             }
-            sprites = sprites.OrderBy(sprite => UnityEngine.Random.value).ToList();
+            sprites = sprites.OrderBy(sprite => sprite.id).ToList();
             loadingCoroutine = StartCoroutine(AddToContentCoroutine(sprites));
         }
         UpdateButtonScales();
@@ -146,12 +147,13 @@ public class CardLookupPanelController : MonoBehaviour
         }
     }
 
-    private IEnumerator AddToContentCoroutine(List<Sprite> sprites)
+    private IEnumerator AddToContentCoroutine(List<(int id, Sprite sprite, string hpText)> sprites)
     {
-        foreach (var sprite in sprites)
+        foreach (var (id, sprite, hpText) in sprites)
         {
             var cardUI = Instantiate(cardPrefab, cardContentParent);
             cardUI.GetComponent<Image>().sprite = sprite;
+            cardUI.GetComponentInChildren<TextMeshProUGUI>().SetText(hpText);
             yield return null;
         }
 

@@ -97,7 +97,7 @@ public class CardLayoutBehaviour : MonoBehaviour, IPointerEnterHandler, IPointer
 
         if (_spriteRenderer != null)
             _spriteRenderer.sortingOrder = hoverSortingOrder;
-        _hpText.sortingOrder = hoverSortingOrder;
+        _hpText.sortingOrder = hoverSortingOrder+5;
     }
 
     public void OnPointerExit(PointerEventData eventData)

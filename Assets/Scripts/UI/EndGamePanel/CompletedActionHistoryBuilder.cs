@@ -38,6 +38,14 @@ public class CompletedActionHistoryBuilder : MonoBehaviour
         StartCoroutine(BuildHistoryCoroutine(actions));
     }
 
+    public void ClearHistory()
+    {
+        foreach (Transform child in contentParent)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+
     private IEnumerator BuildHistoryCoroutine(List<CompletedAction> actions)
     {
         loadingSpinner.SetActive(true);

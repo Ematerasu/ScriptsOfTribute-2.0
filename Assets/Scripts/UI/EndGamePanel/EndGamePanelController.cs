@@ -18,6 +18,7 @@ public class EndGameController : MonoBehaviour
     [SerializeField] private SeedDisplayController seedDisplayController;
     [SerializeField] private CompletedActionHistoryBuilder completedActionHistoryBuilder;
     [SerializeField] private GameSummaryPanelController gameSummaryPanelController;
+    [SerializeField] private Button playAgainButton;
 
     [Header("Animation Settings")]
     [SerializeField] private float fadeDuration = 1.0f;
@@ -41,6 +42,7 @@ public class EndGameController : MonoBehaviour
         CollectVictoryGraphics();
 
         StartCoroutine(PlayEndGameSequence(endState, finalState));
+        playAgainButton.onClick.AddListener(OnPlayAgainButtonClicked);
     }
 
     private void CollectVictoryGraphics()
@@ -100,5 +102,13 @@ public class EndGameController : MonoBehaviour
 
         SetGraphicsAlpha(endAlpha);
     }
+
+    public void OnPlayAgainButtonClicked()
+    {
+        mainPanel.SetActive(false);
+        completedActionHistoryBuilder.ClearHistory();
+        FindFirstObjectByType<GameSetupManager>().ResetAndStartPatronDraft();
+    }
+
 }
 

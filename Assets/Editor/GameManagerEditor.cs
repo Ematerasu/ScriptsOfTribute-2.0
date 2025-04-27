@@ -38,6 +38,7 @@ public class GameManagerEditor : Editor
             {
                 EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("debugPlayer1Hand"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("debugPlayer1Agents"), true);
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("debugPlayer1DrawPile"), true);
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("debugPlayer1Prestige"));
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("debugPlayer1Power"));
@@ -50,6 +51,7 @@ public class GameManagerEditor : Editor
             {
                 EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("debugPlayer2Hand"), true);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("debugPlayer2Agents"), true);
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("debugPlayer2DrawPile"), true);
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("debugPlayer2Prestige"));
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("debugPlayer2Power"));

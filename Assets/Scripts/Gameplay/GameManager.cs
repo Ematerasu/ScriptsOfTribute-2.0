@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private List<CardId> debugPlayer1Hand = new();
     [SerializeField] private List<CardId> debugPlayer2Hand = new();
+    [SerializeField] private List<CardId> debugPlayer1Agents = new();
+    [SerializeField] private List<CardId> debugPlayer2Agents = new();
     [SerializeField] private List<CardId> debugPlayer1DrawPile = new();
     [SerializeField] private List<CardId> debugPlayer2DrawPile = new();
     [SerializeField] private List<CardId> debugTavernCards = new();
@@ -49,37 +51,6 @@ public class GameManager : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
-    }
-
-    private void Start()
-    {
-        if (debugMode)
-        {
-            InitializeDebugGame();
-        }
-        else
-        {
-            NormalStart();
-        }
-    }
-    private void NormalStart()
-    {
-        AI bot = new MaxPrestigeBot();
-        _aiManager.InitializeBot(bot, AIPlayer);
-        CurrentTurn = PlayerEnum.PLAYER1;
-        List<PatronId> patronsAvailable = new List<PatronId>()
-        { 
-            PatronId.ANSEI,
-            PatronId.DUKE_OF_CROWS,
-            PatronId.RAJHIN, 
-            //PatronId.PSIJIC, 
-            PatronId.ORGNUM, 
-            PatronId.HLAALU, 
-            PatronId.PELIN, 
-            PatronId.RED_EAGLE,
-            PatronId.SAINT_ALESSIA,
-        };
-        _uiManager.ShowPatronDraft(patronsAvailable);
     }
 
     public void StartGameWithPatrons(PatronId[] patrons)
@@ -283,7 +254,6 @@ public class GameManager : MonoBehaviour
         }
 
         var result = _soTGameManager.AttackAgent(card);
-        BoardManager.Instance.PlayPowerAttackEffect(card.UniqueId, side);
         if (result is EndGameState end)
         {
             HandleEndGame(end, move);
@@ -426,6 +396,8 @@ public class GameManager : MonoBehaviour
         
         var player1Hand = debugPlayer1Hand.Select(id => FindAndRemoveCard(id, availableCards)).ToList();
         var player2Hand = debugPlayer2Hand.Select(id => FindAndRemoveCard(id, availableCards)).ToList();
+        var player1Agents = debugPlayer1Agents.Select(id => FindAndRemoveCard(id, availableCards)).ToList();
+        var player2Agents = debugPlayer2Agents.Select(id => FindAndRemoveCard(id, availableCards)).ToList();
         var player1DrawPile = debugPlayer1DrawPile.Select(id => FindAndRemoveCard(id, availableCards)).ToList();
         var player2DrawPile = debugPlayer2DrawPile.Select(id => FindAndRemoveCard(id, availableCards)).ToList();
         var tavernAvailable = debugTavernCards.Select(id => FindAndRemoveCard(id, availableCards)).ToList();
@@ -444,7 +416,7 @@ public class GameManager : MonoBehaviour
             drawPile: player1DrawPile,
             cooldownPile: new List<UniqueCard>(),
             played: new List<UniqueCard>(),
-            agents: new List<SerializedAgent>(),
+            agents: player1Agents.Select(card => new SerializedAgent(Agent.FromCard(card))).ToList(),
             power: debugPlayer1Power,
             patronCalls: 1,
             coins: debugPlayer1Coins,
@@ -457,7 +429,7 @@ public class GameManager : MonoBehaviour
             drawPile: player2DrawPile,
             cooldownPile: new List<UniqueCard>(),
             played: new List<UniqueCard>(),
-            agents: new List<SerializedAgent>(),
+            agents: player2Agents.Select(card => new SerializedAgent(Agent.FromCard(card))).ToList(),
             power: debugPlayer2Power,
             patronCalls: 1,
             coins: debugPlayer2Coins,
@@ -479,8 +451,7 @@ public class GameManager : MonoBehaviour
         CurrentTurn = debugState.CurrentPlayer.PlayerID;
         HumanPlayer = PlayerEnum.PLAYER1;
 
-        AI bot = new MCTSBot();
-        _aiManager.InitializeBot(bot, AIPlayer);
+        _aiManager.InitializeBot(BotType.MaxPrestige, AIPlayer);
         _aiManager.InitializeManager(_soTGameManager);
 
         if (CurrentTurn == HumanPlayer)

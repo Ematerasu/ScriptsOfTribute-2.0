@@ -4,6 +4,10 @@ public enum ZoneType
 {
     Tavern,
     TavernAvailable,
+    RAJHIN,
+    SAINT_ALESSIA,
+    TREASURY,
+    ORGNUM,
     Hand,
     DrawPile,
     CooldownPile,

@@ -29,6 +29,7 @@ public class PatronManager : MonoBehaviour
             clickable.Initialize(patronId);
 
             _spawnedPatrons[patronId] = obj;
+            BoardManager.Instance.RegisterPatronTransform(patronId, slot);
         }
     }
 

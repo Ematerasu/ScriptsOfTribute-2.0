@@ -6,6 +6,7 @@ using ScriptsOfTribute;
 using ScriptsOfTribute.Board;
 using ScriptsOfTribute.AI;
 using ScriptsOfTribute.Serializers;
+using Bots;
 
 public class AIManager : MonoBehaviour
 {
@@ -29,9 +30,9 @@ public class AIManager : MonoBehaviour
         Instance = this;
     }
 
-    public void InitializeBot(AI bot, PlayerEnum botId)
+    public void InitializeBot(BotType botType, PlayerEnum botId)
     {
-        _bot = bot;
+        _bot = CreateBotByType(botType);
         _aiPlayer = botId;
         _bot.Id = botId;
         
@@ -247,6 +248,26 @@ public class AIManager : MonoBehaviour
         while (!finished)
         {
             yield return null;
+        }
+    }
+
+    public AI CreateBotByType(BotType botType)
+    {
+        switch (botType)
+        {
+            case BotType.MaxPrestige:
+                return new MaxPrestigeBot();
+            case BotType.Random:
+                return new RandomBot();
+            case BotType.MCTS:
+                return new MCTSBot();
+            case BotType.BeamSearch:
+                return new BeamSearchBot();
+            case BotType.DecisionTree:
+                return new DecisionTreeBot();
+            default:
+                Debug.LogWarning($"Unknown BotType {botType}. Falling back to MaxPrestigeBot.");
+                return new MaxPrestigeBot();
         }
     }
 }

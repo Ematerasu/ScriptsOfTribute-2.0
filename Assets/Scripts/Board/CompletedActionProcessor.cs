@@ -5,22 +5,25 @@ using ScriptsOfTribute.Board;
 using ScriptsOfTribute.Board.Cards;
 using UnityEngine;
 using System.Linq;
+using ScriptsOfTribute.Serializers;
 
 public class CompletedActionProcessor : MonoBehaviour
 {
-    private Queue<MoveVisualCommand> _visualQueue = new();
+    private Queue<VisualCommand> _visualQueue = new();
 
     private HashSet<UniqueId> _prevPlayer1Hand = new();
     private HashSet<UniqueId> _prevPlayer1Played = new();
     private HashSet<UniqueId> _prevPlayer1Cooldown = new();
     private HashSet<UniqueId> _prevPlayer1Draw = new();
-    private HashSet<UniqueId> _prevPlayer1Agents = new();
+    private HashSet<(UniqueId, bool, int)> _prevPlayer1Agents = new();
+    private int _prevPlayer1Power = 0;
 
     private HashSet<UniqueId> _prevPlayer2Hand = new();
     private HashSet<UniqueId> _prevPlayer2Played = new();
     private HashSet<UniqueId> _prevPlayer2Cooldown = new();
     private HashSet<UniqueId> _prevPlayer2Draw = new();
-    private HashSet<UniqueId> _prevPlayer2Agents = new();
+    private HashSet<(UniqueId, bool, int)> _prevPlayer2Agents = new();
+    private int _prevPlayer2Power = 0;
 
     private HashSet<UniqueId> _prevTavernAvailable = new();
     private HashSet<UniqueId> _prevTavernPile = new();
@@ -36,22 +39,30 @@ public class CompletedActionProcessor : MonoBehaviour
         }
     }
 
+    private void ClearProcessor()
+    {
+        _visualQueue.Clear();
+    }
+
     public void SetInitialSnapshot(FullGameState state)
     {
+        ClearProcessor();
         var humanPlayer = state.GetPlayer(GameManager.Instance.HumanPlayer);
         var aiPlayer = state.GetPlayer(GameManager.Instance.AIPlayer);
-
+        
         _prevPlayer1Hand = humanPlayer.Hand.Select(c => c.UniqueId).ToHashSet();
         _prevPlayer1Played = humanPlayer.Played.Select(c => c.UniqueId).ToHashSet();
         _prevPlayer1Cooldown = humanPlayer.CooldownPile.Select(c => c.UniqueId).ToHashSet();
         _prevPlayer1Draw = humanPlayer.DrawPile.Select(c => c.UniqueId).ToHashSet();
-        _prevPlayer1Agents = humanPlayer.Agents.Select(agent => agent.RepresentingCard.UniqueId).ToHashSet();
+        _prevPlayer1Agents = humanPlayer.Agents.Select(agent => (agent.RepresentingCard.UniqueId, agent.Activated, agent.CurrentHp)).ToHashSet();
+        _prevPlayer1Power = humanPlayer.Power;
 
         _prevPlayer2Hand = aiPlayer.Hand.Select(c => c.UniqueId).ToHashSet();
         _prevPlayer2Played = aiPlayer.Played.Select(c => c.UniqueId).ToHashSet();
         _prevPlayer2Cooldown = aiPlayer.CooldownPile.Select(c => c.UniqueId).ToHashSet();
         _prevPlayer2Draw = aiPlayer.DrawPile.Select(c => c.UniqueId).ToHashSet();
-        _prevPlayer2Agents = aiPlayer.Agents.Select(agent => agent.RepresentingCard.UniqueId).ToHashSet();
+        _prevPlayer2Agents = aiPlayer.Agents.Select(agent => (agent.RepresentingCard.UniqueId, agent.Activated, agent.CurrentHp)).ToHashSet();
+        _prevPlayer2Power = aiPlayer.Power;
 
         _prevTavernAvailable = state.TavernAvailableCards.Select(c => c.UniqueId).ToHashSet();
         _prevTavernPile = state.TavernCards.Select(c => c.UniqueId).ToHashSet();
@@ -64,13 +75,13 @@ public class CompletedActionProcessor : MonoBehaviour
         var humanPlayer = newState.GetPlayer(GameManager.Instance.HumanPlayer);
         var aiPlayer = newState.GetPlayer(GameManager.Instance.AIPlayer);
 
-        CompareAndQueue(_prevPlayer1Agents, humanPlayer.Agents.Select(agent => agent.RepresentingCard).ToList(), ZoneType.Agents, ZoneSide.Player1, _prevPlayer1Agents);
+        CompareAndQueueAgents(_prevPlayer1Agents, humanPlayer.Agents, aiPlayer.Power - _prevPlayer2Power, ZoneSide.Player1, _prevPlayer1Agents);
         CompareAndQueue(_prevPlayer1Draw, humanPlayer.DrawPile, ZoneType.DrawPile, ZoneSide.Player1, _prevPlayer1Draw);
         CompareAndQueue(_prevPlayer1Cooldown, humanPlayer.CooldownPile, ZoneType.CooldownPile, ZoneSide.Player1, _prevPlayer1Cooldown);
         CompareAndQueue(_prevPlayer1Played, humanPlayer.Played, ZoneType.PlayedPile, ZoneSide.Player1, _prevPlayer1Played);
         CompareAndQueue(_prevPlayer1Hand, humanPlayer.Hand, ZoneType.Hand, ZoneSide.Player1, _prevPlayer1Hand);
-
-        CompareAndQueue(_prevPlayer2Agents, aiPlayer.Agents.Select(agent => agent.RepresentingCard).ToList(), ZoneType.Agents, ZoneSide.Player2, _prevPlayer2Agents);
+        
+        CompareAndQueueAgents(_prevPlayer2Agents, aiPlayer.Agents, humanPlayer.Power - _prevPlayer1Power, ZoneSide.Player2, _prevPlayer2Agents);
         CompareAndQueue(_prevPlayer2Draw, aiPlayer.DrawPile, ZoneType.DrawPile, ZoneSide.Player2, _prevPlayer2Draw);
         CompareAndQueue(_prevPlayer2Cooldown, aiPlayer.CooldownPile, ZoneType.CooldownPile, ZoneSide.Player2, _prevPlayer2Cooldown);
         CompareAndQueue(_prevPlayer2Played, aiPlayer.Played, ZoneType.PlayedPile, ZoneSide.Player2, _prevPlayer2Played);
@@ -79,7 +90,8 @@ public class CompletedActionProcessor : MonoBehaviour
         CompareAndQueue(_prevTavernPile, newState.TavernCards, ZoneType.Tavern, ZoneSide.Neutral, _prevTavernPile);
         CompareAndQueue(_prevTavernAvailable, newState.TavernAvailableCards, ZoneType.TavernAvailable, ZoneSide.Neutral, _prevTavernAvailable);
 
-        //Debug.Log("[Snapshot] Compared and queued changes.");
+        _prevPlayer1Power = humanPlayer.Power;
+        _prevPlayer2Power = aiPlayer.Power;
     }
 
     private void CompareAndQueue(HashSet<UniqueId> previousSet, List<UniqueCard> currentList, ZoneType zoneType, ZoneSide zoneSide, HashSet<UniqueId> storage)
@@ -94,21 +106,82 @@ public class CompletedActionProcessor : MonoBehaviour
                 var card = currentList.FirstOrDefault(c => c.UniqueId == id);
                 if (card != null)
                 {
-                    BoardManager.Instance.CreateCardObjectFromRuntime(card, zoneType, zoneSide);
+                    var sourceOfCreation = GetSourceOfCreatedCard(card);
+                    BoardManager.Instance.CreateCardObjectFromRuntime(card, sourceOfCreation, ZoneSide.Neutral);
                 }
                 else
                 {
                     Debug.LogError($"[CompletedActionProcessor] Missing UniqueCard for ID: {id.Value}");
                 }
             }
-            //Debug.Log($"[QUEUE] Enqueuing move: {id.Value} → {zoneType} ({zoneSide})");
-            _visualQueue.Enqueue(new MoveVisualCommand(id, zoneType, zoneSide));
+            _visualQueue.Enqueue(new MoveCardCommand(id, zoneType, zoneSide));
         }
 
         storage.Clear();
         foreach (var id in currentIds)
             storage.Add(id);
     }
+
+    private void CompareAndQueueAgents(HashSet<(UniqueId, bool, int)> previousSet, List<SerializedAgent> currentAgents, int enemyPowerDiff, ZoneSide side, HashSet<(UniqueId, bool, int)> storage)
+    {
+        var currentSet = currentAgents.Select(agent => (agent.RepresentingCard.UniqueId, agent.Activated, agent.CurrentHp)).ToHashSet();
+        var previousIds = previousSet.Select(pair => pair.Item1).ToHashSet();
+        var currentIds = currentSet.Select(pair => pair.Item1).ToHashSet();
+
+        var removedAgents = previousIds.Except(currentIds);
+
+        foreach (var id in removedAgents)
+        {
+            if (enemyPowerDiff < 0)
+            {
+                _visualQueue.Enqueue(new PlayProjectileCommand(id, side));
+            }
+            _visualQueue.Enqueue(new MoveCardCommand(id, ZoneType.CooldownPile, side));
+        }
+
+        var added = currentIds.Except(previousIds);
+        foreach (var id in added)
+        {
+            if (!BoardManager.Instance.HasCardObject(id))
+            {
+                var agent = currentAgents.FirstOrDefault(a => a.RepresentingCard.UniqueId == id);
+                if (agent != null)
+                {
+                    BoardManager.Instance.CreateCardObjectFromRuntime(agent.RepresentingCard, ZoneType.Agents, side);
+                }
+                else
+                {
+                    Debug.LogError($"[CompletedActionProcessor] Missing Agent for ID: {id.Value}");
+                }
+            }
+            _visualQueue.Enqueue(new MoveCardCommand(id, ZoneType.Agents, side));
+        }
+
+        foreach (var (id, activated, currentHealth) in currentSet)
+        {
+            var old = previousSet.FirstOrDefault(x => x.Item1 == id);
+            if (old != default && old.Item2 != activated)
+            {
+                if (BoardManager.Instance.HasCardObject(id))
+                {
+                    var cardObj = BoardManager.Instance.GetCardObject(id);
+                    _visualQueue.Enqueue(new ShowAgentActivationCommand(cardObj, activated));
+                }
+            }
+            if (old != default && old.Item3 > currentHealth)
+            {
+                if (BoardManager.Instance.HasCardObject(id))
+                {
+                    _visualQueue.Enqueue(new PlayProjectileCommand(id, side));
+                }
+            }
+        }
+
+        storage.Clear();
+        foreach (var tuple in currentSet)
+            storage.Add(tuple);
+    }
+
 
     private void Start()
     {
@@ -122,27 +195,7 @@ public class CompletedActionProcessor : MonoBehaviour
             if (_visualQueue.Count > 0)
             {
                 var cmd = _visualQueue.Dequeue();
-                if (cmd.Zone == ZoneType.TavernAvailable)
-                {
-                    //Debug.Log($"[Animate] Moving card {cmd.CardId.Value} to {cmd.Zone} ({cmd.Side})");
-                    StartCoroutine(BoardManager.Instance.AnimateAddCardToTavernDelayed(cmd.CardId));
-                }
-                else if (cmd.Zone == ZoneType.Hand)
-                {
-                    Transform target = BoardManager.Instance.GetZoneTransform(cmd.Zone, cmd.Side);
-                    BoardManager.Instance.MoveCardToZone(cmd.CardId, target, cmd.Zone, cmd.Side, () => BoardManager.Instance.ArrangeCardsInHand(target));
-                }
-                else if (cmd.Zone == ZoneType.Agents)
-                {
-                    Transform target = BoardManager.Instance.GetZoneTransform(cmd.Zone, cmd.Side);
-                    BoardManager.Instance.MoveCardToZone(cmd.CardId, target, cmd.Zone, cmd.Side, () => BoardManager.Instance.ArrangeAgentsInZone(target));
-                }
-                else
-                {
-                    Transform target = BoardManager.Instance.GetZoneTransform(cmd.Zone, cmd.Side);
-                    BoardManager.Instance.MoveCardToZone(cmd.CardId, target, cmd.Zone, cmd.Side);
-                }
-                yield return new WaitForSeconds(0.15f);
+                yield return cmd.Execute();
             }
             else
             {
@@ -150,18 +203,17 @@ public class CompletedActionProcessor : MonoBehaviour
             }
         }
     }
-}
 
-public class MoveVisualCommand
-{
-    public UniqueId CardId;
-    public ZoneType Zone;
-    public ZoneSide Side;
-
-    public MoveVisualCommand(UniqueId cardId, ZoneType zone, ZoneSide side)
+    private ZoneType GetSourceOfCreatedCard(UniqueCard card)
     {
-        CardId = cardId;
-        Zone = zone;
-        Side = side;
+        return card.CommonId switch
+        {
+            CardId.WRIT_OF_COIN => ZoneType.TREASURY,
+            CardId.CHAINBREAKER_SERGEANT => ZoneType.SAINT_ALESSIA,
+            CardId.SOLDIER_OF_THE_EMPIRE => ZoneType.SAINT_ALESSIA,
+            CardId.SUMMERSET_SACKING => ZoneType.ORGNUM,
+            CardId.BEWILDERMENT => ZoneType.RAJHIN,
+            _ => ZoneType.Tavern
+        };
     }
 }

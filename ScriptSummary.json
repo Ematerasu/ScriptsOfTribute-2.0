@@ -8,7 +8,7 @@
             "typeName": "AIManager",
             "methods": [
                 "private void Awake()",
-                "public void InitializeBot(AI bot, PlayerEnum botId)",
+                "public void InitializeBot(BotType botType, PlayerEnum botId)",
                 "public void InitializeManager(SoTGameManager gameManager)",
                 "public bool IsAITurn()",
                 "public void PickOnePatron(List<PatronId> availablePatrons, int round, Action<PatronId> onResult)",
@@ -19,7 +19,8 @@
                 "private IEnumerator PlaySingleMoveCoroutine()",
                 "private IEnumerator PlayFullTurnCoroutine()",
                 "private IEnumerator GetMoveFromBotCoroutine(GameState state, List<Move> legalMoves, Action<Move> onResult)",
-                "public IEnumerator GameEndCoroutine(EndGameState result, FullGameState? finalBoardState)"
+                "public IEnumerator GameEndCoroutine(EndGameState result, FullGameState? finalBoardState)",
+                "public AI CreateBotByType(BotType botType)"
             ],
             "fields": [
                 "[SerializeField] private CompletedActionProcessor completedActionProcessor; private AI _bot;",
@@ -28,14 +29,25 @@
             ]
         },
         {
+            "fileName": "BotType.cs",
+            "path": "Assets\\Scripts\\AI\\BotType.cs",
+            "namespaceName": "",
+            "kind": "enum",
+            "typeName": "BotType",
+            "methods": [],
+            "fields": []
+        },
+        {
             "fileName": "BoardManager.cs",
             "path": "Assets\\Scripts\\Board\\BoardManager.cs",
             "namespaceName": "",
             "kind": "class",
             "typeName": "BoardManager",
             "methods": [
-                "[Header(\"Player 1 Zones\")] [SerializeField] private Transform p1DrawPile; [SerializeField] private Transform p1Cooldown; [SerializeField] private Transform p1Hand; [SerializeField] private Transform p1Played; [SerializeField] private Transform p1Agents; [Header(\"Player 2 Zones\")] [SerializeField] private Transform p2DrawPile; [SerializeField] private Transform p2Cooldown; [SerializeField] private Transform p2Hand; [SerializeField] private Transform p2Played; [SerializeField] private Transform p2Agents; [Header(\"Tavern\")] [SerializeField] private Transform tavernPile; [SerializeField] private List<Transform> tavernCardSpots; [Header(\"UI\")] [SerializeField] private TextMeshProUGUI Player1Gold; [SerializeField] private TextMeshProUGUI Player1Prestige; [SerializeField] private TextMeshProUGUI Player1Power; [SerializeField] private TextMeshProUGUI Player2Gold; [SerializeField] private TextMeshProUGUI Player2Prestige; [SerializeField] private TextMeshProUGUI Player2Power; [Header(\"Prefabs / Pool\")] [SerializeField] private GameObject cardPrefab; [SerializeField] private Transform offscreenCardContainer; [SerializeField] private Transform powerOriginPointPlayer1; [SerializeField] private Transform powerOriginPointPlayer2; [SerializeField] private GameObject powerProjectilePrefab; public bool HasCardObject(UniqueId id) => cardObjects.ContainsKey(id);",
+                "[Header(\"Player 1 Zones\")] [SerializeField] private Transform p1DrawPile; [SerializeField] private Transform p1Cooldown; [SerializeField] private Transform p1Hand; [SerializeField] private Transform p1Played; [SerializeField] private Transform p1Agents; [Header(\"Player 2 Zones\")] [SerializeField] private Transform p2DrawPile; [SerializeField] private Transform p2Cooldown; [SerializeField] private Transform p2Hand; [SerializeField] private Transform p2Played; [SerializeField] private Transform p2Agents; [Header(\"Tavern\")] [SerializeField] private Transform tavernPile; [SerializeField] private List<Transform> tavernCardSpots; [Header(\"UI\")] [SerializeField] private TextMeshProUGUI Player1Gold; [SerializeField] private TextMeshProUGUI Player1Prestige; [SerializeField] private TextMeshProUGUI Player1Power; [SerializeField] private TextMeshProUGUI Player1PatronCalls; [SerializeField] private TextMeshProUGUI Player2Gold; [SerializeField] private TextMeshProUGUI Player2Prestige; [SerializeField] private TextMeshProUGUI Player2Power; [SerializeField] private TextMeshProUGUI Player2PatronCalls; [Header(\"Prefabs / Pool\")] [SerializeField] private GameObject cardPrefab; [SerializeField] private Transform offscreenCardContainer; [SerializeField] private Transform powerOriginPointPlayer1; [SerializeField] private Transform powerOriginPointPlayer2; [SerializeField] private GameObject powerProjectilePrefab; public bool HasCardObject(UniqueId id) => cardObjects.ContainsKey(id);",
+                "public GameObject GetCardObject(UniqueId id) => cardObjects[id];",
                 "private void Awake()",
+                "public void ClearBoard()",
                 "public void InitializeBoard(FullGameState state)",
                 "public void UpdateBoard(FullGameState state, UpdateReason reason)",
                 "private void SetupPlayer(SerializedPlayer playerData, bool isPlayer1)",
@@ -106,27 +118,28 @@
             "typeName": "CompletedActionProcessor",
             "methods": [
                 "private void Update()",
+                "private void ClearProcessor()",
                 "public void SetInitialSnapshot(FullGameState state)",
                 "public void CompareAndQueueChanges(FullGameState newState)",
                 "private void CompareAndQueue(HashSet<UniqueId> previousSet, List<UniqueCard> currentList, ZoneType zoneType, ZoneSide zoneSide, HashSet<UniqueId> storage)",
+                "private void CompareAndQueueAgents(HashSet<(UniqueId, bool)> previousSet, List<SerializedAgent> currentAgents, ZoneSide side, HashSet<(UniqueId, bool)> storage)",
                 "private void Start()",
                 "private IEnumerator ConsumeQueue()"
             ],
             "fields": [
                 "private Queue<MoveVisualCommand> _visualQueue = new();",
+                "private Queue<EffectVisualCommand> _effectVisualQueue = new();",
                 "private HashSet<UniqueId> _prevPlayer1Hand = new();",
                 "private HashSet<UniqueId> _prevPlayer1Played = new();",
                 "private HashSet<UniqueId> _prevPlayer1Cooldown = new();",
                 "private HashSet<UniqueId> _prevPlayer1Draw = new();",
-                "private HashSet<UniqueId> _prevPlayer1Agents = new();",
                 "private HashSet<UniqueId> _prevPlayer2Hand = new();",
                 "private HashSet<UniqueId> _prevPlayer2Played = new();",
                 "private HashSet<UniqueId> _prevPlayer2Cooldown = new();",
                 "private HashSet<UniqueId> _prevPlayer2Draw = new();",
-                "private HashSet<UniqueId> _prevPlayer2Agents = new();",
                 "private HashSet<UniqueId> _prevTavernAvailable = new();",
                 "private HashSet<UniqueId> _prevTavernPile = new();",
-                "public bool IsBusy => _visualQueue.Count > 0;",
+                "public bool IsBusy => _visualQueue.Count > 0 || _effectVisualQueue.Count > 0;",
                 "public int ElementsInQueue => _visualQueue.Count;"
             ]
         },
@@ -141,6 +154,27 @@
                 "public UniqueId CardId;",
                 "public ZoneType Zone;",
                 "public ZoneSide Side;"
+            ]
+        },
+        {
+            "fileName": "CompletedActionProcessor.cs",
+            "path": "Assets\\Scripts\\Board\\CompletedActionProcessor.cs",
+            "namespaceName": "",
+            "kind": "enum",
+            "typeName": "VisualEffectType",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "CompletedActionProcessor.cs",
+            "path": "Assets\\Scripts\\Board\\CompletedActionProcessor.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "EffectVisualCommand",
+            "methods": [],
+            "fields": [
+                "public GameObject CardObject;",
+                "public VisualEffectType EffectType;"
             ]
         },
         {
@@ -181,6 +215,7 @@
             "methods": [
                 "public void SetLayoutPosition(Vector3 pos) => _layoutPosition = pos;",
                 "public Vector3 GetLayoutPosition() => _layoutPosition;",
+                "public Sprite GetOriginalSprite() => _originalSprite;",
                 "public void Start()",
                 "[ContextMenu(\"Test Activation Effect\")] public void TestActivationEffect()",
                 "public UniqueCard GetCard()",
@@ -254,6 +289,26 @@
             ]
         },
         {
+            "fileName": "PileZoneClickable.cs",
+            "path": "Assets\\Scripts\\Controllers\\PileZoneClickable.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "PileZoneClickable",
+            "methods": [
+                "[SerializeField] private ZoneSide zoneSide; [SerializeField] private PileType pileType; public void OnClickedFromCard()"
+            ],
+            "fields": []
+        },
+        {
+            "fileName": "PileZoneClickable.cs",
+            "path": "Assets\\Scripts\\Controllers\\PileZoneClickable.cs",
+            "namespaceName": "",
+            "kind": "enum",
+            "typeName": "PileType",
+            "methods": [],
+            "fields": []
+        },
+        {
             "fileName": "GameManager.cs",
             "path": "Assets\\Scripts\\Gameplay\\GameManager.cs",
             "namespaceName": "",
@@ -261,7 +316,6 @@
             "typeName": "GameManager",
             "methods": [
                 "private void Awake()",
-                "private void Start()",
                 "public void StartGameWithPatrons(PatronId[] patrons)",
                 "private void Update()",
                 "public void OnEndTurnButtonClicked()",
@@ -277,12 +331,32 @@
                 "public void MakeChoice(List<UniqueCard> selectedCards)",
                 "public void MakeChoice(UniqueEffect selectedEffect)",
                 "private void HandleEndGame(EndGameState end, Move triggeringMove)",
-                "private IEnumerator ShowStartOfHumanTurnRoutine()"
+                "private IEnumerator ShowStartOfHumanTurnRoutine()",
+                "public void InitializeDebugGame()",
+                "private UniqueCard FindAndRemoveCard(CardId id, List<UniqueCard> availableCards)"
             ],
             "fields": [
                 "[SerializeField] private SoTGameManager _soTGameManager; [SerializeField] private UIManager _uiManager; // [SerializeField] private AudioManager _audioManager;",
-                "[SerializeField] private AIManager _aiManager; [SerializeField] private PatronManager _patronManager; [SerializeField] private PlayerEnum CurrentTurn = PlayerEnum.NO_PLAYER_SELECTED; [SerializeField] public PlayerEnum HumanPlayer = PlayerEnum.PLAYER1; [SerializeField] public PlayerEnum AIPlayer => HumanPlayer == PlayerEnum.PLAYER1 ? PlayerEnum.PLAYER2 : PlayerEnum.PLAYER1; public bool IsHumanPlayersTurn => CurrentTurn == HumanPlayer;"
+                "[SerializeField] private AIManager _aiManager; [SerializeField] private PatronManager _patronManager; [SerializeField] private PlayerEnum CurrentTurn = PlayerEnum.NO_PLAYER_SELECTED; [SerializeField] public PlayerEnum HumanPlayer = PlayerEnum.PLAYER1; [SerializeField] public PlayerEnum AIPlayer => HumanPlayer == PlayerEnum.PLAYER1 ? PlayerEnum.PLAYER2 : PlayerEnum.PLAYER1; [Header(\"Debug mode\")] [SerializeField] private bool debugMode = false; [SerializeField] private bool debugPlayerStartsFirst = true; [SerializeField] private List<CardId> debugPlayer1Hand = new(); [SerializeField] private List<CardId> debugPlayer2Hand = new(); [SerializeField] private List<CardId> debugPlayer1Agents = new(); [SerializeField] private List<CardId> debugPlayer2Agents = new(); [SerializeField] private List<CardId> debugPlayer1DrawPile = new(); [SerializeField] private List<CardId> debugPlayer2DrawPile = new(); [SerializeField] private List<CardId> debugTavernCards = new(); [SerializeField] private List<PatronId> debugPatrons = new(); [SerializeField] private int debugPlayer1Prestige = 0; [SerializeField] private int debugPlayer2Prestige = 0; [SerializeField] private int debugPlayer1Power = 0; [SerializeField] private int debugPlayer2Power = 0; [SerializeField] private int debugPlayer1Coins = 0; [SerializeField] private int debugPlayer2Coins = 0; public bool IsDebugMode => debugMode;",
+                "public bool IsHumanPlayersTurn => CurrentTurn == HumanPlayer;"
             ]
+        },
+        {
+            "fileName": "GameSetupManager.cs",
+            "path": "Assets\\Scripts\\Gameplay\\GameSetupManager.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "GameSetupManager",
+            "methods": [
+                "[Header(\"Manager References\")] [SerializeField] private GameManager _gameManager; [SerializeField] private BoardManager _boardManager; [SerializeField] private AIManager _aiManager; [SerializeField] private CompletedActionHistoryBuilder _historyBuilder; [SerializeField] private UIManager _uiManager; [Header(\"Game Settings\")] [SerializeField] private BotType selectedBot = BotType.MaxPrestige; private void Awake()",
+                "private void Start()",
+                "public void StartInitialSetup()",
+                "public void StartGameWithPatrons(List<PatronId> selectedPatrons)",
+                "public void ResetAndStartPatronDraft()",
+                "private IEnumerator ResetAndStartPatronDraftCoroutine()",
+                "private List<PatronId> GetAvailablePatrons()"
+            ],
+            "fields": []
         },
         {
             "fileName": "SoTGameManager.cs",
@@ -292,6 +366,7 @@
             "typeName": "SoTGameManager",
             "methods": [
                 "[SerializeField] private CompletedActionProcessor completedActionProcessor; public void InitializeGame(PatronId[] patrons, ulong seed = 0)",
+                "public void InitializeDebugGame(FullGameState debugState)",
                 "public void RefreshCache(FullGameState newState)",
                 "public FullGameState GetCurrentGameState()",
                 "public bool IsMoveLegal(Move move)",
@@ -325,8 +400,34 @@
                 "private string _tooltipText;",
                 "[SerializeField] private GameObject patronCircle; public PlayerEnum favoring;",
                 "private Vector3 _neutralRotate = new Vector3(0f, 0f, 90f);",
-                "private Vector3 _player1FavorRotate = new Vector3(0f, 0f, 180f);",
-                "private Vector3 _player2FavorRotate = new Vector3(0f, 0f, 0f);"
+                "private Vector3 _player1FavorRotate = new Vector3(0f, 0f, 179f);",
+                "private Vector3 _player2FavorRotate = new Vector3(0f, 0f, 1f);"
+            ]
+        },
+        {
+            "fileName": "CardLookupPanelController.cs",
+            "path": "Assets\\Scripts\\UI\\CardLookupPanelController.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "CardLookupPanelController",
+            "methods": [
+                "private void Awake()",
+                "public void Show(ZoneSide side, PileType startingPile)",
+                "public void Hide()",
+                "private void SwitchPile(PileType newPile)",
+                "private void UpdateView()",
+                "private void UpdateButtonScales()",
+                "private Transform GetPileTransform(ZoneSide side, PileType pileType)",
+                "private void ClearContent()",
+                "private IEnumerator AddToContentCoroutine(List<Sprite> sprites)",
+                "private IEnumerator FadeInContent()",
+                "private IEnumerator FadeOutAndDisable()"
+            ],
+            "fields": [
+                "[Header(\"UI Elements\")] [SerializeField] private GameObject panelRoot; [SerializeField] private Button playedPileButton; [SerializeField] private Button cooldownPileButton; [SerializeField] private Button drawPileButton; [SerializeField] private Transform cardContentParent; [SerializeField] private GameObject cardPrefab; [SerializeField] private Button closePanelButton; [Header(\"Button Scale Settings\")] [SerializeField] private Vector3 selectedScale = Vector3.one; [SerializeField] private Vector3 unselectedScale = new Vector3(0.8f, 0.8f, 0.8f); [Header(\"Player 1 Zones\")] [SerializeField] private Transform player1DrawPile; [SerializeField] private Transform player1PlayedPile; [SerializeField] private Transform player1CooldownPile; [Header(\"Player 2 Zones\")] [SerializeField] private Transform player2DrawPile; [SerializeField] private Transform player2PlayedPile; [SerializeField] private Transform player2CooldownPile; private Coroutine loadingCoroutine;",
+                "private ZoneSide currentSide;",
+                "private PileType currentPile;",
+                "private bool isClosing = false;"
             ]
         },
         {
@@ -364,10 +465,12 @@
                 "public void ShowPatronTooltip(string name, string text)",
                 "public void HidePatronTooltip()",
                 "public void ShowCardTooltip(string name, string deckName, string text, Sprite sprite)",
-                "public void HideCardTooltip()"
+                "public void HideCardTooltip()",
+                "public void HandleEndGame(EndGameState endGameState, FullGameState finalState)",
+                "public void CardLookup(ZoneSide side, PileType startingPile)"
             ],
             "fields": [
-                "[Header(\"AI Buttons\")] [SerializeField] private Button aiMoveButton; [SerializeField] private Button aiMoveFullTurnButton; [Header(\"Choice Panels\")] [SerializeField] private CardChoicePanelController cardChoicePanel; [SerializeField] private EffectChoicePanelController effectChoicePanel; [SerializeField] private PatronSelectionPanel patronSelectionPanel; [Header(\"Text objects\")] [SerializeField] private GameObject YourTurnImage; [Header(\"Patrons\")] [SerializeField] private GameObject PatronTooltipPanel; [SerializeField] private TextMeshProUGUI PatronTooltipTitle; [SerializeField] private TextMeshProUGUI PatronTooltipText; [Header(\"Card Tooltip\")] [SerializeField] private GameObject CardTooltipPanel; [SerializeField] private TextMeshProUGUI CardTooltipTitle; [SerializeField] private TextMeshProUGUI CardDeckTooltipTitle; [SerializeField] private TextMeshProUGUI CardTooltipText; [SerializeField] private Image cardTooltipImage; private bool isCardTooltipVisible = false;"
+                "[Header(\"AI Buttons\")] [SerializeField] private Button aiMoveButton; [SerializeField] private Button aiMoveFullTurnButton; [Header(\"Choice Panels\")] [SerializeField] private CardChoicePanelController cardChoicePanel; [SerializeField] private EffectChoicePanelController effectChoicePanel; [SerializeField] private PatronSelectionPanel patronSelectionPanel; [Header(\"Normal panels\")] [SerializeField] private CardLookupPanelController cardLookupPanel; [Header(\"Text objects\")] [SerializeField] private GameObject YourTurnImage; [Header(\"Patrons\")] [SerializeField] private GameObject PatronTooltipPanel; [SerializeField] private TextMeshProUGUI PatronTooltipTitle; [SerializeField] private TextMeshProUGUI PatronTooltipText; [Header(\"Card Tooltip\")] [SerializeField] private GameObject CardTooltipPanel; [SerializeField] private TextMeshProUGUI CardTooltipTitle; [SerializeField] private TextMeshProUGUI CardDeckTooltipTitle; [SerializeField] private TextMeshProUGUI CardTooltipText; [SerializeField] private Image cardTooltipImage; [Header(\"End game\")] [SerializeField] private EndGameController endGameController; private bool isCardTooltipVisible = false;"
             ]
         },
         {
@@ -498,6 +601,77 @@
             ],
             "fields": [
                 "[SerializeField] private RectTransform content; [SerializeField] private RectTransform viewport; private ScrollRect scrollRect;"
+            ]
+        },
+        {
+            "fileName": "CompletedActionHistoryBuilder.cs",
+            "path": "Assets\\Scripts\\UI\\EndGamePanel\\CompletedActionHistoryBuilder.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "CompletedActionHistoryBuilder",
+            "methods": [
+                "[Header(\"References\")] [SerializeField] private Transform contentParent; [SerializeField] private GameObject completedActionUIPrefab; [SerializeField] private Sprite player1Sprite; [SerializeField] private Sprite player2Sprite; [SerializeField] private GameObject loadingSpinner; [Header(\"Settings\")] [SerializeField] private int batchSize = 10; [SerializeField] private float delayBetweenBatches = 0.05f; public void BuildHistory(List<CompletedAction> actions)",
+                "public void ClearHistory()",
+                "private IEnumerator BuildHistoryCoroutine(List<CompletedAction> actions)",
+                "private string GenerateMainText(CompletedAction action)",
+                "private string GenerateSubText(List<CompletedAction> actions, int startIndex)"
+            ],
+            "fields": []
+        },
+        {
+            "fileName": "CompletedActionUI.cs",
+            "path": "Assets\\Scripts\\UI\\EndGamePanel\\CompletedActionUI.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "CompletedActionUI",
+            "methods": [
+                "[SerializeField] private Image playerIcon; [SerializeField] private TextMeshProUGUI mainText; [SerializeField] private TextMeshProUGUI subText; public void Initialize(CompletedAction action, Sprite player1Sprite, Sprite player2Sprite, string main, string sub)"
+            ],
+            "fields": []
+        },
+        {
+            "fileName": "EndGamePanelController.cs",
+            "path": "Assets\\Scripts\\UI\\EndGamePanel\\EndGamePanelController.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "EndGameController",
+            "methods": [
+                "public void Initialize(EndGameState endState, FullGameState finalState)",
+                "private void CollectVictoryGraphics()",
+                "private IEnumerator PlayEndGameSequence(EndGameState endState, FullGameState finalState)",
+                "private void SetGraphicsAlpha(float alpha)",
+                "private IEnumerator FadeGraphics(float startAlpha, float endAlpha, float duration)",
+                "public void OnPlayAgainButtonClicked()"
+            ],
+            "fields": [
+                "[Header(\"VictoryDefeat References\")] [SerializeField] private GameObject victoryDefeatRoot; [SerializeField] private Image lineImage; [SerializeField] private TextMeshProUGUI victoryDefeatText; [Header(\"EndGamePanel References\")] [SerializeField] private GameObject mainPanel; [SerializeField] private SeedDisplayController seedDisplayController; [SerializeField] private CompletedActionHistoryBuilder completedActionHistoryBuilder; [SerializeField] private GameSummaryPanelController gameSummaryPanelController; [SerializeField] private Button playAgainButton; [Header(\"Animation Settings\")] [SerializeField] private float fadeDuration = 1.0f; [SerializeField] private float victoryDefeatDuration = 2.0f; [SerializeField] private Color victoryColor = new Color(0.1683873f, 0.646306f, 0.8301887f); [SerializeField] private Color defeatColor = new Color(0.8313726f, 0.3090782f, 0.1686275f); private List<Graphic> victoryGraphics = new();"
+            ]
+        },
+        {
+            "fileName": "GameSummaryPanelController.cs",
+            "path": "Assets\\Scripts\\UI\\EndGamePanel\\GameSummaryPanelController.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "GameSummaryPanelController",
+            "methods": [
+                "[Header(\"UI References\")] [SerializeField] private TextMeshProUGUI resultText; // \"You won!\" / \"You lost!\" [SerializeField] private TextMeshProUGUI reasonText; [SerializeField] private TextMeshProUGUI prestigeComparisonText; [SerializeField] private Image resultIcon; [Header(\"Settings\")] [SerializeField] private Color victoryColor = new Color(0.1683873f, 0.646306f, 0.8301887f); [SerializeField] private Color defeatColor = new Color(0.8313726f, 0.3090782f, 0.1686275f); [SerializeField] private Sprite playerSprite; [SerializeField] private Sprite opponentSprite; public void SetSummary(PlayerEnum winner, GameEndReason reason, int prestigePlayer, int prestigeOpponent)",
+                "private string FormatReason(GameEndReason reason)"
+            ],
+            "fields": []
+        },
+        {
+            "fileName": "SeedDisplayController.cs",
+            "path": "Assets\\Scripts\\UI\\EndGamePanel\\SeedDisplayController.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "SeedDisplayController",
+            "methods": [
+                "private void Awake()",
+                "public void SetSeed(ulong seed)",
+                "private void OnCopyButtonClicked()"
+            ],
+            "fields": [
+                "[Header(\"UI References\")] [SerializeField] private TextMeshProUGUI seedText; [SerializeField] private Button copyButton; private ulong currentSeed;"
             ]
         },
         {
