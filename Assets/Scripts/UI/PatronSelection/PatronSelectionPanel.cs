@@ -29,6 +29,11 @@ public class PatronSelectionPanel : MonoBehaviour
         selectedPatrons.Clear();
         pickIndex = 0;
 
+        foreach(Transform child in patronButtonContainer)
+        {
+            Destroy(child.gameObject);
+        }
+
         SetUpUI();
         RefreshUI();
         panelRoot.SetActive(true);

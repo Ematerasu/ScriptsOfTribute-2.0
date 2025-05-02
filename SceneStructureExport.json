@@ -774,6 +774,308 @@
             "hasCustomScript": false
         },
         {
+            "name": "BotLogPanelController.cs",
+            "path": "UI/Panels/BotLogPanelController.cs",
+            "components": [
+                "UnityEngine.RectTransform",
+                "BotLogPanelController"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Bg",
+            "path": "UI/Panels/BotLogPanelController.cs/Bg",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.UI.Shadow",
+                "UnityEngine.EventSystems.EventTrigger"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "InputField (TMP)",
+            "path": "UI/Panels/BotLogPanelController.cs/Bg/InputField (TMP)",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "TMPro.TMP_InputField"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Text Area",
+            "path": "UI/Panels/BotLogPanelController.cs/Bg/InputField (TMP)/Text Area",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.UI.RectMask2D"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Text",
+            "path": "UI/Panels/BotLogPanelController.cs/Bg/InputField (TMP)/Text Area/Text",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "TMPro.TextMeshProUGUI"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "CombosPanelController",
+            "path": "UI/Panels/CombosPanelController",
+            "components": [
+                "UnityEngine.RectTransform",
+                "CombosPanelController"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "StageFrame_06_Demo_Focus_Blue",
+            "path": "UI/Panels/CombosPanelController/StageFrame_06_Demo_Focus_Blue",
+            "components": [
+                "UnityEngine.RectTransform"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "FocusBackGlow",
+            "path": "UI/Panels/CombosPanelController/StageFrame_06_Demo_Focus_Blue/FocusBackGlow",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Bg",
+            "path": "UI/Panels/CombosPanelController/StageFrame_06_Demo_Focus_Blue/Bg",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.UI.Shadow"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "FocusForntGradient",
+            "path": "UI/Panels/CombosPanelController/StageFrame_06_Demo_Focus_Blue/FocusForntGradient",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "HiddenView",
+            "path": "UI/Panels/CombosPanelController/HiddenView",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.UI.VerticalLayoutGroup",
+                "UnityEngine.UI.ContentSizeFitter"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "ExpandedView",
+            "path": "UI/Panels/CombosPanelController/ExpandedView",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.UI.HorizontalLayoutGroup"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "PatronColumn",
+            "path": "UI/Panels/CombosPanelController/ExpandedView/PatronColumn",
+            "components": [
+                "UnityEngine.RectTransform"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "PatronIcon",
+            "path": "UI/Panels/CombosPanelController/ExpandedView/PatronColumn/PatronIcon",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.UI.LayoutElement"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Combo2Container",
+            "path": "UI/Panels/CombosPanelController/ExpandedView/PatronColumn/Combo2Container",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.UI.HorizontalLayoutGroup"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Combo3Container",
+            "path": "UI/Panels/CombosPanelController/ExpandedView/PatronColumn/Combo3Container",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.UI.HorizontalLayoutGroup"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Combo4Container",
+            "path": "UI/Panels/CombosPanelController/ExpandedView/PatronColumn/Combo4Container",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.UI.HorizontalLayoutGroup"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "PatronColumn (1)",
+            "path": "UI/Panels/CombosPanelController/ExpandedView/PatronColumn (1)",
+            "components": [
+                "UnityEngine.RectTransform"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "PatronIcon",
+            "path": "UI/Panels/CombosPanelController/ExpandedView/PatronColumn (1)/PatronIcon",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.UI.LayoutElement"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Combo2Container",
+            "path": "UI/Panels/CombosPanelController/ExpandedView/PatronColumn (1)/Combo2Container",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.UI.HorizontalLayoutGroup"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Combo3Container",
+            "path": "UI/Panels/CombosPanelController/ExpandedView/PatronColumn (1)/Combo3Container",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.UI.HorizontalLayoutGroup"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Combo4Container",
+            "path": "UI/Panels/CombosPanelController/ExpandedView/PatronColumn (1)/Combo4Container",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.UI.HorizontalLayoutGroup"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "PatronColumn (2)",
+            "path": "UI/Panels/CombosPanelController/ExpandedView/PatronColumn (2)",
+            "components": [
+                "UnityEngine.RectTransform"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "PatronIcon",
+            "path": "UI/Panels/CombosPanelController/ExpandedView/PatronColumn (2)/PatronIcon",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.UI.LayoutElement"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Combo2Container",
+            "path": "UI/Panels/CombosPanelController/ExpandedView/PatronColumn (2)/Combo2Container",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.UI.HorizontalLayoutGroup"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Combo3Container",
+            "path": "UI/Panels/CombosPanelController/ExpandedView/PatronColumn (2)/Combo3Container",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.UI.HorizontalLayoutGroup"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Combo4Container",
+            "path": "UI/Panels/CombosPanelController/ExpandedView/PatronColumn (2)/Combo4Container",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.UI.HorizontalLayoutGroup"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "PatronColumn (3)",
+            "path": "UI/Panels/CombosPanelController/ExpandedView/PatronColumn (3)",
+            "components": [
+                "UnityEngine.RectTransform"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "PatronIcon",
+            "path": "UI/Panels/CombosPanelController/ExpandedView/PatronColumn (3)/PatronIcon",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image",
+                "UnityEngine.UI.LayoutElement"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Combo2Container",
+            "path": "UI/Panels/CombosPanelController/ExpandedView/PatronColumn (3)/Combo2Container",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.UI.HorizontalLayoutGroup"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Combo3Container",
+            "path": "UI/Panels/CombosPanelController/ExpandedView/PatronColumn (3)/Combo3Container",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.UI.HorizontalLayoutGroup"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Combo4Container",
+            "path": "UI/Panels/CombosPanelController/ExpandedView/PatronColumn (3)/Combo4Container",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.UI.HorizontalLayoutGroup"
+            ],
+            "hasCustomScript": false
+        },
+        {
             "name": "PatronSelectionPanelController",
             "path": "UI/Panels/PatronSelectionPanelController",
             "components": [
@@ -1513,7 +1815,8 @@
             "path": "Player1/Agents",
             "components": [
                 "UnityEngine.Transform",
-                "CardZone"
+                "CardZone",
+                "UnityEngine.BoxCollider2D"
             ],
             "hasCustomScript": false
         },
@@ -1580,7 +1883,8 @@
             "path": "Player2/Agents",
             "components": [
                 "UnityEngine.Transform",
-                "CardZone"
+                "CardZone",
+                "UnityEngine.BoxCollider2D"
             ],
             "hasCustomScript": false
         },
@@ -1647,6 +1951,15 @@
                 "UnityEngine.Transform"
             ],
             "hasCustomScript": false
+        },
+        {
+            "name": "VisualEffectManager",
+            "path": "VisualEffectManager",
+            "components": [
+                "UnityEngine.Transform",
+                "VisualEffectsManager"
+            ],
+            "hasCustomScript": true
         }
     ]
 }

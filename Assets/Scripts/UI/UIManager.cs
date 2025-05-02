@@ -23,6 +23,8 @@ public class UIManager : MonoBehaviour
 
     [Header("Normal panels")]
     [SerializeField] private CardLookupPanelController cardLookupPanel;
+    [SerializeField] private CombosPanelController combosPanel;
+    [SerializeField] private BotLogPanelController botLogPanel;
 
     [Header("Text objects")]
     [SerializeField] private GameObject YourTurnImage;
@@ -60,6 +62,9 @@ public class UIManager : MonoBehaviour
 
         aiMoveButton.onClick.AddListener(OnAiMoveClicked);
         aiMoveFullTurnButton.onClick.AddListener(OnAiFullTurnClicked);
+
+        if (!GameSetupManager.Instance.IsBotDebugMode)
+            botLogPanel.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -186,4 +191,15 @@ public class UIManager : MonoBehaviour
     {
         cardLookupPanel.Show(side, startingPile);
     }
+
+    public void InitializeCombosPanel(PatronId[] patrons)
+    {
+        combosPanel.InitializeExpandedView(patrons);
+    }
+
+    public void UpdateCombosPanel(ComboStates comboStates)
+    {
+        combosPanel.UpdateCombos(comboStates);
+    }
+    
 }

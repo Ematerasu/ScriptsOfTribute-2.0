@@ -18,6 +18,12 @@ public class PatronManager : MonoBehaviour
         {
             PatronId patronId = patronIds[i];
             Transform slot = patronSlots[i];
+
+            if (slot.childCount > 0)
+            {
+                Destroy(slot.GetChild(0).gameObject);
+            }
+
             GameObject obj = Instantiate(patronPrefab, slot);
             obj.name = patronId.ToString();
             obj.transform.localPosition = Vector3.zero;

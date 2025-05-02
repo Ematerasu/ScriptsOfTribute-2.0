@@ -10,8 +10,7 @@ public class PileZoneClickable : MonoBehaviour
 
     public void OnClickedFromCard()
     {
-        //TODO allow in debug mode later on
-        if (zoneSide == ZoneSide.Player2)
+        if (zoneSide == ZoneSide.Player2 && !GameSetupManager.Instance.IsBotDebugMode)
             return;
         UIManager.Instance.CardLookup(zoneSide, pileType);
     }

@@ -65,6 +65,7 @@ public class GameManager : MonoBehaviour
             StartCoroutine(_uiManager.ShowYourTurnMessage());
         
         _uiManager.ShowAiButtons(CurrentTurn == AIPlayer);
+        _uiManager.InitializeCombosPanel(patrons);
     }
     private void Update()
     {
@@ -388,6 +389,7 @@ public class GameManager : MonoBehaviour
             return;
         }
         List<PatronId> patronsWithTreasury = new List<PatronId>(debugPatrons);
+        _uiManager.InitializeCombosPanel(patronsWithTreasury.ToArray());
         patronsWithTreasury.Insert(2, PatronId.TREASURY);
         var patrons = patronsWithTreasury.Select(pid => Patron.FromId(pid)).ToList();
         var patronStates = new PatronStates(patrons);
@@ -466,7 +468,7 @@ public class GameManager : MonoBehaviour
         {
             throw new Exception($"Card {id} not found in available cards! Check if your debug selection matches the chosen patrons.");
         }
-        availableCards.Remove(card);
+        //availableCards.Remove(card);
         return card;
     }
 }

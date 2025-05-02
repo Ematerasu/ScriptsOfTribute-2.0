@@ -16,6 +16,8 @@ public class GameSetupManager : MonoBehaviour
 
     [Header("Game Settings")]
     [SerializeField] private BotType selectedBot = BotType.MaxPrestige;
+    [SerializeField] private bool botDebugMode = false;
+    public bool IsBotDebugMode => botDebugMode;
 
     private void Awake()
     {

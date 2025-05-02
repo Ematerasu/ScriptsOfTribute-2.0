@@ -74,6 +74,7 @@ public class BoardManager : MonoBehaviour
         {
             Destroy(kvp.Value);
         }
+
         cardObjects.Clear();
     }
 
@@ -98,6 +99,7 @@ public class BoardManager : MonoBehaviour
     {
         StartCoroutine(UpdateAgentHealthCoroutine(state));
         SetUpUI(state);
+        UIManager.Instance.UpdateCombosPanel(state.ComboStates);
     }
 
     private void SetupPlayer(SerializedPlayer playerData, bool isPlayer1)
@@ -242,17 +244,40 @@ public class BoardManager : MonoBehaviour
         int count = zoneTransform.childCount;
         if (count == 0) return;
 
-        float totalWidth = (count - 1) * cardWidth;
-        float startX = -totalWidth / 2f;
+        int overlapStartAt = 6;
+        float overlapFactor  = 0.45f;
+        float minOverlapFactor = 0.25f;
+
+        float gap = cardWidth;
+        if (count >= overlapStartAt)
+            gap = cardWidth * overlapFactor;
+
+        var box = zoneTransform.GetComponent<BoxCollider2D>();
+        if (box != null)
+        {
+            float zoneWidth   = box.size.x;
+            float targetWidth = (count - 1) * gap;
+
+            if (targetWidth > zoneWidth)
+            {
+                float minGap = cardWidth * minOverlapFactor;
+                gap = Mathf.Max(minGap, zoneWidth / Mathf.Max(1, count - 1));
+                targetWidth = (count - 1) * gap;
+            }
+        }
+
+        float startX = -(count - 1) * gap * 0.5f;
 
         for (int i = 0; i < count; i++)
         {
             Transform card = zoneTransform.GetChild(i);
-            Vector3 targetPos = new Vector3(startX + i * cardWidth, 0, 0);
-            card.localPosition = targetPos;
+            Vector3 pos    = new(startX + i * gap, 0, -0.01f * i);
+            card.localPosition = pos;
 
-            Card logic = card.GetComponent<Card>();
-            logic?.SetLayoutPosition(targetPos);
+            var sr = card.GetComponent<SpriteRenderer>();
+            if (sr) sr.sortingOrder = i;
+
+            card.GetComponent<Card>()?.SetLayoutPosition(pos);
         }
     }
 

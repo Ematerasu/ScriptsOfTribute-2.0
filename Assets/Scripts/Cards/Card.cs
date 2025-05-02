@@ -135,11 +135,32 @@ public class Card : MonoBehaviour
 
     public bool ShouldBeVisible()
     {
-        return _zoneType == ZoneType.TavernAvailable ||
-                IsInPlayerHand() ||
-                (_zoneType == ZoneType.PlayedPile && _zoneSide == ZoneSide.Player1) ||
-                (_zoneType == ZoneType.CooldownPile && _zoneSide == ZoneSide.Player1) ||
-                (_zoneType == ZoneType.Agents);
+        bool isPlayer1 = _zoneSide == ZoneSide.Player1;
+        bool isPlayer2 = _zoneSide == ZoneSide.Player2;
+        bool debugMode = GameSetupManager.Instance.IsBotDebugMode;
+
+        switch (_zoneType)
+        {
+            case ZoneType.TavernAvailable:
+                return true;
+            case ZoneType.Tavern:
+                return false;
+
+            case ZoneType.Hand:
+                return isPlayer1 || (isPlayer2 && debugMode);
+
+            case ZoneType.PlayedPile:
+            case ZoneType.CooldownPile:
+                return isPlayer1 || (isPlayer2 && debugMode);
+            case ZoneType.DrawPile:
+                return (isPlayer1 && debugMode) || (isPlayer2 && debugMode);
+
+            case ZoneType.Agents:
+                return true;
+
+            default:
+                return false;
+        }
     }
 
     public void ShowActivationEffect()

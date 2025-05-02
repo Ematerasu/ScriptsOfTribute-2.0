@@ -136,6 +136,11 @@ public class CompletedActionProcessor : MonoBehaviour
             {
                 _visualQueue.Enqueue(new PlayProjectileCommand(id, side));
             }
+            if (BoardManager.Instance.HasCardObject(id))
+            {
+                var cardObj = BoardManager.Instance.GetCardObject(id);
+                _visualQueue.Enqueue(new ShowAgentActivationCommand(cardObj, false));
+            }
             _visualQueue.Enqueue(new MoveCardCommand(id, ZoneType.CooldownPile, side));
         }
 

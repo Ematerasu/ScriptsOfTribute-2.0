@@ -4,5 +4,7 @@ public enum BotType
     Random,
     MCTS,
     BeamSearch,
-    DecisionTree
+    DecisionTree,
+    Akame,
+    GrpcBot,
 }

@@ -96,7 +96,8 @@ public class CardLookupPanelController : MonoBehaviour
                     sprites.Add((cardScript.UniqueId, cardScript.GetOriginalSprite(), cardScript.hpText.text));
                 }
             }
-            sprites = sprites.OrderBy(sprite => sprite.id).ToList();
+            if (!GameSetupManager.Instance.IsBotDebugMode)
+                sprites = sprites.OrderBy(sprite => sprite.id).ToList();
             loadingCoroutine = StartCoroutine(AddToContentCoroutine(sprites));
         }
         UpdateButtonScales();

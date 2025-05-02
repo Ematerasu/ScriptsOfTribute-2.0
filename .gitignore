@@ -10,6 +10,7 @@ MemoryCaptures/
 
 Assets/Plugins/
 Assets/TextMesh Pro/
+Assets/Packages/
 
 # Visual Studio / JetBrains Rider
 .vscode/

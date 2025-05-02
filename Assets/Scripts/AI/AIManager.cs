@@ -7,6 +7,7 @@ using ScriptsOfTribute.Board;
 using ScriptsOfTribute.AI;
 using ScriptsOfTribute.Serializers;
 using Bots;
+using UnityBots;
 
 public class AIManager : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public class AIManager : MonoBehaviour
 
     private SoTGameManager _gameManager;
     public bool BotIsPlaying { get; private set; }
+
+    public bool BotInitialized { get; private set; } = false;
 
     private void Awake()
     {
@@ -35,7 +38,7 @@ public class AIManager : MonoBehaviour
         _bot = CreateBotByType(botType);
         _aiPlayer = botId;
         _bot.Id = botId;
-        
+        BotInitialized = true;
         try
         {
             _bot.PregamePrepare();
@@ -128,7 +131,12 @@ public class AIManager : MonoBehaviour
     private IEnumerator PlaySingleMoveCoroutine()
     {
         if (!IsAITurn()) yield break;
-        var state = new GameState(_gameManager.GetCurrentGameState());
+        var fullGameState = _gameManager.GetCurrentGameState();
+        if (_bot is GrpcBotAI grpcBot)
+        {
+            grpcBot.SetFullGameState(fullGameState);
+        }
+        var state = new GameState(fullGameState);
         var possibleMoves = _gameManager.LegalMoves;
 
         yield return StartCoroutine(GetMoveFromBotCoroutine(
@@ -152,8 +160,13 @@ public class AIManager : MonoBehaviour
         if (!IsAITurn()) yield break;
         bool endTurn = false;
         while (!endTurn)
-        {
-            var state = new GameState(_gameManager.GetCurrentGameState());
+        {   
+            var fullGameState = _gameManager.GetCurrentGameState();
+            if (_bot is GrpcBotAI grpcBot)
+            {
+                grpcBot.SetFullGameState(fullGameState);
+            }
+            var state = new GameState(fullGameState);
             var possibleMoves = _gameManager.LegalMoves;
 
             bool moveFinished = false;
@@ -209,6 +222,7 @@ public class AIManager : MonoBehaviour
             try
             {
                 move = _bot.Play(state, legalMoves, TimeSpan.FromSeconds(30));
+                Debug.Log($"Ai.Play {move}");
             }
             catch (Exception e)
             {
@@ -265,9 +279,43 @@ public class AIManager : MonoBehaviour
                 return new BeamSearchBot();
             case BotType.DecisionTree:
                 return new DecisionTreeBot();
+            case BotType.Akame:
+                return new Akame();
+            case BotType.GrpcBot:
+                return new GrpcBotAI(new GrpcBot());
             default:
                 Debug.LogWarning($"Unknown BotType {botType}. Falling back to MaxPrestigeBot.");
                 return new MaxPrestigeBot();
+        }
+    }
+
+    public List<(DateTime, string)> GetBotLogs() => _bot.LogMessages;
+
+    private void OnApplicationQuit()
+    {
+        TrySendGameEndIfGrpcBot();
+    }
+
+    private void OnDisable()
+    {
+    #if UNITY_EDITOR
+        if (!Application.isPlaying)
+        {
+            TrySendGameEndIfGrpcBot();
+        }
+    #endif
+    }
+
+    private void TrySendGameEndIfGrpcBot()
+    {
+        if (_bot is GrpcBotAI grpcBot)
+        {
+            Debug.Log("[AIManager] Sending GameEndRequest before shutdown.");
+
+            grpcBot.GameEnd(
+                new EndGameState(PlayerEnum.PLAYER1, GameEndReason.INTERNAL_ERROR, "Application quit"),
+                null
+            );
         }
     }
 }

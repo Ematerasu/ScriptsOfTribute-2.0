@@ -47,6 +47,7 @@
                 "[Header(\"Player 1 Zones\")] [SerializeField] private Transform p1DrawPile; [SerializeField] private Transform p1Cooldown; [SerializeField] private Transform p1Hand; [SerializeField] private Transform p1Played; [SerializeField] private Transform p1Agents; [Header(\"Player 2 Zones\")] [SerializeField] private Transform p2DrawPile; [SerializeField] private Transform p2Cooldown; [SerializeField] private Transform p2Hand; [SerializeField] private Transform p2Played; [SerializeField] private Transform p2Agents; [Header(\"Tavern\")] [SerializeField] private Transform tavernPile; [SerializeField] private List<Transform> tavernCardSpots; [Header(\"UI\")] [SerializeField] private TextMeshProUGUI Player1Gold; [SerializeField] private TextMeshProUGUI Player1Prestige; [SerializeField] private TextMeshProUGUI Player1Power; [SerializeField] private TextMeshProUGUI Player1PatronCalls; [SerializeField] private TextMeshProUGUI Player2Gold; [SerializeField] private TextMeshProUGUI Player2Prestige; [SerializeField] private TextMeshProUGUI Player2Power; [SerializeField] private TextMeshProUGUI Player2PatronCalls; [Header(\"Prefabs / Pool\")] [SerializeField] private GameObject cardPrefab; [SerializeField] private Transform offscreenCardContainer; [SerializeField] private Transform powerOriginPointPlayer1; [SerializeField] private Transform powerOriginPointPlayer2; [SerializeField] private GameObject powerProjectilePrefab; public bool HasCardObject(UniqueId id) => cardObjects.ContainsKey(id);",
                 "public GameObject GetCardObject(UniqueId id) => cardObjects[id];",
                 "private void Awake()",
+                "public void RegisterPatronTransform(PatronId patronId, Transform transform)",
                 "public void ClearBoard()",
                 "public void InitializeBoard(FullGameState state)",
                 "public void UpdateBoard(FullGameState state, UpdateReason reason)",
@@ -64,8 +65,7 @@
                 "public IEnumerator AnimateAddCardToTavernDelayed(UniqueId card)",
                 "public void DestroyCards(List<UniqueCard> cardsToDestroy)",
                 "private IEnumerator UpdateAgentHealthCoroutine(FullGameState state)",
-                "public void DebugCheckHandSync(FullGameState state)",
-                "public void PlayPowerAttackEffect(UniqueId cardId, ZoneSide side, System.Action? onComplete = null)"
+                "public void DebugCheckHandSync(FullGameState state)"
             ],
             "fields": [
                 "private HashSet<Transform> reservedTavernSpots = new();"
@@ -122,59 +122,27 @@
                 "public void SetInitialSnapshot(FullGameState state)",
                 "public void CompareAndQueueChanges(FullGameState newState)",
                 "private void CompareAndQueue(HashSet<UniqueId> previousSet, List<UniqueCard> currentList, ZoneType zoneType, ZoneSide zoneSide, HashSet<UniqueId> storage)",
-                "private void CompareAndQueueAgents(HashSet<(UniqueId, bool)> previousSet, List<SerializedAgent> currentAgents, ZoneSide side, HashSet<(UniqueId, bool)> storage)",
+                "private void CompareAndQueueAgents(HashSet<(UniqueId, bool, int)> previousSet, List<SerializedAgent> currentAgents, int enemyPowerDiff, ZoneSide side, HashSet<(UniqueId, bool, int)> storage)",
                 "private void Start()",
-                "private IEnumerator ConsumeQueue()"
+                "private IEnumerator ConsumeQueue()",
+                "private ZoneType GetSourceOfCreatedCard(UniqueCard card)"
             ],
             "fields": [
-                "private Queue<MoveVisualCommand> _visualQueue = new();",
-                "private Queue<EffectVisualCommand> _effectVisualQueue = new();",
+                "private Queue<VisualCommand> _visualQueue = new();",
                 "private HashSet<UniqueId> _prevPlayer1Hand = new();",
                 "private HashSet<UniqueId> _prevPlayer1Played = new();",
                 "private HashSet<UniqueId> _prevPlayer1Cooldown = new();",
                 "private HashSet<UniqueId> _prevPlayer1Draw = new();",
+                "private int _prevPlayer1Power = 0;",
                 "private HashSet<UniqueId> _prevPlayer2Hand = new();",
                 "private HashSet<UniqueId> _prevPlayer2Played = new();",
                 "private HashSet<UniqueId> _prevPlayer2Cooldown = new();",
                 "private HashSet<UniqueId> _prevPlayer2Draw = new();",
+                "private int _prevPlayer2Power = 0;",
                 "private HashSet<UniqueId> _prevTavernAvailable = new();",
                 "private HashSet<UniqueId> _prevTavernPile = new();",
-                "public bool IsBusy => _visualQueue.Count > 0 || _effectVisualQueue.Count > 0;",
+                "public bool IsBusy => _visualQueue.Count > 0;",
                 "public int ElementsInQueue => _visualQueue.Count;"
-            ]
-        },
-        {
-            "fileName": "CompletedActionProcessor.cs",
-            "path": "Assets\\Scripts\\Board\\CompletedActionProcessor.cs",
-            "namespaceName": "",
-            "kind": "class",
-            "typeName": "MoveVisualCommand",
-            "methods": [],
-            "fields": [
-                "public UniqueId CardId;",
-                "public ZoneType Zone;",
-                "public ZoneSide Side;"
-            ]
-        },
-        {
-            "fileName": "CompletedActionProcessor.cs",
-            "path": "Assets\\Scripts\\Board\\CompletedActionProcessor.cs",
-            "namespaceName": "",
-            "kind": "enum",
-            "typeName": "VisualEffectType",
-            "methods": [],
-            "fields": []
-        },
-        {
-            "fileName": "CompletedActionProcessor.cs",
-            "path": "Assets\\Scripts\\Board\\CompletedActionProcessor.cs",
-            "namespaceName": "",
-            "kind": "class",
-            "typeName": "EffectVisualCommand",
-            "methods": [],
-            "fields": [
-                "public GameObject CardObject;",
-                "public VisualEffectType EffectType;"
             ]
         },
         {
@@ -190,6 +158,64 @@
                 "private Sprite LoadPatronSprite(PatronId patronId)"
             ],
             "fields": []
+        },
+        {
+            "fileName": "VisualCommands.cs",
+            "path": "Assets\\Scripts\\Board\\VisualCommands.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "VisualCommand",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "VisualCommands.cs",
+            "path": "Assets\\Scripts\\Board\\VisualCommands.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "MoveCardCommand",
+            "methods": [],
+            "fields": [
+                "private UniqueId _cardId;",
+                "private ZoneType _zone;",
+                "private ZoneSide _side;"
+            ]
+        },
+        {
+            "fileName": "VisualCommands.cs",
+            "path": "Assets\\Scripts\\Board\\VisualCommands.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "PlayProjectileCommand",
+            "methods": [],
+            "fields": [
+                "private UniqueId _targetCardId;",
+                "private ZoneSide _side;"
+            ]
+        },
+        {
+            "fileName": "VisualCommands.cs",
+            "path": "Assets\\Scripts\\Board\\VisualCommands.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "PlayHealingEffectCommand",
+            "methods": [],
+            "fields": [
+                "private UniqueId _targetCardId;",
+                "private ZoneSide _side;"
+            ]
+        },
+        {
+            "fileName": "VisualCommands.cs",
+            "path": "Assets\\Scripts\\Board\\VisualCommands.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "ShowAgentActivationCommand",
+            "methods": [],
+            "fields": [
+                "private GameObject _cardObject;",
+                "private bool _activate;"
+            ]
         },
         {
             "fileName": "CameraDrag.cs",
@@ -282,7 +308,10 @@
             "methods": [
                 "public void OnPointerClick(PointerEventData eventData)",
                 "private string GetCardTooltipText(UniqueCard card)",
-                "private string EffectToString(UniqueComplexEffect effect)"
+                "private string EffectToString(UniqueComplexEffect effect)",
+                "private bool IsInPileZone(Card card)",
+                "private void HandleLeftClick()",
+                "private void HandleRightClick()"
             ],
             "fields": [
                 "public Card card;"
@@ -348,7 +377,7 @@
             "kind": "class",
             "typeName": "GameSetupManager",
             "methods": [
-                "[Header(\"Manager References\")] [SerializeField] private GameManager _gameManager; [SerializeField] private BoardManager _boardManager; [SerializeField] private AIManager _aiManager; [SerializeField] private CompletedActionHistoryBuilder _historyBuilder; [SerializeField] private UIManager _uiManager; [Header(\"Game Settings\")] [SerializeField] private BotType selectedBot = BotType.MaxPrestige; private void Awake()",
+                "private void Awake()",
                 "private void Start()",
                 "public void StartInitialSetup()",
                 "public void StartGameWithPatrons(List<PatronId> selectedPatrons)",
@@ -356,7 +385,9 @@
                 "private IEnumerator ResetAndStartPatronDraftCoroutine()",
                 "private List<PatronId> GetAvailablePatrons()"
             ],
-            "fields": []
+            "fields": [
+                "[Header(\"Manager References\")] [SerializeField] private GameManager _gameManager; [SerializeField] private BoardManager _boardManager; [SerializeField] private AIManager _aiManager; [SerializeField] private CompletedActionHistoryBuilder _historyBuilder; [SerializeField] private UIManager _uiManager; [Header(\"Game Settings\")] [SerializeField] private BotType selectedBot = BotType.MaxPrestige; [SerializeField] private bool botDebugMode = false; public bool IsBotDebugMode => botDebugMode;"
+            ]
         },
         {
             "fileName": "SoTGameManager.cs",
@@ -405,6 +436,28 @@
             ]
         },
         {
+            "fileName": "BotLogPanelController.cs",
+            "path": "Assets\\Scripts\\UI\\BotLogPanelController.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "BotLogPanelController",
+            "methods": [
+                "private void Start()",
+                "private IEnumerator LogWatcher()",
+                "private void Update()",
+                "public void OnPointerEnter() => isMouseOver = true;",
+                "public void OnPointerExit() => isMouseOver = false;",
+                "private void TryAppendNewLogs()",
+                "public void Clear()"
+            ],
+            "fields": [
+                "[Header(\"References\")] [SerializeField] private RectTransform panelRoot; [SerializeField] private TMP_InputField logInputField; [SerializeField] private int maxLogsToShow = 100; [Header(\"Animation\")] [SerializeField] private float hiddenX = -240f; [SerializeField] private float visibleX = 0f; [SerializeField] private float slideSpeed = 500f; private bool isMouseOver = false;",
+                "private bool isAnimating = false;",
+                "private int lastLogIndex = 0;",
+                "private StringBuilder _logBuilder = new();"
+            ]
+        },
+        {
             "fileName": "CardLookupPanelController.cs",
             "path": "Assets\\Scripts\\UI\\CardLookupPanelController.cs",
             "namespaceName": "",
@@ -419,7 +472,7 @@
                 "private void UpdateButtonScales()",
                 "private Transform GetPileTransform(ZoneSide side, PileType pileType)",
                 "private void ClearContent()",
-                "private IEnumerator AddToContentCoroutine(List<Sprite> sprites)",
+                "private IEnumerator AddToContentCoroutine(List<(int id, Sprite sprite, string hpText)> sprites)",
                 "private IEnumerator FadeInContent()",
                 "private IEnumerator FadeOutAndDisable()"
             ],
@@ -467,10 +520,12 @@
                 "public void ShowCardTooltip(string name, string deckName, string text, Sprite sprite)",
                 "public void HideCardTooltip()",
                 "public void HandleEndGame(EndGameState endGameState, FullGameState finalState)",
-                "public void CardLookup(ZoneSide side, PileType startingPile)"
+                "public void CardLookup(ZoneSide side, PileType startingPile)",
+                "public void InitializeCombosPanel(PatronId[] patrons)",
+                "public void UpdateCombosPanel(ComboStates comboStates)"
             ],
             "fields": [
-                "[Header(\"AI Buttons\")] [SerializeField] private Button aiMoveButton; [SerializeField] private Button aiMoveFullTurnButton; [Header(\"Choice Panels\")] [SerializeField] private CardChoicePanelController cardChoicePanel; [SerializeField] private EffectChoicePanelController effectChoicePanel; [SerializeField] private PatronSelectionPanel patronSelectionPanel; [Header(\"Normal panels\")] [SerializeField] private CardLookupPanelController cardLookupPanel; [Header(\"Text objects\")] [SerializeField] private GameObject YourTurnImage; [Header(\"Patrons\")] [SerializeField] private GameObject PatronTooltipPanel; [SerializeField] private TextMeshProUGUI PatronTooltipTitle; [SerializeField] private TextMeshProUGUI PatronTooltipText; [Header(\"Card Tooltip\")] [SerializeField] private GameObject CardTooltipPanel; [SerializeField] private TextMeshProUGUI CardTooltipTitle; [SerializeField] private TextMeshProUGUI CardDeckTooltipTitle; [SerializeField] private TextMeshProUGUI CardTooltipText; [SerializeField] private Image cardTooltipImage; [Header(\"End game\")] [SerializeField] private EndGameController endGameController; private bool isCardTooltipVisible = false;"
+                "[Header(\"AI Buttons\")] [SerializeField] private Button aiMoveButton; [SerializeField] private Button aiMoveFullTurnButton; [Header(\"Choice Panels\")] [SerializeField] private CardChoicePanelController cardChoicePanel; [SerializeField] private EffectChoicePanelController effectChoicePanel; [SerializeField] private PatronSelectionPanel patronSelectionPanel; [Header(\"Normal panels\")] [SerializeField] private CardLookupPanelController cardLookupPanel; [SerializeField] private CombosPanelController combosPanel; [SerializeField] private BotLogPanelController botLogPanel; [Header(\"Text objects\")] [SerializeField] private GameObject YourTurnImage; [Header(\"Patrons\")] [SerializeField] private GameObject PatronTooltipPanel; [SerializeField] private TextMeshProUGUI PatronTooltipTitle; [SerializeField] private TextMeshProUGUI PatronTooltipText; [Header(\"Card Tooltip\")] [SerializeField] private GameObject CardTooltipPanel; [SerializeField] private TextMeshProUGUI CardTooltipTitle; [SerializeField] private TextMeshProUGUI CardDeckTooltipTitle; [SerializeField] private TextMeshProUGUI CardTooltipText; [SerializeField] private Image cardTooltipImage; [Header(\"End game\")] [SerializeField] private EndGameController endGameController; private bool isCardTooltipVisible = false;"
             ]
         },
         {
@@ -479,6 +534,37 @@
             "namespaceName": "",
             "kind": "class",
             "typeName": "CardUtils",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "VisualEffectManager.cs",
+            "path": "Assets\\Scripts\\Visuals\\VisualEffectManager.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "VisualEffectsManager",
+            "methods": [
+                "[SerializeField] private GameObject powerProjectilePrefab; [SerializeField] private Transform powerOriginPointPlayer1; [SerializeField] private Transform powerOriginPointPlayer2; private void Awake()",
+                "public void PlayPowerAttackEffect(Vector3 targetPosition, ZoneSide side, Action? onComplete = null)",
+                "public void PlayHealingEffect(GameObject agentObj, ZoneSide side, Action? onComplete = null)"
+            ],
+            "fields": []
+        },
+        {
+            "fileName": "Cardtierlist.cs",
+            "path": "Assets\\Scripts\\AI\\CustomBots\\Cardtierlist.cs",
+            "namespaceName": "UnityBots",
+            "kind": "enum",
+            "typeName": "TierEnum",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "Cardtierlist.cs",
+            "path": "Assets\\Scripts\\AI\\CustomBots\\Cardtierlist.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "CardTierList",
             "methods": [],
             "fields": []
         },
@@ -604,6 +690,59 @@
             ]
         },
         {
+            "fileName": "CombosPanelController.cs",
+            "path": "Assets\\Scripts\\UI\\CombosPanel\\CombosPanelController.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "CombosPanelController",
+            "methods": [
+                "private void Awake()",
+                "private void Update()",
+                "public void OnPointerEnter(PointerEventData eventData)",
+                "public void OnPointerExit(PointerEventData eventData)",
+                "private void Expand()",
+                "private void Collapse()",
+                "private void CollapseImmediate()",
+                "public void InitializeExpandedView(PatronId[] activePatrons)",
+                "public void UpdateCombos(ComboStates states)",
+                "private void FillComboZone(Transform zone, List<UniqueBaseEffect> effects)",
+                "private void ClearColumn(PatronColumnUI column)",
+                "private Sprite GetSpriteForEffect(UniqueBaseEffect effect)",
+                "private Sprite LoadPatronSprite(PatronId patronId)"
+            ],
+            "fields": [
+                "[Header(\"References\")] [SerializeField] private GameObject container; [SerializeField] private GameObject focusBackGlow; [SerializeField] private GameObject bg; [SerializeField] private GameObject focusFrontGradient; [Header(\"Config\")] [SerializeField] private float collapsedWidth = 30f; [SerializeField] private float expandedWidth = 600f; [SerializeField] private float expandSpeed = 10f; [Header(\"Content\")] [SerializeField] private GameObject hiddenView; [SerializeField] private GameObject expandedView; [Header(\"Expanded View Columns\")] [SerializeField] private List<PatronColumnUI> patronColumns; [Header(\"Prefabs\")] [SerializeField] private GameObject patronIconPrefab; [SerializeField] private GameObject effectIconPrefab; [Header(\"Effect Sprites Mapping\")] [SerializeField] private List<EffectTypeSpritePair> effectTypeSpritePairs = new(); [SerializeField] private Sprite choiceSpriteIcon; private RectTransform rectTransform;",
+                "private bool isExpanded = false;",
+                "private bool fullyExpanded = false;"
+            ]
+        },
+        {
+            "fileName": "CombosPanelController.cs",
+            "path": "Assets\\Scripts\\UI\\CombosPanel\\CombosPanelController.cs",
+            "namespaceName": "",
+            "kind": "struct",
+            "typeName": "EffectTypeSpritePair",
+            "methods": [],
+            "fields": [
+                "public EffectType effectType;",
+                "public Sprite sprite;"
+            ]
+        },
+        {
+            "fileName": "PatronColumnUI.cs",
+            "path": "Assets\\Scripts\\UI\\CombosPanel\\PatronColumnUI.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "PatronColumnUI",
+            "methods": [],
+            "fields": [
+                "public PatronId patronId;",
+                "public Transform combo2Zone;",
+                "public Transform combo3Zone;",
+                "public Transform combo4Zone;"
+            ]
+        },
+        {
             "fileName": "CompletedActionHistoryBuilder.cs",
             "path": "Assets\\Scripts\\UI\\EndGamePanel\\CompletedActionHistoryBuilder.cs",
             "namespaceName": "",
@@ -712,6 +851,19 @@
                 "private int pickIndex = 0;",
                 "private PlayerEnum[] pickOrder = new[] {"
             ]
+        },
+        {
+            "fileName": "Akame.cs",
+            "path": "Assets\\Scripts\\AI\\CustomBots\\Akame\\Akame.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "Akame",
+            "methods": [
+                "private bool IsInstantMove(Move move, GameState gameState)",
+                "private bool IsSafeBaseEffect(UniqueBaseEffect effect)",
+                "private bool IsInstantEffect(EffectType type)"
+            ],
+            "fields": []
         }
     ]
 }

@@ -9,62 +9,25 @@ public class CardController : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (card.IsInZone(ZoneType.PlayedPile, ZoneSide.Player1) ||
-            card.IsInZone(ZoneType.PlayedPile, ZoneSide.Player2) ||
-            card.IsInZone(ZoneType.CooldownPile, ZoneSide.Player1) ||
-            card.IsInZone(ZoneType.CooldownPile, ZoneSide.Player2) ||
-            card.IsInZone(ZoneType.DrawPile, ZoneSide.Player1) ||
-            card.IsInZone(ZoneType.DrawPile, ZoneSide.Player2))
+        if (IsInPileZone(card))
         {
-            PileZoneClickable pileClickable = transform.parent.GetComponent<PileZoneClickable>();
-            if (pileClickable != null)
-            {
-                pileClickable.OnClickedFromCard();
-                return;
-            }
+            var pileClickable = transform.parent.GetComponent<PileZoneClickable>();
+            pileClickable?.OnClickedFromCard();
+            return;
         }
 
-        if (card.IsAnimating() || !card.IsVisible()) return;
+        if (card.IsAnimating() || !card.IsVisible())
+            return;
 
-        if (eventData.button == PointerEventData.InputButton.Left)
+        switch (eventData.button)
         {
-            if (!GameManager.Instance.IsHumanPlayersTurn) return;
-            //Debug.Log($"Click on {card.GetCard().CommonId} {card.GetCard().UniqueId.Value}");
-            if (card.IsInZone(ZoneType.Hand, ZoneSide.Player1))
-            {   
-                GameManager.Instance.PlayCard(card.GetCard(), ZoneSide.Player1);
-            }
-            else if (card.IsInZone(ZoneType.TavernAvailable, ZoneSide.Neutral))
-            { 
-                GameManager.Instance.BuyCard(card.GetCard(), ZoneSide.Player1);
-            }
-            else if (card.IsInZone(ZoneType.Agents, ZoneSide.Player1))
-            { 
-                GameManager.Instance.ActivateAgent(card.GetCard(), ZoneSide.Player1);
-            }
-            else if (card.IsInZone(ZoneType.Agents, ZoneSide.Player2))
-            {
-                GameManager.Instance.AttackAgent(card.GetCard(), ZoneSide.Player1);
-            }
-        }
-        else if (eventData.button == PointerEventData.InputButton.Right && (
-                card.IsInZone(ZoneType.Hand, ZoneSide.Player1) ||
-                card.IsInZone(ZoneType.Agents, ZoneSide.Player1) ||
-                card.IsInZone(ZoneType.Agents, ZoneSide.Player2) ||
-                card.IsInZone(ZoneType.TavernAvailable, ZoneSide.Neutral)
-            ))
-        {
-            if (UIManager.Instance.IsCardTooltipVisible())
-            {
-                UIManager.Instance.HideCardTooltip();
-                return;
-            }
-            var uniqueCard = card.GetCard();
-            string title = $"{uniqueCard.Name}";
-            string deck = CardUtils.GetFullDeckDisplayName(uniqueCard.Deck);
-            string tooltipText = GetCardTooltipText(uniqueCard);
-            Sprite sprite = CardUtils.LoadCardSprite(uniqueCard.Deck, uniqueCard.CommonId);
-            UIManager.Instance.ShowCardTooltip(title, deck, tooltipText, sprite);
+            case PointerEventData.InputButton.Left:
+                HandleLeftClick();
+                break;
+
+            case PointerEventData.InputButton.Right:
+                HandleRightClick();
+                break;
         }
     }
 
@@ -102,5 +65,70 @@ public class CardController : MonoBehaviour, IPointerClickHandler
             return comp.ToString();
 
         return "Unknown effect";
+    }
+
+    private bool IsInPileZone(Card card)
+    {
+        return card.IsInZone(ZoneType.PlayedPile, ZoneSide.Player1) ||
+            card.IsInZone(ZoneType.PlayedPile, ZoneSide.Player2) ||
+            card.IsInZone(ZoneType.CooldownPile, ZoneSide.Player1) ||
+            card.IsInZone(ZoneType.CooldownPile, ZoneSide.Player2) ||
+            card.IsInZone(ZoneType.DrawPile, ZoneSide.Player1) ||
+            card.IsInZone(ZoneType.DrawPile, ZoneSide.Player2);
+    }
+
+    private void HandleLeftClick()
+    {
+        if (!GameManager.Instance.IsHumanPlayersTurn)
+            return;
+
+        var cardData = card.GetCard();
+
+        if (card.IsInZone(ZoneType.Hand, ZoneSide.Player1))
+        {
+            GameManager.Instance.PlayCard(cardData, ZoneSide.Player1);
+        }
+        else if (card.IsInZone(ZoneType.TavernAvailable, ZoneSide.Neutral))
+        {
+            GameManager.Instance.BuyCard(cardData, ZoneSide.Player1);
+        }
+        else if (card.IsInZone(ZoneType.Agents, ZoneSide.Player1))
+        {
+            GameManager.Instance.ActivateAgent(cardData, ZoneSide.Player1);
+        }
+        else if (card.IsInZone(ZoneType.Agents, ZoneSide.Player2))
+        {
+            GameManager.Instance.AttackAgent(cardData, ZoneSide.Player1);
+        }
+    }
+
+    private void HandleRightClick()
+    {
+        bool isCardInspectable =
+            card.IsInZone(ZoneType.Hand, ZoneSide.Player1) ||
+            card.IsInZone(ZoneType.Agents, ZoneSide.Player1) ||
+            card.IsInZone(ZoneType.Agents, ZoneSide.Player2) ||
+            card.IsInZone(ZoneType.TavernAvailable, ZoneSide.Neutral);
+
+        bool isBotDebugInspectable =
+            GameSetupManager.Instance.IsBotDebugMode &&
+            card.IsInZone(ZoneType.Hand, ZoneSide.Player2);
+
+    if (!isCardInspectable && !isBotDebugInspectable)
+        return;
+
+        if (UIManager.Instance.IsCardTooltipVisible())
+        {
+            UIManager.Instance.HideCardTooltip();
+            return;
+        }
+
+        var uniqueCard = card.GetCard();
+        string title = uniqueCard.Name;
+        string deck = CardUtils.GetFullDeckDisplayName(uniqueCard.Deck);
+        string tooltipText = GetCardTooltipText(uniqueCard);
+        Sprite sprite = CardUtils.LoadCardSprite(uniqueCard.Deck, uniqueCard.CommonId);
+
+        UIManager.Instance.ShowCardTooltip(title, deck, tooltipText, sprite);
     }
 }
