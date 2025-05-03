@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2816064649689813886}
   - component: {fileID: 7196388408443535642}
   - component: {fileID: 1854731178319862558}
+  - component: {fileID: -7227459059400721291}
   m_Layer: 5
   m_Name: CardChoiceButton
   m_TagString: Untagged
@@ -135,9 +136,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardImage: {fileID: 4257501660432285071}
-  selectedGlowColor: {r: 0.2, g: 1, b: 0.2, a: 1}
-  selectedGlowIntensity: 0
-  unselectedGlowIntensity: 0
+  selectedOutlineColor: {r: 0.2, g: 1, b: 0.2, a: 1}
+  errorOutlineColor: {r: 1, g: 0.2, b: 0.2, a: 1}
   outlineAlpha: 0.255
   outlineGlow: 45
   outlineWidth: 0.083
@@ -159,3 +159,16 @@ MonoBehaviour:
   normalStrength: 5
   normalSmoothing: 1
   computingNormal: 0
+--- !u!114 &-7227459059400721291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8567531535904899435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbdeff4995577614c95552e8362fa14b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thisRect: {fileID: 6517813509668760738}

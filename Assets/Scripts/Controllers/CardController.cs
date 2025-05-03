@@ -3,7 +3,7 @@ using ScriptsOfTribute;
 using ScriptsOfTribute.Board.Cards;
 using UnityEngine;
 using UnityEngine.EventSystems;
-public class CardController : MonoBehaviour, IPointerClickHandler
+public class CardController : MonoBehaviour, IPointerClickHandler, IPointerExitHandler
 {    
     public Card card;
 
@@ -31,41 +31,11 @@ public class CardController : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    private string GetCardTooltipText(UniqueCard card)
+    public void OnPointerExit(PointerEventData eventData)
     {
-        List<string> parts = new();
-        var effects = card.Effects;
-
-        if (effects.Length > 0 && effects[0] != null)
-            parts.Add($"<b>Activation:</b> {EffectToString(effects[0])}");
-
-        for (int i = 1; i < effects.Length; i++)
-        {
-            if (effects[i] != null)
-                parts.Add($"<b>Combo {i + 1}:</b> {EffectToString(effects[i])}");
-        }
-
-        if (card.CommonId == CardId.MORIHAUS_SACRED_BULL || card.CommonId == CardId.MORIHAUS_THE_ARCHER)
-        {
-            parts.Add($"<b>Trigger</b> When an agent other than this one is Knocked Out: Gain 1 Coin.");
-        }
-
-        return string.Join("\n\n", parts);
+        UIManager.Instance.HideCardTooltip();
     }
 
-    private string EffectToString(UniqueComplexEffect effect)
-    {
-        if (effect is UniqueEffect ue)
-            return ue.ToString();
-
-        if (effect is UniqueEffectOr or)
-            return or.ToString();
-
-        if (effect is UniqueEffectComposite comp)
-            return comp.ToString();
-
-        return "Unknown effect";
-    }
 
     private bool IsInPileZone(Card card)
     {
@@ -114,21 +84,11 @@ public class CardController : MonoBehaviour, IPointerClickHandler
             GameSetupManager.Instance.IsBotDebugMode &&
             card.IsInZone(ZoneType.Hand, ZoneSide.Player2);
 
-    if (!isCardInspectable && !isBotDebugInspectable)
-        return;
-
-        if (UIManager.Instance.IsCardTooltipVisible())
-        {
-            UIManager.Instance.HideCardTooltip();
+        if (!isCardInspectable && !isBotDebugInspectable)
             return;
-        }
 
-        var uniqueCard = card.GetCard();
-        string title = uniqueCard.Name;
-        string deck = CardUtils.GetFullDeckDisplayName(uniqueCard.Deck);
-        string tooltipText = GetCardTooltipText(uniqueCard);
-        Sprite sprite = CardUtils.LoadCardSprite(uniqueCard.Deck, uniqueCard.CommonId);
-
-        UIManager.Instance.ShowCardTooltip(title, deck, tooltipText, sprite);
+        UIManager.Instance.ShowCardTooltip(card.GetCard(), transform);
     }
+
+
 }

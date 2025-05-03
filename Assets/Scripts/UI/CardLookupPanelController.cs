@@ -5,6 +5,7 @@ using System.Collections;
 using System.Linq;
 using System;
 using TMPro;
+using ScriptsOfTribute.Board.Cards;
 
 public class CardLookupPanelController : MonoBehaviour
 {
@@ -87,17 +88,17 @@ public class CardLookupPanelController : MonoBehaviour
         if (pileTransform != null)
         {
             cardContentParent.gameObject.SetActive(false);
-            List<(int id, Sprite sprite, string hpText)> sprites = new ();
+            List<(UniqueCard card, Sprite sprite, string hpText)> sprites = new ();
 
             foreach (Transform child in pileTransform)
             {
                 if (child.TryGetComponent(out Card cardScript))
                 {
-                    sprites.Add((cardScript.UniqueId, cardScript.GetOriginalSprite(), cardScript.hpText.text));
+                    sprites.Add((cardScript.GetCard(), cardScript.GetOriginalSprite(), cardScript.hpText.text));
                 }
             }
             if (!GameSetupManager.Instance.IsBotDebugMode)
-                sprites = sprites.OrderBy(sprite => sprite.id).ToList();
+                sprites = sprites.OrderBy(sprite => sprite.card.UniqueId).ToList();
             loadingCoroutine = StartCoroutine(AddToContentCoroutine(sprites));
         }
         UpdateButtonScales();
@@ -148,13 +149,14 @@ public class CardLookupPanelController : MonoBehaviour
         }
     }
 
-    private IEnumerator AddToContentCoroutine(List<(int id, Sprite sprite, string hpText)> sprites)
+    private IEnumerator AddToContentCoroutine(List<(UniqueCard card, Sprite sprite, string hpText)> sprites)
     {
-        foreach (var (id, sprite, hpText) in sprites)
+        foreach (var (card, sprite, hpText) in sprites)
         {
             var cardUI = Instantiate(cardPrefab, cardContentParent);
             cardUI.GetComponent<Image>().sprite = sprite;
             cardUI.GetComponentInChildren<TextMeshProUGUI>().SetText(hpText);
+            cardUI.GetComponent<CardUITooltip>().SetCardData(card);
             yield return null;
         }
 

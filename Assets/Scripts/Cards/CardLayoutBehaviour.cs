@@ -94,10 +94,7 @@ public class CardLayoutBehaviour : MonoBehaviour, IPointerEnterHandler, IPointer
             Vector3 raised = _card.GetLayoutPosition() - new Vector3(0, 0.5f, 0);
             LeanTween.moveLocal(gameObject, raised, 0.1f);
         }
-
-        if (_spriteRenderer != null)
-            _spriteRenderer.sortingOrder = hoverSortingOrder;
-        _hpText.sortingOrder = hoverSortingOrder+5;
+        SetSortingLayer("CardHover");
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -120,9 +117,34 @@ public class CardLayoutBehaviour : MonoBehaviour, IPointerEnterHandler, IPointer
             ApplyLayout();
         }
 
+        SetSortingLayer("Cards");
+    }
+
+    public void SetSortingOrder(int baseOrder)
+    {
         if (_spriteRenderer != null)
-            _spriteRenderer.sortingOrder = _originalSortingOrder;
-        _hpText.sortingOrder = _originalSortingOrder + 1;
+            _spriteRenderer.sortingOrder = baseOrder;
+
+        if (_hpText != null)
+        {
+            var meshRenderer = _hpText.GetComponent<MeshRenderer>();
+            if (meshRenderer != null)
+            {
+                meshRenderer.sortingOrder = baseOrder + 1;
+            }
+
+            _hpText.sortingOrder = baseOrder + 1;
+        }
+    }
+
+    public void SetSortingLayer(string layerName)
+    {
+        if (_spriteRenderer != null)
+            _spriteRenderer.sortingLayerName = layerName;
+
+        var meshRenderer = _hpText?.GetComponent<MeshRenderer>();
+        if (meshRenderer != null)
+            meshRenderer.sortingLayerName = layerName;
     }
 }
 

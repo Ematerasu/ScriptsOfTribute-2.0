@@ -97,6 +97,10 @@ public class PatronSelectionPanel : MonoBehaviour
         if (selectedPatrons.Count == 5)
         {
             panelRoot.SetActive(false);
+            foreach(Transform child in patronButtonContainer)
+            {
+                Destroy(child.gameObject);
+            }
             GameSetupManager.Instance.StartGameWithPatrons(selectedPatrons);
         }
         else if (selectedPatrons.Count == 2)

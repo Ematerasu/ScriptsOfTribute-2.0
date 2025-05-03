@@ -1,6 +1,7 @@
 using UnityEngine;
 using ScriptsOfTribute;
 using Unity.VisualScripting;
+using ScriptsOfTribute.Board.Cards;
 
 public static class CardUtils
 {
@@ -43,15 +44,29 @@ public static class CardUtils
         {
             PatronId.ANSEI => "Ansei Frandar Hunding",
             PatronId.DUKE_OF_CROWS => "Duke of Crows",
-            PatronId.RAJHIN => "Rajhin, the Purring Liar",
+            PatronId.RAJHIN => "Rajhin,\nthe Purring Liar",
             PatronId.PSIJIC => "Psijic Loremaster Celarus",
             PatronId.ORGNUM => "Sorcerer-King Orgnum",
             PatronId.HLAALU => "Grandmaster Delmene Hlaalu",
             PatronId.PELIN => "Saint Pelin",
-            PatronId.RED_EAGLE => "Red Eagle, King of the Reach",
+            PatronId.RED_EAGLE => "Red Eagle,\nKing of the Reach",
             PatronId.SAINT_ALESSIA => "Saint Alessia",
             PatronId.TREASURY => "Treasury",
             _ => "Treasury"
+        };
+    }
+
+    public static string GetTypeString(CardType type)
+    {
+        return type switch 
+        {
+            CardType.ACTION => "Action",
+            CardType.AGENT => "Agent",
+            CardType.CONTRACT_ACTION => "Contract Action",
+            CardType.CONTRACT_AGENT => "Contract Agent",
+            CardType.STARTER => "Starter",
+            CardType.CURSE => "Curse",
+            _ => "Starter",
         };
     }
 }

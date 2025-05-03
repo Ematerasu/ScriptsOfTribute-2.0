@@ -48,6 +48,7 @@ public class CardChoiceButton : MonoBehaviour
         SetSelected(false);
 
         GetComponent<Button>().onClick.AddListener(HandleClick);
+        GetComponent<CardUITooltip>().SetCardData(card);
     }
 
     private void HandleClick()

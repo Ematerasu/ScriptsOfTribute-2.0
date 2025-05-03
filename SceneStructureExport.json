@@ -19,7 +19,8 @@
             "components": [
                 "UnityEngine.Transform",
                 "UnityEngine.SpriteRenderer",
-                "BoardManager"
+                "BoardManager",
+                "CardLayoutManager"
             ],
             "hasCustomScript": true
         },
@@ -638,6 +639,86 @@
             "hasCustomScript": false
         },
         {
+            "name": "CardTooltip",
+            "path": "UI/Panels/CardTooltip",
+            "components": [
+                "UnityEngine.RectTransform",
+                "CardTooltip"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Panel",
+            "path": "UI/Panels/CardTooltip/Panel",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Border",
+            "path": "UI/Panels/CardTooltip/Border",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Deco",
+            "path": "UI/Panels/CardTooltip/Deco",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "UnityEngine.UI.Image"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "CardName",
+            "path": "UI/Panels/CardTooltip/CardName",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "TMPro.TextMeshProUGUI"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Deck",
+            "path": "UI/Panels/CardTooltip/Deck",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "TMPro.TextMeshProUGUI"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "Text",
+            "path": "UI/Panels/CardTooltip/Text",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.CanvasRenderer",
+                "TMPro.TextMeshProUGUI"
+            ],
+            "hasCustomScript": false
+        },
+        {
+            "name": "TMP SubMeshUI [tribute-icons Material]",
+            "path": "UI/Panels/CardTooltip/Text/TMP SubMeshUI [tribute-icons Material]",
+            "components": [
+                "UnityEngine.RectTransform",
+                "UnityEngine.UI.LayoutElement",
+                "UnityEngine.CanvasRenderer",
+                "TMPro.TMP_SubMeshUI"
+            ],
+            "hasCustomScript": false
+        },
+        {
             "name": "PatronTooltip",
             "path": "UI/Panels/PatronTooltip",
             "components": [
@@ -692,84 +773,6 @@
                 "UnityEngine.RectTransform",
                 "UnityEngine.CanvasRenderer",
                 "TMPro.TextMeshProUGUI"
-            ],
-            "hasCustomScript": false
-        },
-        {
-            "name": "CardTooltip",
-            "path": "UI/Panels/CardTooltip",
-            "components": [
-                "UnityEngine.RectTransform"
-            ],
-            "hasCustomScript": false
-        },
-        {
-            "name": "Panel",
-            "path": "UI/Panels/CardTooltip/Panel",
-            "components": [
-                "UnityEngine.RectTransform",
-                "UnityEngine.CanvasRenderer",
-                "UnityEngine.UI.Image"
-            ],
-            "hasCustomScript": false
-        },
-        {
-            "name": "Border",
-            "path": "UI/Panels/CardTooltip/Border",
-            "components": [
-                "UnityEngine.RectTransform",
-                "UnityEngine.CanvasRenderer",
-                "UnityEngine.UI.Image"
-            ],
-            "hasCustomScript": false
-        },
-        {
-            "name": "Deco",
-            "path": "UI/Panels/CardTooltip/Deco",
-            "components": [
-                "UnityEngine.RectTransform",
-                "UnityEngine.CanvasRenderer",
-                "UnityEngine.UI.Image"
-            ],
-            "hasCustomScript": false
-        },
-        {
-            "name": "Text",
-            "path": "UI/Panels/CardTooltip/Text",
-            "components": [
-                "UnityEngine.RectTransform",
-                "UnityEngine.CanvasRenderer",
-                "TMPro.TextMeshProUGUI"
-            ],
-            "hasCustomScript": false
-        },
-        {
-            "name": "CardName",
-            "path": "UI/Panels/CardTooltip/CardName",
-            "components": [
-                "UnityEngine.RectTransform",
-                "UnityEngine.CanvasRenderer",
-                "TMPro.TextMeshProUGUI"
-            ],
-            "hasCustomScript": false
-        },
-        {
-            "name": "CardDeck",
-            "path": "UI/Panels/CardTooltip/CardDeck",
-            "components": [
-                "UnityEngine.RectTransform",
-                "UnityEngine.CanvasRenderer",
-                "TMPro.TextMeshProUGUI"
-            ],
-            "hasCustomScript": false
-        },
-        {
-            "name": "Card",
-            "path": "UI/Panels/CardTooltip/Card",
-            "components": [
-                "UnityEngine.RectTransform",
-                "UnityEngine.CanvasRenderer",
-                "UnityEngine.UI.Image"
             ],
             "hasCustomScript": false
         },

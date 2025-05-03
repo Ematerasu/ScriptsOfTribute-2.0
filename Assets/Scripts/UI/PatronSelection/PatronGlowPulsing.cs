@@ -15,30 +15,8 @@ public class PatronGlowPulsing : MonoBehaviour
         runtimeMat = new Material(img.material);
         img.material = runtimeMat;
 
-        targetColor = color;
-        targetGlow = glow;
-        this.speed = speed;
+        runtimeMat.EnableKeyword("OVERLAY_ON");
 
-        startTimeOffset = Time.time;
-
-        runtimeMat.EnableKeyword("HITEFFECT_ON");
-        runtimeMat.SetFloat("_HitEffectBlend", 0.35f);
-
-        runtimeMat.SetColor("_HitEffectColor", Color.black);
-        runtimeMat.SetFloat("_HitEffectGlow", 0f);
-    }
-
-    private void Update()
-    {
-        if (runtimeMat == null) return;
-
-        float elapsed = Time.time - startTimeOffset;
-        float t = Mathf.PingPong(elapsed * speed, 1f);
-
-        Color lerpedColor = Color.Lerp(Color.black, targetColor, t);
-        float lerpedGlow = Mathf.Lerp(0f, targetGlow, t);
-
-        runtimeMat.SetColor("_HitEffectColor", lerpedColor);
-        runtimeMat.SetFloat("_HitEffectGlow", lerpedGlow);
+        runtimeMat.SetColor("_OverlayColor", color);
     }
 }

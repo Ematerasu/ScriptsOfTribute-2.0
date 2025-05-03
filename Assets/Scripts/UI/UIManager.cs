@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using ScriptsOfTribute;
 using ScriptsOfTribute.Board;
+using ScriptsOfTribute.Board.Cards;
 using ScriptsOfTribute.Serializers;
 using TMPro;
 using UnityEngine;
@@ -34,19 +35,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI PatronTooltipTitle;
     [SerializeField] private TextMeshProUGUI PatronTooltipText;
 
-    [Header("Card Tooltip")]
-    [SerializeField] private GameObject CardTooltipPanel;
-    [SerializeField] private TextMeshProUGUI CardTooltipTitle;
-    [SerializeField] private TextMeshProUGUI CardDeckTooltipTitle;
-    [SerializeField] private TextMeshProUGUI CardTooltipText;
-    [SerializeField] private Image cardTooltipImage;
-
     [Header("End game")]
     [SerializeField] private EndGameController endGameController;
-    private bool isCardTooltipVisible = false;
 
-    public bool IsCardTooltipVisible() => isCardTooltipVisible;
-
+    [Header("Tooltips")]
+    [SerializeField] private CardTooltip cardTooltip;
+    private Coroutine fadeCoroutine;
 
     private void Awake()
     {
@@ -71,7 +65,6 @@ public class UIManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Mouse1))
         {
-            HideCardTooltip();
             HidePatronTooltip();
         }
     }
@@ -166,20 +159,22 @@ public class UIManager : MonoBehaviour
         PatronTooltipPanel.SetActive(false);
     }
 
-    public void ShowCardTooltip(string name, string deckName, string text, Sprite sprite)
+    public void ShowCardTooltip(UniqueCard card, Transform cardWorldTransform)
     {
-        CardTooltipTitle.text = name;
-        CardTooltipText.text = text;
-        CardDeckTooltipTitle.text = deckName;
-        cardTooltipImage.sprite = sprite;
-        CardTooltipPanel.SetActive(true);
-        isCardTooltipVisible = true;
+        if (fadeCoroutine != null)
+        StopCoroutine(fadeCoroutine);
+
+        cardTooltip.Setup(card);
+        cardTooltip.SetPositionRelativeTo(cardWorldTransform);
+        fadeCoroutine = StartCoroutine(FadeTooltip(1f, 0.1f));
     }
 
     public void HideCardTooltip()
     {
-        CardTooltipPanel.SetActive(false);
-        isCardTooltipVisible = false;
+        if (fadeCoroutine != null)
+        StopCoroutine(fadeCoroutine);
+
+        fadeCoroutine = StartCoroutine(FadeTooltip(0f, 0.1f));
     }
 
     public void HandleEndGame(EndGameState endGameState, FullGameState finalState)
@@ -200,6 +195,28 @@ public class UIManager : MonoBehaviour
     public void UpdateCombosPanel(ComboStates comboStates)
     {
         combosPanel.UpdateCombos(comboStates);
+    }
+
+    private IEnumerator FadeTooltip(float targetAlpha, float duration)
+    {
+        CanvasGroup cg = cardTooltip.gameObject.GetComponent<CanvasGroup>();
+        float startAlpha = cg.alpha;
+        float time = 0f;
+
+        if (targetAlpha > 0f)
+            cardTooltip.gameObject.SetActive(true);
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            cg.alpha = Mathf.Lerp(startAlpha, targetAlpha, time / duration);
+            yield return null;
+        }
+
+        cg.alpha = targetAlpha;
+
+        if (targetAlpha == 0f)
+            cardTooltip.gameObject.SetActive(false);
     }
     
 }

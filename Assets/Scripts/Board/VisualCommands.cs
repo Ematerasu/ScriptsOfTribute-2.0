@@ -29,12 +29,14 @@ public class MoveCardCommand : VisualCommand
         else
         {
             Transform target = BoardManager.Instance.GetZoneTransform(_zone, _side);
+            var _sourceZoneType = BoardManager.Instance.GetCardObject(_cardId).GetComponent<Card>().ZoneType;
             BoardManager.Instance.MoveCardToZone(_cardId, target, _zone, _side, () =>
             {
-                if (_zone == ZoneType.Hand)
-                    BoardManager.Instance.ArrangeCardsInHand(target);
-                else if (_zone == ZoneType.Agents)
-                    BoardManager.Instance.ArrangeAgentsInZone(target);
+                if (_sourceZoneType == ZoneType.Agents || _zone == ZoneType.Agents)
+                    CardLayoutManager.Instance.ScheduleLayout(ZoneType.Agents, _side);
+                
+                if (_sourceZoneType == ZoneType.Hand || _zone == ZoneType.Hand)
+                    CardLayoutManager.Instance.ScheduleLayout(ZoneType.Hand, _side);
             });
             yield return new WaitForSeconds(0.15f);
         }

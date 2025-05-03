@@ -20,7 +20,10 @@
                 "private IEnumerator PlayFullTurnCoroutine()",
                 "private IEnumerator GetMoveFromBotCoroutine(GameState state, List<Move> legalMoves, Action<Move> onResult)",
                 "public IEnumerator GameEndCoroutine(EndGameState result, FullGameState? finalBoardState)",
-                "public AI CreateBotByType(BotType botType)"
+                "public AI CreateBotByType(BotType botType)",
+                "private void OnApplicationQuit()",
+                "private void OnDisable()",
+                "private void TrySendGameEndIfGrpcBot()"
             ],
             "fields": [
                 "[SerializeField] private CompletedActionProcessor completedActionProcessor; private AI _bot;",
@@ -56,8 +59,6 @@
                 "private void SetUpUI(FullGameState state)",
                 "private GameObject CreateCardObject(UniqueCard cardData, Transform parentTransform)",
                 "public void CreateCardObjectFromRuntime(UniqueCard card, ZoneType initialZone, ZoneSide side)",
-                "public void ArrangeCardsInHand(Transform handTransform)",
-                "public void ArrangeAgentsInZone(Transform zoneTransform)",
                 "public void MoveCardToZone(UniqueId cardId, Transform targetZone, ZoneType zoneType, ZoneSide zoneSide, System.Action? onComplete = null)",
                 "public Transform GetZoneTransform(ZoneType zone, ZoneSide side)",
                 "public List<Card> GetCardsInZone(ZoneType zone, ZoneSide side)",
@@ -78,6 +79,21 @@
             "kind": "enum",
             "typeName": "UpdateReason",
             "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "CardLayoutManager.cs",
+            "path": "Assets\\Scripts\\Board\\CardLayoutManager.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "CardLayoutManager",
+            "methods": [
+                "private void Awake()",
+                "public void ScheduleLayout(ZoneType zone, ZoneSide side)",
+                "private void LateUpdate()",
+                "private void ArrangeHand(ZoneSide side)",
+                "private void ArrangeAgents(ZoneSide side)"
+            ],
             "fields": []
         },
         {
@@ -289,7 +305,9 @@
                 "private void Start()",
                 "public void ApplyLayout()",
                 "public void OnPointerEnter(PointerEventData eventData)",
-                "public void OnPointerExit(PointerEventData eventData)"
+                "public void OnPointerExit(PointerEventData eventData)",
+                "public void SetSortingOrder(int baseOrder)",
+                "public void SetSortingLayer(string layerName)"
             ],
             "fields": [
                 "[SerializeField] private float playerHandScale = 1.0f; [SerializeField] private float playerPlayedScale = 0.7f; [SerializeField] private float playerAgentScale = 0.8f; [SerializeField] private float enemyHandScale =  0.65f; [SerializeField] private float enemyPlayedScale = 0.5f; [SerializeField] private float enemyAgentScale = 0.575f; private Vector3 defaultScale;",
@@ -307,8 +325,7 @@
             "typeName": "CardController",
             "methods": [
                 "public void OnPointerClick(PointerEventData eventData)",
-                "private string GetCardTooltipText(UniqueCard card)",
-                "private string EffectToString(UniqueComplexEffect effect)",
+                "public void OnPointerExit(PointerEventData eventData)",
                 "private bool IsInPileZone(Card card)",
                 "private void HandleLeftClick()",
                 "private void HandleRightClick()"
@@ -316,6 +333,22 @@
             "fields": [
                 "public Card card;"
             ]
+        },
+        {
+            "fileName": "CardTooltip.cs",
+            "path": "Assets\\Scripts\\Controllers\\CardTooltip.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "CardTooltip",
+            "methods": [
+                "[SerializeField] private TextMeshProUGUI cardNameText; [SerializeField] private TextMeshProUGUI deckText; [SerializeField] private TextMeshProUGUI effectText; public void Setup(UniqueCard card)",
+                "private string BuildEffectText(UniqueCard card)",
+                "private string EffectToString(UniqueComplexEffect effect)",
+                "public void SetPositionRelativeTo(Transform cardTransform)",
+                "private string EffectDescription(EffectType type, int value)",
+                "private Vector2 AdjustYToStayInCanvas(Vector2 anchoredPos, RectTransform tooltipRT, RectTransform canvasRT)"
+            ],
+            "fields": []
         },
         {
             "fileName": "PileZoneClickable.cs",
@@ -472,7 +505,7 @@
                 "private void UpdateButtonScales()",
                 "private Transform GetPileTransform(ZoneSide side, PileType pileType)",
                 "private void ClearContent()",
-                "private IEnumerator AddToContentCoroutine(List<(int id, Sprite sprite, string hpText)> sprites)",
+                "private IEnumerator AddToContentCoroutine(List<(UniqueCard card, Sprite sprite, string hpText)> sprites)",
                 "private IEnumerator FadeInContent()",
                 "private IEnumerator FadeOutAndDisable()"
             ],
@@ -481,6 +514,22 @@
                 "private ZoneSide currentSide;",
                 "private PileType currentPile;",
                 "private bool isClosing = false;"
+            ]
+        },
+        {
+            "fileName": "CardUITooltip.cs",
+            "path": "Assets\\Scripts\\UI\\CardUITooltip.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "CardUITooltip",
+            "methods": [
+                "[SerializeField] private RectTransform thisRect; private void Awake()",
+                "public void OnPointerClick(PointerEventData eventData)",
+                "public void OnPointerExit(PointerEventData eventData)",
+                "public void SetCardData(UniqueCard card)"
+            ],
+            "fields": [
+                "private UniqueCard cardData;"
             ]
         },
         {
@@ -506,8 +555,7 @@
             "kind": "class",
             "typeName": "UIManager",
             "methods": [
-                "public bool IsCardTooltipVisible() => isCardTooltipVisible;",
-                "private void Awake()",
+                "[Header(\"AI Buttons\")] [SerializeField] private Button aiMoveButton; [SerializeField] private Button aiMoveFullTurnButton; [Header(\"Choice Panels\")] [SerializeField] private CardChoicePanelController cardChoicePanel; [SerializeField] private EffectChoicePanelController effectChoicePanel; [SerializeField] private PatronSelectionPanel patronSelectionPanel; [Header(\"Normal panels\")] [SerializeField] private CardLookupPanelController cardLookupPanel; [SerializeField] private CombosPanelController combosPanel; [SerializeField] private BotLogPanelController botLogPanel; [Header(\"Text objects\")] [SerializeField] private GameObject YourTurnImage; [Header(\"Patrons\")] [SerializeField] private GameObject PatronTooltipPanel; [SerializeField] private TextMeshProUGUI PatronTooltipTitle; [SerializeField] private TextMeshProUGUI PatronTooltipText; [Header(\"End game\")] [SerializeField] private EndGameController endGameController; [Header(\"Tooltips\")] [SerializeField] private CardTooltip cardTooltip; private void Awake()",
                 "private void Update()",
                 "public void ShowPatronDraft(List<PatronId> patrons)",
                 "public void ShowAiButtons(bool show)",
@@ -517,16 +565,14 @@
                 "public IEnumerator ShowYourTurnMessage()",
                 "public void ShowPatronTooltip(string name, string text)",
                 "public void HidePatronTooltip()",
-                "public void ShowCardTooltip(string name, string deckName, string text, Sprite sprite)",
+                "public void ShowCardTooltip(UniqueCard card, Transform cardWorldTransform)",
                 "public void HideCardTooltip()",
                 "public void HandleEndGame(EndGameState endGameState, FullGameState finalState)",
                 "public void CardLookup(ZoneSide side, PileType startingPile)",
                 "public void InitializeCombosPanel(PatronId[] patrons)",
                 "public void UpdateCombosPanel(ComboStates comboStates)"
             ],
-            "fields": [
-                "[Header(\"AI Buttons\")] [SerializeField] private Button aiMoveButton; [SerializeField] private Button aiMoveFullTurnButton; [Header(\"Choice Panels\")] [SerializeField] private CardChoicePanelController cardChoicePanel; [SerializeField] private EffectChoicePanelController effectChoicePanel; [SerializeField] private PatronSelectionPanel patronSelectionPanel; [Header(\"Normal panels\")] [SerializeField] private CardLookupPanelController cardLookupPanel; [SerializeField] private CombosPanelController combosPanel; [SerializeField] private BotLogPanelController botLogPanel; [Header(\"Text objects\")] [SerializeField] private GameObject YourTurnImage; [Header(\"Patrons\")] [SerializeField] private GameObject PatronTooltipPanel; [SerializeField] private TextMeshProUGUI PatronTooltipTitle; [SerializeField] private TextMeshProUGUI PatronTooltipText; [Header(\"Card Tooltip\")] [SerializeField] private GameObject CardTooltipPanel; [SerializeField] private TextMeshProUGUI CardTooltipTitle; [SerializeField] private TextMeshProUGUI CardDeckTooltipTitle; [SerializeField] private TextMeshProUGUI CardTooltipText; [SerializeField] private Image cardTooltipImage; [Header(\"End game\")] [SerializeField] private EndGameController endGameController; private bool isCardTooltipVisible = false;"
-            ]
+            "fields": []
         },
         {
             "fileName": "CardUtils.cs",
@@ -565,6 +611,277 @@
             "namespaceName": "UnityBots",
             "kind": "class",
             "typeName": "CardTierList",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "ClassDefinitions.cs",
+            "path": "Assets\\Scripts\\AI\\gRPC\\ClassDefinitions.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "PlayRequest",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "ClassDefinitions.cs",
+            "path": "Assets\\Scripts\\AI\\gRPC\\ClassDefinitions.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "PlayResponse",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "ClassDefinitions.cs",
+            "path": "Assets\\Scripts\\AI\\gRPC\\ClassDefinitions.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "SelectPatronRequest",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "ClassDefinitions.cs",
+            "path": "Assets\\Scripts\\AI\\gRPC\\ClassDefinitions.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "SelectPatronResponse",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "ClassDefinitions.cs",
+            "path": "Assets\\Scripts\\AI\\gRPC\\ClassDefinitions.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "GameEndRequest",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "ClassDefinitions.cs",
+            "path": "Assets\\Scripts\\AI\\gRPC\\ClassDefinitions.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "GenericCommand",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "ClassDefinitions.cs",
+            "path": "Assets\\Scripts\\AI\\gRPC\\ClassDefinitions.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "RegisterResponse",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "ClassDefinitions.cs",
+            "path": "Assets\\Scripts\\AI\\gRPC\\ClassDefinitions.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "MoveDto",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "ClassDefinitions.cs",
+            "path": "Assets\\Scripts\\AI\\gRPC\\ClassDefinitions.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "SimpleCardMoveDto",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "ClassDefinitions.cs",
+            "path": "Assets\\Scripts\\AI\\gRPC\\ClassDefinitions.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "SimplePatronMoveDto",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "ClassDefinitions.cs",
+            "path": "Assets\\Scripts\\AI\\gRPC\\ClassDefinitions.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "MakeChoiceMoveCardDto",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "ClassDefinitions.cs",
+            "path": "Assets\\Scripts\\AI\\gRPC\\ClassDefinitions.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "MakeChoiceMoveEffectDto",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "ClassDefinitions.cs",
+            "path": "Assets\\Scripts\\AI\\gRPC\\ClassDefinitions.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "EndTurnMoveDto",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "ClassDefinitions.cs",
+            "path": "Assets\\Scripts\\AI\\gRPC\\ClassDefinitions.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "FullGameStateDto",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "ClassDefinitions.cs",
+            "path": "Assets\\Scripts\\AI\\gRPC\\ClassDefinitions.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "ComboStateDto",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "ClassDefinitions.cs",
+            "path": "Assets\\Scripts\\AI\\gRPC\\ClassDefinitions.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "UniqueCardDto",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "ClassDefinitions.cs",
+            "path": "Assets\\Scripts\\AI\\gRPC\\ClassDefinitions.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "SerializedAgentDto",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "ClassDefinitions.cs",
+            "path": "Assets\\Scripts\\AI\\gRPC\\ClassDefinitions.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "ChoiceContextDto",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "ClassDefinitions.cs",
+            "path": "Assets\\Scripts\\AI\\gRPC\\ClassDefinitions.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "SerializedChoiceDto",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "ClassDefinitions.cs",
+            "path": "Assets\\Scripts\\AI\\gRPC\\ClassDefinitions.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "SerializedPlayerDto",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "ClassDefinitions.cs",
+            "path": "Assets\\Scripts\\AI\\gRPC\\ClassDefinitions.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "UniqueBaseEffectDto",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "ClassDefinitions.cs",
+            "path": "Assets\\Scripts\\AI\\gRPC\\ClassDefinitions.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "UniqueEffectDto",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "ClassDefinitions.cs",
+            "path": "Assets\\Scripts\\AI\\gRPC\\ClassDefinitions.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "UniqueEffectOrDto",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "ClassDefinitions.cs",
+            "path": "Assets\\Scripts\\AI\\gRPC\\ClassDefinitions.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "UniqueEffectCompositeDto",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "ClassDefinitions.cs",
+            "path": "Assets\\Scripts\\AI\\gRPC\\ClassDefinitions.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "EndGameStateDto",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "GrpcBot.cs",
+            "path": "Assets\\Scripts\\AI\\gRPC\\GrpcBot.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "GrpcBot",
+            "methods": [
+                "public string Register()",
+                "public Move RequestMove(FullGameState fullState, List<Move> legalMoves, TimeSpan timeout)",
+                "public PatronId RequestPatron(List<PatronId> patrons, int round)",
+                "public void Prepare()",
+                "public void NotifyEnd(EndGameState state, FullGameState? finalBoardState)"
+            ],
+            "fields": []
+        },
+        {
+            "fileName": "GrpcBotAI.cs",
+            "path": "Assets\\Scripts\\AI\\gRPC\\GrpcBotAI.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "GrpcBotAI",
+            "methods": [
+                "public void SetFullGameState(FullGameState state)"
+            ],
+            "fields": [
+                "private string _name;"
+            ]
+        },
+        {
+            "fileName": "GrpcProxyLauncher.cs",
+            "path": "Assets\\Scripts\\AI\\gRPC\\GrpcProxyLauncher.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "GrpcProxyLauncher",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "Mapper.cs",
+            "path": "Assets\\Scripts\\AI\\gRPC\\Mapper.cs",
+            "namespaceName": "UnityBots",
+            "kind": "class",
+            "typeName": "Mapper",
             "methods": [],
             "fields": []
         },
@@ -820,8 +1137,7 @@
             "kind": "class",
             "typeName": "PatronGlowPulsing",
             "methods": [
-                "public void Initialize(Color color, float glow, float speed = 1f)",
-                "private void Update()"
+                "public void Initialize(Color color, float glow, float speed = 1f)"
             ],
             "fields": [
                 "private Material runtimeMat;",

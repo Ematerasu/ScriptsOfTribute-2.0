@@ -181,7 +181,6 @@ public class CompletedActionProcessor : MonoBehaviour
                 }
             }
         }
-
         storage.Clear();
         foreach (var tuple in currentSet)
             storage.Add(tuple);

@@ -55,6 +55,14 @@ public class Card : MonoBehaviour
     public void SetAnimating(bool value)
     {
         _isAnimating = value;
+        if (value) // == true
+        {
+            gameObject.GetComponent<CardLayoutBehaviour>().SetSortingLayer("CardHover");
+        }
+        else
+        {
+            gameObject.GetComponent<CardLayoutBehaviour>().SetSortingLayer("Cards");
+        }
     }
 
     public bool IsAnimating()

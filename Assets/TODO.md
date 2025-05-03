@@ -15,14 +15,14 @@
 ## ✅ Średni priorytet (ważne ale nie blokujące)
 
 - [ ] **Animacja agenta** – zamiast texture outline dodać efekt jak przy podświetleniu patronów
-- [ ] **Tooltipy** – przesunąć sprite’y w prawo (lepsza czytelność)
-- [ ] **PPM tooltip** – kliknięcie PPM ponownie powinno tooltip zamknąć
+- [x] **Tooltipy** – przesunąć sprite’y w prawo (lepsza czytelność), dodać do CardLookup
+- [ ] ~~**PPM tooltip** – kliknięcie PPM ponownie powinno tooltip zamknąć~~
 - [ ] **Przyciski debugowe** – Cofanie ruchów?
 - [x] **Tryb DEBUG** – Pełny podgląd do kart przeciwnika, logi bota
 - [x] **Patron Calls notifier** – zeton z liczba patron calli dostepnych
 - [ ] **Contract agent próbuje wrócic do cooldown** - powinien isc od razu do tawerny po wyjebce, a najpierw ustawiamy ze wraca do cooldown
 - [ ] **Napisać własnego, lepszego bota** - Heura wzmocniona sieciami
-- [ ] **Obsługa gRPC botów**
+- [x] **Obsługa gRPC botów**
 
 ## 🧪 Techniczne (setup, multiplayer, tutorial)
 
@@ -32,10 +32,10 @@
 
 ## 📦 Niższy priorytet (QoL, polish)
 
-- [ ] **Animacje kart w ręce** – lepsze przemieszczanie się kart po zagraniu
+- [x] **Animacje kart w ręce** – lepsze przemieszczanie się kart po zagraniu
 - [ ] **Animacja kontraktów** – kontrakty trafiają od razu do tawerny (animacja + efekt)
 - [ ] **Podświetlenie możliwych ruchów** – highlight dostępnych kart
-- [ ] **Pasek statusu gry** – aktualna tura, przewaga prestiżu, przychylność patronów
+- [ ] **Pasek statusu gry** – aktualna tura
 
 ## 🧠 Sugestie (dodatkowe)
 

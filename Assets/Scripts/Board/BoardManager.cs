@@ -121,7 +121,7 @@ public class BoardManager : MonoBehaviour
         {
             CreateCardObject(card, hand);
         }
-        ArrangeCardsInHand(hand);
+        CardLayoutManager.Instance.ScheduleLayout(ZoneType.Hand, isPlayer1 ? ZoneSide.Player1 : ZoneSide.Player2);
         // Cooldown
         foreach (var card in playerData.CooldownPile)
         {
@@ -137,7 +137,7 @@ public class BoardManager : MonoBehaviour
         {
             CreateCardObject(agent.RepresentingCard, agents);
         }
-        ArrangeAgentsInZone(agents);
+        CardLayoutManager.Instance.ScheduleLayout(ZoneType.Agents, isPlayer1 ? ZoneSide.Player1 : ZoneSide.Player2);
 
     }
 
@@ -212,75 +212,6 @@ public class BoardManager : MonoBehaviour
         CreateCardObject(card, parentTransform);
     }
 
-    public void ArrangeCardsInHand(Transform handTransform)
-    {
-        float cardSpacing = 0.8f;
-        int count = handTransform.childCount;
-
-        float totalWidth = (count - 1) * cardSpacing;
-        float startX = -totalWidth / 2f;
-
-        for (int i = 0; i < count; i++)
-        {
-            Transform card = handTransform.GetChild(i);
-            var cardScript = card.GetComponent<Card>();
-            cardScript.SetAnimating(true);
-            Vector3 targetPos = new Vector3(startX + i * cardSpacing, 0, 0);
-            card.localPosition = targetPos;
-            cardScript.SetLayoutPosition(targetPos);
-
-            SpriteRenderer sr = card.GetComponent<SpriteRenderer>();
-            if (sr != null)
-            {
-                sr.sortingOrder = i+1;
-            }
-            cardScript.SetAnimating(false);
-        }
-    }
-
-    public void ArrangeAgentsInZone(Transform zoneTransform)
-    {
-        float cardWidth = 1.2f;
-        int count = zoneTransform.childCount;
-        if (count == 0) return;
-
-        int overlapStartAt = 6;
-        float overlapFactor  = 0.45f;
-        float minOverlapFactor = 0.25f;
-
-        float gap = cardWidth;
-        if (count >= overlapStartAt)
-            gap = cardWidth * overlapFactor;
-
-        var box = zoneTransform.GetComponent<BoxCollider2D>();
-        if (box != null)
-        {
-            float zoneWidth   = box.size.x;
-            float targetWidth = (count - 1) * gap;
-
-            if (targetWidth > zoneWidth)
-            {
-                float minGap = cardWidth * minOverlapFactor;
-                gap = Mathf.Max(minGap, zoneWidth / Mathf.Max(1, count - 1));
-                targetWidth = (count - 1) * gap;
-            }
-        }
-
-        float startX = -(count - 1) * gap * 0.5f;
-
-        for (int i = 0; i < count; i++)
-        {
-            Transform card = zoneTransform.GetChild(i);
-            Vector3 pos    = new(startX + i * gap, 0, -0.01f * i);
-            card.localPosition = pos;
-
-            var sr = card.GetComponent<SpriteRenderer>();
-            if (sr) sr.sortingOrder = i;
-
-            card.GetComponent<Card>()?.SetLayoutPosition(pos);
-        }
-    }
-
 #pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     public void MoveCardToZone(UniqueId cardId, Transform targetZone, ZoneType zoneType, ZoneSide zoneSide, System.Action? onComplete = null)
 #pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
@@ -311,10 +242,15 @@ public class BoardManager : MonoBehaviour
             cardObj.transform.SetParent(targetZone, false);
             cardObj.transform.localPosition = Vector3.zero;
             
-            var cardsInZoneCnt = GetCardsInZone(zoneType, zoneSide).Count + 1;
-            SpriteRenderer sr = cardObj.GetComponent<SpriteRenderer>();
-            if (sr != null)
-                sr.sortingOrder = cardsInZoneCnt;
+            int sortingIndex = -1;
+            for (int i = 0; i < targetZone.childCount; i++)
+            {
+                if (targetZone.GetChild(i) == cardObj.transform)
+                {
+                    sortingIndex = i;
+                    break;
+                }
+            }
 
             var card = cardObj.GetComponent<Card>();
             if (card != null)
@@ -325,7 +261,10 @@ public class BoardManager : MonoBehaviour
             }
             var layout = cardObj.GetComponent<CardLayoutBehaviour>();
             if (layout != null)
+            {
                 layout.ApplyLayout();
+                layout.SetSortingOrder(sortingIndex >= 0 ? sortingIndex : 0);
+            }
 
             onComplete?.Invoke();
         });
