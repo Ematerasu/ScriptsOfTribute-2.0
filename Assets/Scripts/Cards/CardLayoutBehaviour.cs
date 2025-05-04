@@ -45,11 +45,11 @@ public class CardLayoutBehaviour : MonoBehaviour, IPointerEnterHandler, IPointer
     public void ApplyLayout()
     {
         if (_card == null) return;
-        var zRotation = _card.ZoneSide == ZoneSide.Player2 ? defaultEnemyRotation : defaultPlayerRotation;
+        var zRotation = _card.ZoneSide == ZoneSide.EnemyPlayer ? defaultEnemyRotation : defaultPlayerRotation;
         switch (_card.ZoneType)
         {
             case ZoneType.Hand:
-                LeanTween.scale(gameObject, defaultScale * (_card.ZoneSide == ZoneSide.Player1 ? playerHandScale : enemyHandScale), 0.1f);
+                LeanTween.scale(gameObject, defaultScale * (_card.ZoneSide == ZoneSide.HumanPlayer ? playerHandScale : enemyHandScale), 0.1f);
                 transform.localRotation = Quaternion.Euler(0, 0, zRotation);
                 break;
 
@@ -62,11 +62,11 @@ public class CardLayoutBehaviour : MonoBehaviour, IPointerEnterHandler, IPointer
             case ZoneType.DrawPile:
             case ZoneType.CooldownPile:
             case ZoneType.PlayedPile:
-                LeanTween.scale(gameObject, defaultScale * (_card.ZoneSide == ZoneSide.Player1 ? playerPlayedScale : enemyPlayedScale), 0.1f);
+                LeanTween.scale(gameObject, defaultScale * (_card.ZoneSide == ZoneSide.HumanPlayer ? playerPlayedScale : enemyPlayedScale), 0.1f);
                 transform.localRotation = Quaternion.Euler(0, 0, zRotation);
                 break;
             case ZoneType.Agents:
-                LeanTween.scale(gameObject, defaultScale * (_card.ZoneSide == ZoneSide.Player1 ? playerAgentScale : enemyAgentScale), 0.1f);
+                LeanTween.scale(gameObject, defaultScale * (_card.ZoneSide == ZoneSide.HumanPlayer ? playerAgentScale : enemyAgentScale), 0.1f);
                 transform.localRotation = Quaternion.Euler(0, 0, zRotation);
                 break;
             default:
@@ -106,7 +106,7 @@ public class CardLayoutBehaviour : MonoBehaviour, IPointerEnterHandler, IPointer
 
         if (_card.IsInPlayerHand() || _card.IsInEnemyHand())
         {
-            transform.localRotation = Quaternion.Euler(0, 0, _card.ZoneSide == ZoneSide.Player2 ? defaultEnemyRotation : defaultPlayerRotation);
+            transform.localRotation = Quaternion.Euler(0, 0, _card.ZoneSide == ZoneSide.EnemyPlayer ? defaultEnemyRotation : defaultPlayerRotation);
             LeanTween.moveLocal(gameObject, _card.GetLayoutPosition(), 0.1f).setOnComplete(() =>
             {
                 ApplyLayout();

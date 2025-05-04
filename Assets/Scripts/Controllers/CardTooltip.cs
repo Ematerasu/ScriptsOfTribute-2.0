@@ -102,7 +102,7 @@ public class CardTooltip : MonoBehaviour
             case EffectType.ACQUIRE_TAVERN:
                 return Sized($"<color={baseColor}>Acquire a Tavern card costing up to {valueStr}</color>");
             case EffectType.DESTROY_CARD:
-                return Sized($"<color={baseColor}>Destroy a card from hand or played pile</color>");
+                return Sized($"<color={baseColor}>Destroy {valueStr} card(s) from hand or played pile</color>");
             case EffectType.DRAW:
                 return Sized($"<color={baseColor}>Draw {valueStr} card(s)</color>");
             case EffectType.OPP_DISCARD:

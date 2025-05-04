@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using ScriptsOfTribute;
@@ -13,11 +14,15 @@ public class GameSetupManager : MonoBehaviour
     [SerializeField] private AIManager _aiManager;
     [SerializeField] private CompletedActionHistoryBuilder _historyBuilder;
     [SerializeField] private UIManager _uiManager;
+    [SerializeField] private GameSetupPanelController _setupcontroller;
 
     [Header("Game Settings")]
-    [SerializeField] private BotType selectedBot = BotType.MaxPrestige;
+    private Type _selectedBot;
     [SerializeField] private bool botDebugMode = false;
     public bool IsBotDebugMode => botDebugMode;
+    private ulong _seed = 0;
+    private PlayerEnum _humanPlayer;
+    private PlayerEnum _botPlayer;
 
     private void Awake()
     {
@@ -27,25 +32,34 @@ public class GameSetupManager : MonoBehaviour
 
     private void Start()
     {
-        StartInitialSetup();
+        _setupcontroller.StartSetup();
     }
 
-    public void StartInitialSetup()
+    public void StartInitialSetup(Type selectedBot, PlayerEnum humanPlayer, PlayerEnum botPlayer, bool isDebugMode, string seed)
     {
+        _selectedBot = selectedBot;
+        _humanPlayer = humanPlayer;
+        _botPlayer = botPlayer;
+        botDebugMode = isDebugMode;
+        bool parsed = ulong.TryParse(seed, out ulong parsedSeed);
+        _seed = parsed ? parsedSeed : 0;
+
+        _gameManager.HumanPlayer = humanPlayer;
+        
         if (_gameManager.IsDebugMode)
         {
             _gameManager.InitializeDebugGame();
         }
         else
         {
-            _aiManager.InitializeBot(selectedBot, _gameManager.AIPlayer);
+            _aiManager.InitializeBot(selectedBot, botPlayer);
             _uiManager.ShowPatronDraft(GetAvailablePatrons());
         }
     }
 
     public void StartGameWithPatrons(List<PatronId> selectedPatrons)
     {
-        _gameManager.StartGameWithPatrons(selectedPatrons.ToArray());
+        _gameManager.StartGameWithPatrons(selectedPatrons.ToArray(), _seed);
     }
 
     public void ResetAndStartPatronDraft()
@@ -60,7 +74,7 @@ public class GameSetupManager : MonoBehaviour
         _boardManager.ClearBoard();
         yield return null;
 
-        _aiManager.InitializeBot(selectedBot, _gameManager.AIPlayer);
+        _aiManager.InitializeBot(_selectedBot, _gameManager.AIPlayer);
         yield return null;
 
         _historyBuilder.ClearHistory();

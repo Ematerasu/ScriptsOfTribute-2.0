@@ -63,11 +63,19 @@ public class PatronSelectionPanel : MonoBehaviour
         {
             AIManager.Instance.PickOnePatron(availablePatrons, pickIndex+1, (patronId) => OnPatronClicked(patronId));
         }
-        draftText.text = $"{pickOrder[pickIndex]} is picking";
+        string playerPicking = pickOrder[pickIndex] == GameManager.Instance.HumanPlayer ? "You are" : "Enemy is";
+        draftText.text = $"{playerPicking} picking";
     }
 
     private void OnPatronClicked(PatronId patron)
     {
+        if (!availablePatrons.Contains(patron)) return;
+
+        foreach (var kv in patronButtons)
+        {
+            kv.Value.GetComponent<Button>().interactable = false;
+        }
+
         StartCoroutine(HandlePatronPickCoroutine(patron));
     }
 

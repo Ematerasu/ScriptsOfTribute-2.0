@@ -14,7 +14,7 @@
 
 ## ✅ Średni priorytet (ważne ale nie blokujące)
 
-- [ ] **Animacja agenta** – zamiast texture outline dodać efekt jak przy podświetleniu patronów
+- [x] **Animacja agenta** – zamiast texture outline dodać efekt jak przy podświetleniu patronów
 - [x] **Tooltipy** – przesunąć sprite’y w prawo (lepsza czytelność), dodać do CardLookup
 - [ ] ~~**PPM tooltip** – kliknięcie PPM ponownie powinno tooltip zamknąć~~
 - [ ] **Przyciski debugowe** – Cofanie ruchów?
@@ -27,6 +27,7 @@
 ## 🧪 Techniczne (setup, multiplayer, tutorial)
 
 - [ ] **Start menu + menu setupu gry** – wybór botów, seed, strona, decki
+- [ ] **Audio** – dzwieki kart, patronów, muzyka
 - [ ] **Multiplayer fundamenty** – synchronizacja stanu, wybór modelu (host/client, peer-to-peer)
 - [ ] **Tutorial scene** – scena testowa do nauki rozgrywki
 

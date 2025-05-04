@@ -13,33 +13,33 @@ public class BoardManager : MonoBehaviour
 {
     public static BoardManager Instance { get; private set; }
 
-    [Header("Player 1 Zones")]
-    [SerializeField] private Transform p1DrawPile;
-    [SerializeField] private Transform p1Cooldown;
-    [SerializeField] private Transform p1Hand;
-    [SerializeField] private Transform p1Played;
-    [SerializeField] private Transform p1Agents;
+    [Header("Player Zones")]
+    [SerializeField] private Transform playerDrawPile;
+    [SerializeField] private Transform playerCooldown;
+    [SerializeField] private Transform playerHand;
+    [SerializeField] private Transform playerPlayed;
+    [SerializeField] private Transform playerAgents;
 
-    [Header("Player 2 Zones")]
-    [SerializeField] private Transform p2DrawPile;
-    [SerializeField] private Transform p2Cooldown;
-    [SerializeField] private Transform p2Hand;
-    [SerializeField] private Transform p2Played;
-    [SerializeField] private Transform p2Agents;
+    [Header("Enemy Zones")]
+    [SerializeField] private Transform enemyDrawPile;
+    [SerializeField] private Transform enemyCooldown;
+    [SerializeField] private Transform enemyHand;
+    [SerializeField] private Transform enemyPlayed;
+    [SerializeField] private Transform enemyAgents;
 
     [Header("Tavern")]
     [SerializeField] private Transform tavernPile;
     [SerializeField] private List<Transform> tavernCardSpots;
         
     [Header("UI")]
-    [SerializeField] private TextMeshProUGUI Player1Gold;
-    [SerializeField] private TextMeshProUGUI Player1Prestige;
-    [SerializeField] private TextMeshProUGUI Player1Power;
-    [SerializeField] private TextMeshProUGUI Player1PatronCalls;
-    [SerializeField] private TextMeshProUGUI Player2Gold;
-    [SerializeField] private TextMeshProUGUI Player2Prestige;
-    [SerializeField] private TextMeshProUGUI Player2Power;
-    [SerializeField] private TextMeshProUGUI Player2PatronCalls;
+    [SerializeField] private TextMeshProUGUI playerGold;
+    [SerializeField] private TextMeshProUGUI playerPrestige;
+    [SerializeField] private TextMeshProUGUI playerPower;
+    [SerializeField] private TextMeshProUGUI playerPatronCalls;
+    [SerializeField] private TextMeshProUGUI enemyGold;
+    [SerializeField] private TextMeshProUGUI enemyPrestige;
+    [SerializeField] private TextMeshProUGUI enemyPower;
+    [SerializeField] private TextMeshProUGUI enemyPatronCalls;
     
     [Header("Prefabs / Pool")]
     [SerializeField] private GameObject cardPrefab;
@@ -82,10 +82,10 @@ public class BoardManager : MonoBehaviour
     {
         ClearBoard();
         // 1) Setup Player 1
-        SetupPlayer(state.CurrentPlayer, isPlayer1: state.CurrentPlayer.PlayerID == PlayerEnum.PLAYER1);
+        SetupPlayer(state.CurrentPlayer, isPlayer: state.CurrentPlayer.PlayerID == GameManager.Instance.HumanPlayer);
 
         // 2) Setup Player 2
-        SetupPlayer(state.EnemyPlayer, isPlayer1: state.EnemyPlayer.PlayerID == PlayerEnum.PLAYER1);
+        SetupPlayer(state.EnemyPlayer, isPlayer: state.EnemyPlayer.PlayerID == GameManager.Instance.HumanPlayer);
 
         // 3) Setup Tavern
         SetupTavern(state);
@@ -102,14 +102,14 @@ public class BoardManager : MonoBehaviour
         UIManager.Instance.UpdateCombosPanel(state.ComboStates);
     }
 
-    private void SetupPlayer(SerializedPlayer playerData, bool isPlayer1)
+    private void SetupPlayer(SerializedPlayer playerData, bool isPlayer)
     {
         // Decide which transforms to use
-        Transform drawPile   = isPlayer1 ? p1DrawPile   : p2DrawPile;
-        Transform cooldown   = isPlayer1 ? p1Cooldown   : p2Cooldown;
-        Transform hand       = isPlayer1 ? p1Hand       : p2Hand;
-        Transform played     = isPlayer1 ? p1Played     : p2Played;
-        Transform agents     = isPlayer1 ? p1Agents     : p2Agents;
+        Transform drawPile   = isPlayer ? playerDrawPile   : enemyDrawPile;
+        Transform cooldown   = isPlayer ? playerCooldown   : enemyCooldown;
+        Transform hand       = isPlayer ? playerHand       : enemyHand;
+        Transform played     = isPlayer ? playerPlayed     : enemyPlayed;
+        Transform agents     = isPlayer ? playerAgents     : enemyAgents;
 
         // Draw Pile
         foreach (var card in playerData.DrawPile)
@@ -121,7 +121,7 @@ public class BoardManager : MonoBehaviour
         {
             CreateCardObject(card, hand);
         }
-        CardLayoutManager.Instance.ScheduleLayout(ZoneType.Hand, isPlayer1 ? ZoneSide.Player1 : ZoneSide.Player2);
+        CardLayoutManager.Instance.ScheduleLayout(ZoneType.Hand, isPlayer ? ZoneSide.HumanPlayer : ZoneSide.EnemyPlayer);
         // Cooldown
         foreach (var card in playerData.CooldownPile)
         {
@@ -137,7 +137,7 @@ public class BoardManager : MonoBehaviour
         {
             CreateCardObject(agent.RepresentingCard, agents);
         }
-        CardLayoutManager.Instance.ScheduleLayout(ZoneType.Agents, isPlayer1 ? ZoneSide.Player1 : ZoneSide.Player2);
+        CardLayoutManager.Instance.ScheduleLayout(ZoneType.Agents, isPlayer ? ZoneSide.HumanPlayer : ZoneSide.EnemyPlayer);
 
     }
 
@@ -161,16 +161,16 @@ public class BoardManager : MonoBehaviour
 
     private void SetUpUI(FullGameState state)
     {
-        SerializedPlayer player1 = state.CurrentPlayer.PlayerID == PlayerEnum.PLAYER1 ? state.CurrentPlayer : state.EnemyPlayer;
-        SerializedPlayer player2 = state.CurrentPlayer.PlayerID == PlayerEnum.PLAYER2 ? state.CurrentPlayer : state.EnemyPlayer;
-        Player1Gold.SetText(player1.Coins.ToString());
-        Player1Prestige.SetText(player1.Prestige.ToString());
-        Player1Power.SetText(player1.Power.ToString());
-        Player1PatronCalls.SetText(player1.PatronCalls.ToString());
-        Player2Gold.SetText(player2.Coins.ToString());
-        Player2Prestige.SetText(player2.Prestige.ToString());
-        Player2Power.SetText(player2.Power.ToString());
-        Player2PatronCalls.SetText(player2.PatronCalls.ToString());
+        SerializedPlayer player1 = state.CurrentPlayer.PlayerID == GameManager.Instance.HumanPlayer ? state.CurrentPlayer : state.EnemyPlayer;
+        SerializedPlayer player2 = state.CurrentPlayer.PlayerID == GameManager.Instance.AIPlayer ? state.CurrentPlayer : state.EnemyPlayer;
+        playerGold.SetText(player1.Coins.ToString());
+        playerPrestige.SetText(player1.Prestige.ToString());
+        playerPower.SetText(player1.Power.ToString());
+        playerPatronCalls.SetText(player1.PatronCalls.ToString());
+        enemyGold.SetText(player2.Coins.ToString());
+        enemyPrestige.SetText(player2.Prestige.ToString());
+        enemyPower.SetText(player2.Power.ToString());
+        enemyPatronCalls.SetText(player2.PatronCalls.ToString());
     }
 
     private GameObject CreateCardObject(UniqueCard cardData, Transform parentTransform)
@@ -226,7 +226,7 @@ public class BoardManager : MonoBehaviour
         if (zoneType == ZoneType.Hand && (card.ZoneType == ZoneType.PlayedPile || card.ZoneType == ZoneType.CooldownPile))
         {
             Transform drawTransform = GetZoneTransform(ZoneType.DrawPile, zoneSide);
-            LeanTween.move(cardObj, drawTransform.position, 0.25f)
+            LeanTween.move(cardObj, drawTransform.position, 0.35f)
                 .setEase(LeanTweenType.easeInOutSine)
                 .setOnComplete(() =>
                 {
@@ -283,16 +283,16 @@ public class BoardManager : MonoBehaviour
 
         return (zone, side) switch
         {
-            (ZoneType.Hand, ZoneSide.Player1) => p1Hand,
-            (ZoneType.Hand, ZoneSide.Player2) => p2Hand,
-            (ZoneType.PlayedPile, ZoneSide.Player1) => p1Played,
-            (ZoneType.PlayedPile, ZoneSide.Player2) => p2Played,
-            (ZoneType.CooldownPile, ZoneSide.Player1) => p1Cooldown,
-            (ZoneType.CooldownPile, ZoneSide.Player2) => p2Cooldown,
-            (ZoneType.DrawPile, ZoneSide.Player1) => p1DrawPile,
-            (ZoneType.DrawPile, ZoneSide.Player2) => p2DrawPile,
-            (ZoneType.Agents, ZoneSide.Player1) => p1Agents,
-            (ZoneType.Agents, ZoneSide.Player2) => p2Agents,
+            (ZoneType.Hand, ZoneSide.HumanPlayer) => playerHand,
+            (ZoneType.Hand, ZoneSide.EnemyPlayer) => enemyHand,
+            (ZoneType.PlayedPile, ZoneSide.HumanPlayer) => playerPlayed,
+            (ZoneType.PlayedPile, ZoneSide.EnemyPlayer) => enemyPlayed,
+            (ZoneType.CooldownPile, ZoneSide.HumanPlayer) => playerCooldown,
+            (ZoneType.CooldownPile, ZoneSide.EnemyPlayer) => enemyCooldown,
+            (ZoneType.DrawPile, ZoneSide.HumanPlayer) => playerDrawPile,
+            (ZoneType.DrawPile, ZoneSide.EnemyPlayer) => enemyDrawPile,
+            (ZoneType.Agents, ZoneSide.HumanPlayer) => playerAgents,
+            (ZoneType.Agents, ZoneSide.EnemyPlayer) => enemyAgents,
             (ZoneType.Tavern, ZoneSide.Neutral) => tavernPile,
             _ => offscreenCardContainer
         };
@@ -358,7 +358,7 @@ public class BoardManager : MonoBehaviour
         SerializedPlayer p1 = GameManager.Instance.IsHumanPlayersTurn ? state.CurrentPlayer : state.EnemyPlayer;
         SerializedPlayer p2 = GameManager.Instance.IsHumanPlayersTurn ? state.EnemyPlayer : state.CurrentPlayer;
 
-        foreach (Transform child in p1Agents)
+        foreach (Transform child in enemyAgents)
         {
             Card card = child.GetComponent<Card>();
             if (card != null)
@@ -372,7 +372,7 @@ public class BoardManager : MonoBehaviour
             yield return null;
         }
 
-        foreach (Transform child in p2Agents)
+        foreach (Transform child in enemyAgents)
         {
             Card card = child.GetComponent<Card>();
             if (card != null)
@@ -390,7 +390,7 @@ public class BoardManager : MonoBehaviour
     public void DebugCheckHandSync(FullGameState state)
     {
         var correctHand = state.EnemyPlayer.Hand.Select(c => c.UniqueId.Value).OrderBy(x => x).ToList();
-        var visualHand = GetCardsInZone(ZoneType.Hand, ZoneSide.Player2).Select(c => c.GetCard().UniqueId.Value).OrderBy(x => x).ToList();
+        var visualHand = GetCardsInZone(ZoneType.Hand, ZoneSide.EnemyPlayer).Select(c => c.GetCard().UniqueId.Value).OrderBy(x => x).ToList();
 
         Debug.Log($"[SYNC] Engine hand (P2): {string.Join(", ", correctHand)}");
         Debug.Log($"[SYNC] Unity  hand (P2): {string.Join(", ", visualHand)}");

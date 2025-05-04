@@ -18,8 +18,8 @@ public enum ZoneType
 public enum ZoneSide
 {
     Neutral,
-    Player1,
-    Player2
+    HumanPlayer,
+    EnemyPlayer
 }
 
 public class CardZone : MonoBehaviour

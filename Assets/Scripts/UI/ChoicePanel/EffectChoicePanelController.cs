@@ -5,6 +5,7 @@ using ScriptsOfTribute.Serializers;
 using ScriptsOfTribute.Board.Cards;
 using System.Collections.Generic;
 using ScriptsOfTribute;
+using System.Collections;
 
 public class EffectChoicePanelController : MonoBehaviour
 {
@@ -15,10 +16,53 @@ public class EffectChoicePanelController : MonoBehaviour
     [SerializeField] private GameObject effectChoiceButtonPrefab;
 
     private SerializedChoice currentChoice;
+    private CanvasGroup canvasGroup;
+    private Coroutine fadeRoutine;
+    private bool spaceHeld = false;
 
     private void Awake()
     {
         effectChoicePanel.SetActive(false);
+        canvasGroup = effectChoicePanel.GetComponent<CanvasGroup>();
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            StartFade(false);
+        }
+        else if (Input.GetKeyUp(KeyCode.Space))
+        {
+            StartFade(true);
+        }
+    }
+
+    private void StartFade(bool show)
+    {
+        if (fadeRoutine != null)
+            StopCoroutine(fadeRoutine);
+        fadeRoutine = StartCoroutine(FadeCoroutine(show));
+    }
+
+    private IEnumerator FadeCoroutine(bool show)
+    {
+        float duration = 0.1f;
+        float start = canvasGroup.alpha;
+        float end = show ? 1f : 0f;
+        float t = 0f;
+
+        canvasGroup.interactable = show;
+        canvasGroup.blocksRaycasts = true;
+
+        while (t < duration)
+        {
+            t += Time.unscaledDeltaTime;
+            canvasGroup.alpha = Mathf.Lerp(start, end, t / duration);
+            yield return null;
+        }
+
+        canvasGroup.alpha = end;
     }
 
     public void ShowEffectChoice(SerializedChoice choice)

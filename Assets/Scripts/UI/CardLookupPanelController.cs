@@ -98,7 +98,7 @@ public class CardLookupPanelController : MonoBehaviour
                 }
             }
             if (!GameSetupManager.Instance.IsBotDebugMode)
-                sprites = sprites.OrderBy(sprite => sprite.card.UniqueId).ToList();
+                sprites = sprites.OrderBy(sprite => sprite.card.Name).ToList();
             loadingCoroutine = StartCoroutine(AddToContentCoroutine(sprites));
         }
         UpdateButtonScales();
@@ -113,7 +113,7 @@ public class CardLookupPanelController : MonoBehaviour
 
     private Transform GetPileTransform(ZoneSide side, PileType pileType)
     {
-        if (side == ZoneSide.Player1)
+        if (side == ZoneSide.HumanPlayer)
         {
             return pileType switch
             {

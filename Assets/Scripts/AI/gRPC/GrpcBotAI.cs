@@ -14,9 +14,9 @@ namespace UnityBots
 
         private string _name;
 
-        public GrpcBotAI(GrpcBot bot)
+        public GrpcBotAI()
         {
-            _bot = bot;
+            _bot = new GrpcBot();
             _name = _bot.Register();
         }
 

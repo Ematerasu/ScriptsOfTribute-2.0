@@ -75,17 +75,17 @@ public class CompletedActionProcessor : MonoBehaviour
         var humanPlayer = newState.GetPlayer(GameManager.Instance.HumanPlayer);
         var aiPlayer = newState.GetPlayer(GameManager.Instance.AIPlayer);
 
-        CompareAndQueueAgents(_prevPlayer1Agents, humanPlayer.Agents, aiPlayer.Power - _prevPlayer2Power, ZoneSide.Player1, _prevPlayer1Agents);
-        CompareAndQueue(_prevPlayer1Draw, humanPlayer.DrawPile, ZoneType.DrawPile, ZoneSide.Player1, _prevPlayer1Draw);
-        CompareAndQueue(_prevPlayer1Cooldown, humanPlayer.CooldownPile, ZoneType.CooldownPile, ZoneSide.Player1, _prevPlayer1Cooldown);
-        CompareAndQueue(_prevPlayer1Played, humanPlayer.Played, ZoneType.PlayedPile, ZoneSide.Player1, _prevPlayer1Played);
-        CompareAndQueue(_prevPlayer1Hand, humanPlayer.Hand, ZoneType.Hand, ZoneSide.Player1, _prevPlayer1Hand);
+        CompareAndQueueAgents(_prevPlayer1Agents, humanPlayer.Agents, aiPlayer.Power - _prevPlayer2Power, ZoneSide.HumanPlayer, _prevPlayer1Agents);
+        CompareAndQueue(_prevPlayer1Draw, humanPlayer.DrawPile, ZoneType.DrawPile, ZoneSide.HumanPlayer, _prevPlayer1Draw);
+        CompareAndQueue(_prevPlayer1Cooldown, humanPlayer.CooldownPile, ZoneType.CooldownPile, ZoneSide.HumanPlayer, _prevPlayer1Cooldown);
+        CompareAndQueue(_prevPlayer1Played, humanPlayer.Played, ZoneType.PlayedPile, ZoneSide.HumanPlayer, _prevPlayer1Played);
+        CompareAndQueue(_prevPlayer1Hand, humanPlayer.Hand, ZoneType.Hand, ZoneSide.HumanPlayer, _prevPlayer1Hand);
         
-        CompareAndQueueAgents(_prevPlayer2Agents, aiPlayer.Agents, humanPlayer.Power - _prevPlayer1Power, ZoneSide.Player2, _prevPlayer2Agents);
-        CompareAndQueue(_prevPlayer2Draw, aiPlayer.DrawPile, ZoneType.DrawPile, ZoneSide.Player2, _prevPlayer2Draw);
-        CompareAndQueue(_prevPlayer2Cooldown, aiPlayer.CooldownPile, ZoneType.CooldownPile, ZoneSide.Player2, _prevPlayer2Cooldown);
-        CompareAndQueue(_prevPlayer2Played, aiPlayer.Played, ZoneType.PlayedPile, ZoneSide.Player2, _prevPlayer2Played);
-        CompareAndQueue(_prevPlayer2Hand, aiPlayer.Hand, ZoneType.Hand, ZoneSide.Player2, _prevPlayer2Hand);
+        CompareAndQueueAgents(_prevPlayer2Agents, aiPlayer.Agents, humanPlayer.Power - _prevPlayer1Power, ZoneSide.EnemyPlayer, _prevPlayer2Agents);
+        CompareAndQueue(_prevPlayer2Draw, aiPlayer.DrawPile, ZoneType.DrawPile, ZoneSide.EnemyPlayer, _prevPlayer2Draw);
+        CompareAndQueue(_prevPlayer2Cooldown, aiPlayer.CooldownPile, ZoneType.CooldownPile, ZoneSide.EnemyPlayer, _prevPlayer2Cooldown);
+        CompareAndQueue(_prevPlayer2Played, aiPlayer.Played, ZoneType.PlayedPile, ZoneSide.EnemyPlayer, _prevPlayer2Played);
+        CompareAndQueue(_prevPlayer2Hand, aiPlayer.Hand, ZoneType.Hand, ZoneSide.EnemyPlayer, _prevPlayer2Hand);
 
         CompareAndQueue(_prevTavernPile, newState.TavernCards, ZoneType.Tavern, ZoneSide.Neutral, _prevTavernPile);
         CompareAndQueue(_prevTavernAvailable, newState.TavernAvailableCards, ZoneType.TavernAvailable, ZoneSide.Neutral, _prevTavernAvailable);

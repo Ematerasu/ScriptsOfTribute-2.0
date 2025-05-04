@@ -123,12 +123,12 @@ public class Card : MonoBehaviour
 
     public bool IsInPlayerHand()
     {
-        return _zoneType == ZoneType.Hand && _zoneSide == ZoneSide.Player1;
+        return _zoneType == ZoneType.Hand && _zoneSide == ZoneSide.HumanPlayer;
     }
 
     public bool IsInEnemyHand()
     {
-        return _zoneType == ZoneType.Hand && _zoneSide == ZoneSide.Player2;
+        return _zoneType == ZoneType.Hand && _zoneSide == ZoneSide.EnemyPlayer;
     }
 
     public bool IsInTavern()
@@ -143,8 +143,8 @@ public class Card : MonoBehaviour
 
     public bool ShouldBeVisible()
     {
-        bool isPlayer1 = _zoneSide == ZoneSide.Player1;
-        bool isPlayer2 = _zoneSide == ZoneSide.Player2;
+        bool isPlayer1 = _zoneSide == ZoneSide.HumanPlayer;
+        bool isPlayer2 = _zoneSide == ZoneSide.EnemyPlayer;
         bool debugMode = GameSetupManager.Instance.IsBotDebugMode;
 
         switch (_zoneType)

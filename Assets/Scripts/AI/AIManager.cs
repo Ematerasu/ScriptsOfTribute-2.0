@@ -33,9 +33,9 @@ public class AIManager : MonoBehaviour
         Instance = this;
     }
 
-    public void InitializeBot(BotType botType, PlayerEnum botId)
+    public void InitializeBot(Type botType, PlayerEnum botId)
     {
-        _bot = CreateBotByType(botType);
+        _bot = (AI)Activator.CreateInstance(botType);
         _aiPlayer = botId;
         _bot.Id = botId;
         BotInitialized = true;
@@ -206,17 +206,18 @@ public class AIManager : MonoBehaviour
                 // Debug.Log($"W kolejce jest {completedActionProcessor.ElementsInQueue} elementów");
                 yield return null;
             }
-            //yield return new WaitUntil(() => );
+            yield return new WaitForSeconds(0.3f);
         }
         yield return new WaitForSeconds(0.3f);
         BotIsPlaying = false;
-        GameManager.Instance.HandleEndTurn(ZoneSide.Player2);
+        GameManager.Instance.HandleEndTurn(ZoneSide.EnemyPlayer);
     }
 
     private IEnumerator GetMoveFromBotCoroutine(GameState state, List<Move> legalMoves, Action<Move> onResult)
     {
         Move move = null;
         bool finished = false;
+        Exception botException = null;
         System.Threading.Thread t = new System.Threading.Thread(() =>
         {
             try
@@ -226,15 +227,39 @@ public class AIManager : MonoBehaviour
             }
             catch (Exception e)
             {
+                botException = e;
                 Debug.LogError($"AI.Play crash: {e.Message}");
             }
-            finished = true;
+            finally
+            {
+                finished = true;
+            }
         });
         t.Start();
 
-        while (!finished)
+        float timeout = 30f;
+        float elapsed = 0f;
+
+        while (!finished && elapsed < timeout)
         {
+            elapsed += Time.deltaTime;
             yield return null;
+        }
+
+        if (!finished)
+        {
+            Debug.LogWarning("AI bot przekroczył limit czasu – kończę grę jako timeout.");
+            EndGameState timeoutState = new EndGameState(GameManager.Instance.HumanPlayer, GameEndReason.TURN_TIMEOUT, "Bot timed out");
+            GameManager.Instance.HandleEndGame(timeoutState, null);
+            StopAllCoroutines();
+            yield break;
+        }
+
+        if (botException != null)
+        {
+            EndGameState endGameState = new EndGameState(GameManager.Instance.HumanPlayer, GameEndReason.BOT_EXCEPTION, botException.Message);
+            GameManager.Instance.HandleEndGame(endGameState, move);
+            StopAllCoroutines();
         }
         onResult?.Invoke(move);
     }
@@ -282,7 +307,11 @@ public class AIManager : MonoBehaviour
             case BotType.Akame:
                 return new Akame();
             case BotType.GrpcBot:
-                return new GrpcBotAI(new GrpcBot());
+                return new GrpcBotAI();
+            case BotType.BestMCTS3:
+                return new BestMCTS3();
+            case BotType.SOISMCTS:
+                return new SOISMCTS.SOISMCTS();
             default:
                 Debug.LogWarning($"Unknown BotType {botType}. Falling back to MaxPrestigeBot.");
                 return new MaxPrestigeBot();
@@ -318,4 +347,5 @@ public class AIManager : MonoBehaviour
             );
         }
     }
+
 }

@@ -23,7 +23,7 @@ public class PatronClickable : MonoBehaviour, IPointerClickHandler, IPointerExit
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            GameManager.Instance.CallPatron(_patronId, ZoneSide.Player1);
+            GameManager.Instance.CallPatron(_patronId, ZoneSide.HumanPlayer);
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
@@ -38,15 +38,17 @@ public class PatronClickable : MonoBehaviour, IPointerClickHandler, IPointerExit
 
     public void UpdatePatronCircleRotation()
     {
-        switch(favoring)
+        PlayerEnum localPlayer = GameManager.Instance.HumanPlayer;
+
+        switch (favoring)
         {
             case PlayerEnum.NO_PLAYER_SELECTED:
                 LeanTween.rotate(patronCircle, _neutralRotate, 0.5f);
                 break;
-            case PlayerEnum.PLAYER1:
+            case var player when player == localPlayer:
                 LeanTween.rotate(patronCircle, _player1FavorRotate, 0.5f);
                 break;
-            case PlayerEnum.PLAYER2:
+            case var opponent when opponent != PlayerEnum.NO_PLAYER_SELECTED:
                 LeanTween.rotate(patronCircle, _player2FavorRotate, 0.5f);
                 break;
         }
@@ -63,7 +65,7 @@ public class PatronClickable : MonoBehaviour, IPointerClickHandler, IPointerExit
     Pay 2 Power: <sprite name=""Coin_icon""> Gain 1 Coin. This Patron now FAVORS you.
 
     UNFAVORED
-    Pay 2 Power: <sprite name=""Coin_icon""> Gain 1 Coin. This Patron is now NEUTRAL.",
+    Pay 2 Power: <sprite name=""Coin_icon""> Gain 1 Coin. This Patron now FAVORS you.",
 
             PatronId.DUKE_OF_CROWS => @"FAVORED
     Unusable: No benefit
@@ -96,10 +98,10 @@ public class PatronClickable : MonoBehaviour, IPointerClickHandler, IPointerExit
     Pay 3 Coin: <sprite name=""Power_icon""> Gain 1 Power for every 4 cards you own, rounded down. <sprite name=""CreateCards_icon""> Create 1 Summerset Sacking card and place it in your cooldown pile.
 
     NEUTRAL
-    Pay 2 Coin: <sprite name=""Power_icon""> Gain 1 Power for every 6 cards you own, rounded down. This Patron now FAVORS you.
+    Pay 3 Coin: <sprite name=""Power_icon""> Gain 1 Power for every 6 cards you own, rounded down. This Patron now FAVORS you.
 
     UNFAVORED
-    Pay 1 Coin: <sprite name=""Power_icon""> Gain 2 Power. This Patron is now NEUTRAL.",
+    Pay 3 Coin: <sprite name=""Power_icon""> Gain 2 Power. This Patron is now NEUTRAL.",
 
             PatronId.HLAALU => @"FAVORED
     Sacrifice 1 card you own in play that cost 1 or more Coin: <sprite name=""Prestige_icon""> Gain Prestige equal to the card's cost minus 1.

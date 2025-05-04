@@ -5,6 +5,7 @@ using ScriptsOfTribute.Serializers;
 using ScriptsOfTribute.Board.Cards;
 using System.Collections.Generic;
 using ScriptsOfTribute;
+using System.Collections;
 
 public class CardChoicePanelController : MonoBehaviour
 {
@@ -21,10 +22,54 @@ public class CardChoicePanelController : MonoBehaviour
     private int minChoices;
     private int maxChoices;
 
+    private CanvasGroup canvasGroup;
+    private Coroutine fadeRoutine;
+    private bool spaceHeld = false;
+
     private void Awake()
     {
         confirmButton.onClick.AddListener(OnConfirmCardChoice);
         cardChoicePanel.SetActive(false);
+        canvasGroup = cardChoicePanel.GetComponent<CanvasGroup>();
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            StartFade(false);
+        }
+        else if (Input.GetKeyUp(KeyCode.Space))
+        {
+            StartFade(true);
+        }
+    }
+
+    private void StartFade(bool show)
+    {
+        if (fadeRoutine != null)
+            StopCoroutine(fadeRoutine);
+        fadeRoutine = StartCoroutine(FadeCoroutine(show));
+    }
+
+    private IEnumerator FadeCoroutine(bool show)
+    {
+        float duration = 0.1f;
+        float start = canvasGroup.alpha;
+        float end = show ? 1f : 0f;
+        float t = 0f;
+
+        canvasGroup.interactable = show;
+        canvasGroup.blocksRaycasts = true;
+
+        while (t < duration)
+        {
+            t += Time.unscaledDeltaTime;
+            canvasGroup.alpha = Mathf.Lerp(start, end, t / duration);
+            yield return null;
+        }
+
+        canvasGroup.alpha = end;
     }
 
     public void ShowCardChoice(SerializedChoice choice)
@@ -48,6 +93,7 @@ public class CardChoicePanelController : MonoBehaviour
         }
         minChoices = choice.MinChoices;
         maxChoices = choice.MaxChoices;
+        confirmButton.interactable = minChoices <= selectedCards.Count;
         cardChoicePanel.SetActive(true);
     }
 
@@ -87,6 +133,7 @@ public class CardChoicePanelController : MonoBehaviour
             progressSlider.SetSelectedCount(count);
             confirmButton.interactable = count >= minChoices;
         }
+        confirmButton.interactable = minChoices <= selectedCards.Count;
     }
 
     public void OnConfirmCardChoice()

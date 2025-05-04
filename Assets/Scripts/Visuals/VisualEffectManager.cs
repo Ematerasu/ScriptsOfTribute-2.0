@@ -15,7 +15,7 @@ public class VisualEffectsManager : MonoBehaviour
 
     public void PlayPowerAttackEffect(Vector3 targetPosition, ZoneSide side, Action? onComplete = null)
     {
-        Transform powerOrigin = side == ZoneSide.Player1 ? powerOriginPointPlayer2 : powerOriginPointPlayer1;
+        Transform powerOrigin = side == ZoneSide.HumanPlayer ? powerOriginPointPlayer2 : powerOriginPointPlayer1;
         GameObject projectile = Instantiate(powerProjectilePrefab, powerOrigin.position, Quaternion.identity, transform);
 
         ProjectileMoveScript moveScript = projectile.GetComponent<ProjectileMoveScript>();
@@ -24,7 +24,7 @@ public class VisualEffectsManager : MonoBehaviour
             Vector3 direction = (targetPosition - powerOrigin.position).normalized;
             projectile.transform.forward = direction;
             moveScript.fireRate = 1;
-            moveScript.speed = 25f;
+            moveScript.speed = 15f;
             moveScript.accuracy = 100f;
             moveScript.rotate = true;
             moveScript.bounce = false;

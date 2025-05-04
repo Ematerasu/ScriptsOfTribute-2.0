@@ -7,4 +7,7 @@ public enum BotType
     DecisionTree,
     Akame,
     GrpcBot,
+    BestMCTS3,
+    HQL_BOT,
+    SOISMCTS,
 }

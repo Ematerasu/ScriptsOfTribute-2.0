@@ -111,7 +111,7 @@ MonoBehaviour:
   _zoneType: 0
   _zoneSide: 0
   backSprite: {fileID: -8622259438476403829, guid: de0d361f7516f794eb2081053f45a82b, type: 3}
-  activationMaterial: {fileID: 2100000, guid: c3c3ee2332a4a24488c2cac57690059d, type: 2}
+  activationMaterial: {fileID: 2100000, guid: 1656ff891fb32ed4ab74d17ca85f7ac9, type: 2}
 --- !u!114 &400410025059632294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141,7 +141,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   card: {fileID: 3667011385853856298}
-  tooltip: {fileID: 0}
 --- !u!61 &9093424229380983445
 BoxCollider2D:
   m_ObjectHideFlags: 0

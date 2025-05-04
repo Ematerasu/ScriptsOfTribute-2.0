@@ -53,9 +53,9 @@ public class GameManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    public void StartGameWithPatrons(PatronId[] patrons)
+    public void StartGameWithPatrons(PatronId[] patrons, ulong seed = 0)
     {
-        _soTGameManager.InitializeGame(patrons);
+        _soTGameManager.InitializeGame(patrons, seed);
         _patronManager.InitializePatrons(patrons);
         CurrentTurn = _soTGameManager.CurrentPlayer;
 
@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour
 
     public void OnEndTurnButtonClicked()
     {
-        HandleEndTurn(ZoneSide.Player1);
+        HandleEndTurn(ZoneSide.HumanPlayer);
     }
 
     public void PlaySingleAIMove()
@@ -128,7 +128,7 @@ public class GameManager : MonoBehaviour
 
     public void ExecuteMove(Move move, PlayerEnum player)
     {
-        ZoneSide side = player == PlayerEnum.PLAYER1 ? ZoneSide.Player1 : ZoneSide.Player2;
+        ZoneSide side = player == PlayerEnum.PLAYER1 ? ZoneSide.HumanPlayer : ZoneSide.EnemyPlayer;
         switch(move.Command)
         {
             case CommandEnum.END_TURN:
@@ -356,7 +356,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void HandleEndGame(EndGameState end, Move triggeringMove)
+    public void HandleEndGame(EndGameState end, Move triggeringMove)
     {
         if (end.Reason == GameEndReason.INCORRECT_MOVE)
         {
@@ -453,7 +453,7 @@ public class GameManager : MonoBehaviour
         CurrentTurn = debugState.CurrentPlayer.PlayerID;
         HumanPlayer = PlayerEnum.PLAYER1;
 
-        _aiManager.InitializeBot(BotType.MaxPrestige, AIPlayer);
+        _aiManager.InitializeBot(typeof(BestMCTS3), AIPlayer);
         _aiManager.InitializeManager(_soTGameManager);
 
         if (CurrentTurn == HumanPlayer)
