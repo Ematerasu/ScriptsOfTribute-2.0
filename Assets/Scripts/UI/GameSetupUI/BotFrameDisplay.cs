@@ -24,10 +24,14 @@ public class BotFrameDisplay : MonoBehaviour, IPointerClickHandler
         if (nameText != null) nameText.text = data.Name;
         if (shortDescriptionText != null) shortDescriptionText.text = data.ShortDescription;
         if (longDescriptionText != null) longDescriptionText.text = data.LongDescription;
-        if (avatar != null)
+        if (avatar != null && data.Avatar != null)
         {
             avatar.sprite = data.Avatar;
             avatar.SetNativeSize();
+        }
+        else
+        {
+            avatar.enabled = false;
         }
     
 

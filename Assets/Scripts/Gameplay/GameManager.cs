@@ -283,6 +283,8 @@ public class GameManager : MonoBehaviour
             HandleEndGame(end, move);
         }
         _patronManager.UpdateObjects(_soTGameManager.PatronStates);
+        if (patron != PatronId.TREASURY)
+            AudioManager.Instance.PlayPatronActivateSfx();
         if (IsHumanPlayersTurn && _soTGameManager.IsChoicePending())
         {
             var choice = _soTGameManager.GetPendingChoice();

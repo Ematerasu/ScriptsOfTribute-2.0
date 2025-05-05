@@ -38,6 +38,13 @@ public class MoveCardCommand : VisualCommand
                 if (_sourceZoneType == ZoneType.Hand || _zone == ZoneType.Hand)
                     CardLayoutManager.Instance.ScheduleLayout(ZoneType.Hand, _side);
             });
+            if(_sourceZoneType == ZoneType.TavernAvailable && (_zone == ZoneType.CooldownPile || _zone == ZoneType.Tavern))
+                AudioManager.Instance.PlayCardBuySfx();
+            else if ((_sourceZoneType == ZoneType.DrawPile && _zone == ZoneType.Hand) ||
+                    (_sourceZoneType == ZoneType.PlayedPile && _zone == ZoneType.CooldownPile))
+                AudioManager.Instance.PlayCardDrawSfx();
+            else if (_sourceZoneType == ZoneType.Hand && (_zone == ZoneType.Agents || _zone == ZoneType.PlayedPile))
+                AudioManager.Instance.PlayCardPlaySfx();
             yield return new WaitForSeconds(0.15f);
         }
     }
@@ -61,6 +68,7 @@ public class PlayProjectileCommand : VisualCommand
 
         Vector3 targetPos = BoardManager.Instance.GetCardObject(_targetCardId).transform.position;
         bool finished = false;
+        AudioManager.Instance.PlayProjectileSound();
         VisualEffectsManager.Instance.PlayPowerAttackEffect(targetPos, _side, () => finished = true);
         yield return new WaitUntil(() => finished);
         yield return new WaitForSeconds(0.2f);

@@ -39,7 +39,6 @@ public class PatronClickable : MonoBehaviour, IPointerClickHandler, IPointerExit
     public void UpdatePatronCircleRotation()
     {
         PlayerEnum localPlayer = GameManager.Instance.HumanPlayer;
-
         switch (favoring)
         {
             case PlayerEnum.NO_PLAYER_SELECTED:

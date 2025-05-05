@@ -17,7 +17,6 @@ public class VisualEffectsManager : MonoBehaviour
     {
         Transform powerOrigin = side == ZoneSide.HumanPlayer ? powerOriginPointPlayer2 : powerOriginPointPlayer1;
         GameObject projectile = Instantiate(powerProjectilePrefab, powerOrigin.position, Quaternion.identity, transform);
-
         ProjectileMoveScript moveScript = projectile.GetComponent<ProjectileMoveScript>();
         if (moveScript != null)
         {

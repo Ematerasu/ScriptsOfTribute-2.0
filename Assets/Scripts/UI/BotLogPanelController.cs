@@ -26,6 +26,11 @@ public class BotLogPanelController : MonoBehaviour
 
     private void Start()
     {
+        if (!GameSetupManager.Instance.IsBotDebugMode)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
         panelRoot.anchoredPosition = new Vector2(hiddenX, panelRoot.anchoredPosition.y);
         logInputField.text = string.Empty;
         StartCoroutine(LogWatcher());

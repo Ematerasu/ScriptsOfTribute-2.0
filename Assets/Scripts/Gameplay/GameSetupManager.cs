@@ -54,6 +54,7 @@ public class GameSetupManager : MonoBehaviour
         {
             _aiManager.InitializeBot(selectedBot, botPlayer);
             _uiManager.ShowPatronDraft(GetAvailablePatrons());
+            //AudioManager.Instance.SwapMusic(AudioManager.Instance.gameMusic);
         }
     }
 

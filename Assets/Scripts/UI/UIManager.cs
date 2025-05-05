@@ -6,7 +6,7 @@ using ScriptsOfTribute.Board.Cards;
 using ScriptsOfTribute.Serializers;
 using TMPro;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -17,6 +17,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button aiMoveButton;
     [SerializeField] private Button aiMoveFullTurnButton;
 
+    [Header("Misc buttons")]
+    [SerializeField] private Button settingsButton;
+    [SerializeField] private Button homeButton;
+
     [Header("Choice Panels")]
     [SerializeField] private CardChoicePanelController cardChoicePanel;
     [SerializeField] private EffectChoicePanelController effectChoicePanel;
@@ -26,6 +30,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private CardLookupPanelController cardLookupPanel;
     [SerializeField] private CombosPanelController combosPanel;
     [SerializeField] private BotLogPanelController botLogPanel;
+    [SerializeField] private GameObject settingsPanel;
 
     [Header("Text objects")]
     [SerializeField] private GameObject YourTurnImage;
@@ -57,8 +62,8 @@ public class UIManager : MonoBehaviour
         aiMoveButton.onClick.AddListener(OnAiMoveClicked);
         aiMoveFullTurnButton.onClick.AddListener(OnAiFullTurnClicked);
 
-        if (!GameSetupManager.Instance.IsBotDebugMode)
-            botLogPanel.gameObject.SetActive(false);
+        settingsButton.onClick.AddListener(ShowSettingsPanel);
+        homeButton.onClick.AddListener(() => SceneManager.LoadScene("MainMenu"));
     }
 
     private void Update()
@@ -69,8 +74,15 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void ShowSettingsPanel()
+    {
+        StartCoroutine(FadeIn(settingsPanel, 0.3f));
+    }
+
     public void ShowPatronDraft(List<PatronId> patrons)
     {
+        if (!GameSetupManager.Instance.IsBotDebugMode)
+            botLogPanel.gameObject.SetActive(false);
         patronSelectionPanel.ShowPatronDraft(patrons);
     }
 
@@ -116,6 +128,7 @@ public class UIManager : MonoBehaviour
 
     public IEnumerator ShowYourTurnMessage()
     {
+        AudioManager.Instance.PlayYourTurnSfx();
         CanvasGroup group = YourTurnImage.GetComponent<CanvasGroup>();
         if (group == null)
         {
@@ -218,5 +231,20 @@ public class UIManager : MonoBehaviour
         if (targetAlpha == 0f)
             cardTooltip.gameObject.SetActive(false);
     }
-    
+
+    private IEnumerator FadeIn(GameObject panel, float fadeDuration)
+    {
+        var cg = panel.GetComponent<CanvasGroup>();
+        cg.gameObject.SetActive(true);
+        cg.interactable = true;
+        cg.blocksRaycasts = true;
+        float t = 0f;
+        while (t < fadeDuration)
+        {
+            t += Time.deltaTime;
+            cg.alpha = Mathf.Clamp01(t / fadeDuration);
+            yield return null;
+        }
+        cg.alpha = 1f;
+    }
 }
