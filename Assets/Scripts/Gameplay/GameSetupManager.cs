@@ -24,6 +24,8 @@ public class GameSetupManager : MonoBehaviour
     private PlayerEnum _humanPlayer;
     private PlayerEnum _botPlayer;
 
+    public PlayerEnum HumanPlayer => _humanPlayer;
+
     private void Awake()
     {
         if (Instance == null) Instance = this;

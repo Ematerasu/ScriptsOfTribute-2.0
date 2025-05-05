@@ -88,13 +88,11 @@ public class PatronSelectionPanel : MonoBehaviour
 
         if (patronButtons.TryGetValue(patron, out GameObject btnGO))
         {
-            Color color = pickOrder[pickIndex] == PlayerEnum.PLAYER1
+            Color color = pickOrder[pickIndex] == GameSetupManager.Instance.HumanPlayer
                 ? new Color32(0x57, 0x6B, 0xEE, 255) // #576BEE
                 : new Color32(0xEE, 0x67, 0x57, 255); // #EE6757
 
-            float glow = 2.0f;
-
-            btnGO.GetComponent<PatronGlowPulsing>().Initialize(color, glow);
+            btnGO.GetComponent<PatronGlowPulsing>().Initialize(color);
             btnGO.GetComponent<Button>().interactable = false;
         }
 

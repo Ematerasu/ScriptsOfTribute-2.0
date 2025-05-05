@@ -63,7 +63,11 @@ public class UIManager : MonoBehaviour
         aiMoveFullTurnButton.onClick.AddListener(OnAiFullTurnClicked);
 
         settingsButton.onClick.AddListener(ShowSettingsPanel);
-        homeButton.onClick.AddListener(() => SceneManager.LoadScene("MainMenu"));
+        homeButton.onClick.AddListener(() => 
+        {
+            AudioManager.Instance.SwapMusic(AudioManager.Instance.mainMenuMusic);
+            SceneManager.LoadScene("MainMenu");
+        });
     }
 
     private void Update()

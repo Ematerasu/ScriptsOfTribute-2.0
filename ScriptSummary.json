@@ -8,7 +8,7 @@
             "typeName": "AIManager",
             "methods": [
                 "private void Awake()",
-                "public void InitializeBot(BotType botType, PlayerEnum botId)",
+                "public void InitializeBot(Type botType, PlayerEnum botId)",
                 "public void InitializeManager(SoTGameManager gameManager)",
                 "public bool IsAITurn()",
                 "public void PickOnePatron(List<PatronId> availablePatrons, int round, Action<PatronId> onResult)",
@@ -41,20 +41,33 @@
             "fields": []
         },
         {
+            "fileName": "ProjectileSoundTrigger.cs",
+            "path": "Assets\\Scripts\\Audio\\ProjectileSoundTrigger.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "ProjectileSoundTrigger",
+            "methods": [
+                "private IEnumerator Start()"
+            ],
+            "fields": [
+                "public float delay = 0.01f;"
+            ]
+        },
+        {
             "fileName": "BoardManager.cs",
             "path": "Assets\\Scripts\\Board\\BoardManager.cs",
             "namespaceName": "",
             "kind": "class",
             "typeName": "BoardManager",
             "methods": [
-                "[Header(\"Player 1 Zones\")] [SerializeField] private Transform p1DrawPile; [SerializeField] private Transform p1Cooldown; [SerializeField] private Transform p1Hand; [SerializeField] private Transform p1Played; [SerializeField] private Transform p1Agents; [Header(\"Player 2 Zones\")] [SerializeField] private Transform p2DrawPile; [SerializeField] private Transform p2Cooldown; [SerializeField] private Transform p2Hand; [SerializeField] private Transform p2Played; [SerializeField] private Transform p2Agents; [Header(\"Tavern\")] [SerializeField] private Transform tavernPile; [SerializeField] private List<Transform> tavernCardSpots; [Header(\"UI\")] [SerializeField] private TextMeshProUGUI Player1Gold; [SerializeField] private TextMeshProUGUI Player1Prestige; [SerializeField] private TextMeshProUGUI Player1Power; [SerializeField] private TextMeshProUGUI Player1PatronCalls; [SerializeField] private TextMeshProUGUI Player2Gold; [SerializeField] private TextMeshProUGUI Player2Prestige; [SerializeField] private TextMeshProUGUI Player2Power; [SerializeField] private TextMeshProUGUI Player2PatronCalls; [Header(\"Prefabs / Pool\")] [SerializeField] private GameObject cardPrefab; [SerializeField] private Transform offscreenCardContainer; [SerializeField] private Transform powerOriginPointPlayer1; [SerializeField] private Transform powerOriginPointPlayer2; [SerializeField] private GameObject powerProjectilePrefab; public bool HasCardObject(UniqueId id) => cardObjects.ContainsKey(id);",
+                "[Header(\"Player Zones\")] [SerializeField] private Transform playerDrawPile; [SerializeField] private Transform playerCooldown; [SerializeField] private Transform playerHand; [SerializeField] private Transform playerPlayed; [SerializeField] private Transform playerAgents; [Header(\"Enemy Zones\")] [SerializeField] private Transform enemyDrawPile; [SerializeField] private Transform enemyCooldown; [SerializeField] private Transform enemyHand; [SerializeField] private Transform enemyPlayed; [SerializeField] private Transform enemyAgents; [Header(\"Tavern\")] [SerializeField] private Transform tavernPile; [SerializeField] private List<Transform> tavernCardSpots; [Header(\"UI\")] [SerializeField] private TextMeshProUGUI playerGold; [SerializeField] private TextMeshProUGUI playerPrestige; [SerializeField] private TextMeshProUGUI playerPower; [SerializeField] private TextMeshProUGUI playerPatronCalls; [SerializeField] private TextMeshProUGUI enemyGold; [SerializeField] private TextMeshProUGUI enemyPrestige; [SerializeField] private TextMeshProUGUI enemyPower; [SerializeField] private TextMeshProUGUI enemyPatronCalls; [Header(\"Prefabs / Pool\")] [SerializeField] private GameObject cardPrefab; [SerializeField] private Transform offscreenCardContainer; [SerializeField] private Transform powerOriginPointPlayer1; [SerializeField] private Transform powerOriginPointPlayer2; [SerializeField] private GameObject powerProjectilePrefab; public bool HasCardObject(UniqueId id) => cardObjects.ContainsKey(id);",
                 "public GameObject GetCardObject(UniqueId id) => cardObjects[id];",
                 "private void Awake()",
                 "public void RegisterPatronTransform(PatronId patronId, Transform transform)",
                 "public void ClearBoard()",
                 "public void InitializeBoard(FullGameState state)",
                 "public void UpdateBoard(FullGameState state, UpdateReason reason)",
-                "private void SetupPlayer(SerializedPlayer playerData, bool isPlayer1)",
+                "private void SetupPlayer(SerializedPlayer playerData, bool isPlayer)",
                 "private void SetupTavern(FullGameState state)",
                 "private void SetUpUI(FullGameState state)",
                 "private GameObject CreateCardObject(UniqueCard cardData, Transform parentTransform)",
@@ -341,7 +354,7 @@
             "kind": "class",
             "typeName": "CardTooltip",
             "methods": [
-                "[SerializeField] private TextMeshProUGUI cardNameText; [SerializeField] private TextMeshProUGUI deckText; [SerializeField] private TextMeshProUGUI effectText; public void Setup(UniqueCard card)",
+                "[SerializeField] private TextMeshProUGUI cardNameText; [SerializeField] private TextMeshProUGUI deckText; [SerializeField] private TextMeshProUGUI typeText; [SerializeField] private TextMeshProUGUI effectText; public void Setup(UniqueCard card)",
                 "private string BuildEffectText(UniqueCard card)",
                 "private string EffectToString(UniqueComplexEffect effect)",
                 "public void SetPositionRelativeTo(Transform cardTransform)",
@@ -371,6 +384,42 @@
             "fields": []
         },
         {
+            "fileName": "AudioManager.cs",
+            "path": "Assets\\Scripts\\Gameplay\\AudioManager.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "AudioManager",
+            "methods": [
+                "public void ApplyVolumes()",
+                "public void PlaySound(AudioClip clip, float volume=1f)",
+                "public void PlayMusic(AudioClip clip)",
+                "public void PlayCardPlaySfx()",
+                "public void PlayCardDrawSfx()",
+                "public void PlayCardBuySfx()",
+                "public void PlayPatronActivateSfx()",
+                "public void PlayYourTurnSfx()",
+                "public void PlayMainMenuMusic()",
+                "public void PlayGameMusic()",
+                "public void PlayProjectileSound()",
+                "public void SwapMusic(AudioClip newClip, float fadeDuration = 0.5f)",
+                "private IEnumerator SwapMusicCoroutine(AudioClip newClip, float fadeDuration)"
+            ],
+            "fields": [
+                "[Header(\"Audio Sources\")] public AudioSource sfxSource;",
+                "public AudioSource musicSource;",
+                "[Header(\"Clips\")] public AudioClip cardPlay;",
+                "public AudioClip cardDraw;",
+                "public AudioClip cardBuy;",
+                "public AudioClip patronActivate;",
+                "public AudioClip mainMenuMusic;",
+                "public AudioClip gameMusic;",
+                "public AudioClip projectileSound;",
+                "public AudioClip endTurnSound;",
+                "public AudioClip defeatSound;",
+                "public AudioClip victorySound;"
+            ]
+        },
+        {
             "fileName": "GameManager.cs",
             "path": "Assets\\Scripts\\Gameplay\\GameManager.cs",
             "namespaceName": "",
@@ -378,7 +427,7 @@
             "typeName": "GameManager",
             "methods": [
                 "private void Awake()",
-                "public void StartGameWithPatrons(PatronId[] patrons)",
+                "public void StartGameWithPatrons(PatronId[] patrons, ulong seed = 0)",
                 "private void Update()",
                 "public void OnEndTurnButtonClicked()",
                 "public void PlaySingleAIMove()",
@@ -392,7 +441,7 @@
                 "public void CallPatron(PatronId patron, ZoneSide side)",
                 "public void MakeChoice(List<UniqueCard> selectedCards)",
                 "public void MakeChoice(UniqueEffect selectedEffect)",
-                "private void HandleEndGame(EndGameState end, Move triggeringMove)",
+                "public void HandleEndGame(EndGameState end, Move triggeringMove)",
                 "private IEnumerator ShowStartOfHumanTurnRoutine()",
                 "public void InitializeDebugGame()",
                 "private UniqueCard FindAndRemoveCard(CardId id, List<UniqueCard> availableCards)"
@@ -412,14 +461,18 @@
             "methods": [
                 "private void Awake()",
                 "private void Start()",
-                "public void StartInitialSetup()",
+                "public void StartInitialSetup(Type selectedBot, PlayerEnum humanPlayer, PlayerEnum botPlayer, bool isDebugMode, string seed)",
                 "public void StartGameWithPatrons(List<PatronId> selectedPatrons)",
                 "public void ResetAndStartPatronDraft()",
                 "private IEnumerator ResetAndStartPatronDraftCoroutine()",
                 "private List<PatronId> GetAvailablePatrons()"
             ],
             "fields": [
-                "[Header(\"Manager References\")] [SerializeField] private GameManager _gameManager; [SerializeField] private BoardManager _boardManager; [SerializeField] private AIManager _aiManager; [SerializeField] private CompletedActionHistoryBuilder _historyBuilder; [SerializeField] private UIManager _uiManager; [Header(\"Game Settings\")] [SerializeField] private BotType selectedBot = BotType.MaxPrestige; [SerializeField] private bool botDebugMode = false; public bool IsBotDebugMode => botDebugMode;"
+                "[Header(\"Manager References\")] [SerializeField] private GameManager _gameManager; [SerializeField] private BoardManager _boardManager; [SerializeField] private AIManager _aiManager; [SerializeField] private CompletedActionHistoryBuilder _historyBuilder; [SerializeField] private UIManager _uiManager; [SerializeField] private GameSetupPanelController _setupcontroller; [Header(\"Game Settings\")] private Type _selectedBot;",
+                "[SerializeField] private bool botDebugMode = false; public bool IsBotDebugMode => botDebugMode;",
+                "private ulong _seed = 0;",
+                "private PlayerEnum _humanPlayer;",
+                "private PlayerEnum _botPlayer;"
             ]
         },
         {
@@ -555,8 +608,9 @@
             "kind": "class",
             "typeName": "UIManager",
             "methods": [
-                "[Header(\"AI Buttons\")] [SerializeField] private Button aiMoveButton; [SerializeField] private Button aiMoveFullTurnButton; [Header(\"Choice Panels\")] [SerializeField] private CardChoicePanelController cardChoicePanel; [SerializeField] private EffectChoicePanelController effectChoicePanel; [SerializeField] private PatronSelectionPanel patronSelectionPanel; [Header(\"Normal panels\")] [SerializeField] private CardLookupPanelController cardLookupPanel; [SerializeField] private CombosPanelController combosPanel; [SerializeField] private BotLogPanelController botLogPanel; [Header(\"Text objects\")] [SerializeField] private GameObject YourTurnImage; [Header(\"Patrons\")] [SerializeField] private GameObject PatronTooltipPanel; [SerializeField] private TextMeshProUGUI PatronTooltipTitle; [SerializeField] private TextMeshProUGUI PatronTooltipText; [Header(\"End game\")] [SerializeField] private EndGameController endGameController; [Header(\"Tooltips\")] [SerializeField] private CardTooltip cardTooltip; private void Awake()",
+                "private void Awake()",
                 "private void Update()",
+                "public void ShowSettingsPanel()",
                 "public void ShowPatronDraft(List<PatronId> patrons)",
                 "public void ShowAiButtons(bool show)",
                 "private void OnAiMoveClicked()",
@@ -570,9 +624,13 @@
                 "public void HandleEndGame(EndGameState endGameState, FullGameState finalState)",
                 "public void CardLookup(ZoneSide side, PileType startingPile)",
                 "public void InitializeCombosPanel(PatronId[] patrons)",
-                "public void UpdateCombosPanel(ComboStates comboStates)"
+                "public void UpdateCombosPanel(ComboStates comboStates)",
+                "private IEnumerator FadeTooltip(float targetAlpha, float duration)",
+                "private IEnumerator FadeIn(GameObject panel, float fadeDuration)"
             ],
-            "fields": []
+            "fields": [
+                "[Header(\"AI Buttons\")] [SerializeField] private Button aiMoveButton; [SerializeField] private Button aiMoveFullTurnButton; [Header(\"Misc buttons\")] [SerializeField] private Button settingsButton; [SerializeField] private Button homeButton; [Header(\"Choice Panels\")] [SerializeField] private CardChoicePanelController cardChoicePanel; [SerializeField] private EffectChoicePanelController effectChoicePanel; [SerializeField] private PatronSelectionPanel patronSelectionPanel; [Header(\"Normal panels\")] [SerializeField] private CardLookupPanelController cardLookupPanel; [SerializeField] private CombosPanelController combosPanel; [SerializeField] private BotLogPanelController botLogPanel; [SerializeField] private GameObject settingsPanel; [Header(\"Text objects\")] [SerializeField] private GameObject YourTurnImage; [Header(\"Patrons\")] [SerializeField] private GameObject PatronTooltipPanel; [SerializeField] private TextMeshProUGUI PatronTooltipTitle; [SerializeField] private TextMeshProUGUI PatronTooltipText; [Header(\"End game\")] [SerializeField] private EndGameController endGameController; [Header(\"Tooltips\")] [SerializeField] private CardTooltip cardTooltip; private Coroutine fadeCoroutine;"
+            ]
         },
         {
             "fileName": "CardUtils.cs",
@@ -594,6 +652,142 @@
                 "public void PlayPowerAttackEffect(Vector3 targetPosition, ZoneSide side, Action? onComplete = null)",
                 "public void PlayHealingEffect(GameObject agentObj, ZoneSide side, Action? onComplete = null)"
             ],
+            "fields": []
+        },
+        {
+            "fileName": "AgentTierList.cs",
+            "path": "Assets\\Scripts\\AI\\BestMCTS3\\AgentTierList.cs",
+            "namespaceName": "Bots",
+            "kind": "class",
+            "typeName": "AgentTier",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "BestMCTS3.cs",
+            "path": "Assets\\Scripts\\AI\\BestMCTS3\\BestMCTS3.cs",
+            "namespaceName": "Bots",
+            "kind": "class",
+            "typeName": "MCTSNode",
+            "methods": [
+                "public double Simulate(MCTSNode node, GameStrategy strategy, SeededRandom rng, ref int moveCount)"
+            ],
+            "fields": [
+                "public SeededGameState gameState;",
+                "public double score = 0;",
+                "public int visits = 0;",
+                "public bool full = false;",
+                "public bool endTurn;"
+            ]
+        },
+        {
+            "fileName": "BestMCTS3.cs",
+            "path": "Assets\\Scripts\\AI\\BestMCTS3\\BestMCTS3.cs",
+            "namespaceName": "Bots",
+            "kind": "class",
+            "typeName": "BestMCTS3",
+            "methods": [
+                "static public bool CheckIfSameCards(List<UniqueCard> l, List<UniqueCard> r)",
+                "static public bool CheckIfSameEffects(List<UniqueEffect> e1, List<UniqueEffect> e2)"
+            ],
+            "fields": []
+        },
+        {
+            "fileName": "BestMCTS3.cs",
+            "path": "Assets\\Scripts\\AI\\BestMCTS3\\BestMCTS3.cs",
+            "namespaceName": "Bots",
+            "kind": "class",
+            "typeName": "PairOnlySecond",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "BestMCTS3.cs",
+            "path": "Assets\\Scripts\\AI\\BestMCTS3\\BestMCTS3.cs",
+            "namespaceName": "Bots",
+            "kind": "class",
+            "typeName": "MoveComparer",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "GameStrategy.cs",
+            "path": "Assets\\Scripts\\AI\\BestMCTS3\\GameStrategy.cs",
+            "namespaceName": "Bots",
+            "kind": "class",
+            "typeName": "GameStrategy",
+            "methods": [
+                "public double Heuristic(SeededGameState gameState)",
+                "public double CardEvaluation(UniqueCard card, SeededGameState gameState)",
+                "public double enemyCardEvaluation(UniqueCard card, SeededGameState gameState)"
+            ],
+            "fields": []
+        },
+        {
+            "fileName": "GameStrategy.cs",
+            "path": "Assets\\Scripts\\AI\\BestMCTS3\\GameStrategy.cs",
+            "namespaceName": "Bots",
+            "kind": "enum",
+            "typeName": "GamePhase",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "GameStrategy.cs",
+            "path": "Assets\\Scripts\\AI\\BestMCTS3\\GameStrategy.cs",
+            "namespaceName": "Bots",
+            "kind": "enum",
+            "typeName": "Param",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "HandTierList.cs",
+            "path": "Assets\\Scripts\\AI\\BestMCTS3\\HandTierList.cs",
+            "namespaceName": "Bots",
+            "kind": "class",
+            "typeName": "HandTierList",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "InstantPlayCards.cs",
+            "path": "Assets\\Scripts\\AI\\BestMCTS3\\InstantPlayCards.cs",
+            "namespaceName": "Bots",
+            "kind": "class",
+            "typeName": "InstantPlayCards",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "PatronTierList.cs",
+            "path": "Assets\\Scripts\\AI\\BestMCTS3\\PatronTierList.cs",
+            "namespaceName": "Bots",
+            "kind": "struct",
+            "typeName": "PatronTier",
+            "methods": [],
+            "fields": [
+                "public int Favoured;",
+                "public int Neutral;",
+                "public int Unfavoured;"
+            ]
+        },
+        {
+            "fileName": "PatronTierList.cs",
+            "path": "Assets\\Scripts\\AI\\BestMCTS3\\PatronTierList.cs",
+            "namespaceName": "Bots",
+            "kind": "class",
+            "typeName": "PatronTierList",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "TierList.cs",
+            "path": "Assets\\Scripts\\AI\\BestMCTS3\\TierList.cs",
+            "namespaceName": "Bots",
+            "kind": "class",
+            "typeName": "GPCardTierList",
+            "methods": [],
             "fields": []
         },
         {
@@ -886,6 +1080,280 @@
             "fields": []
         },
         {
+            "fileName": "AgentTierListSOISMCTS.cs",
+            "path": "Assets\\Scripts\\AI\\SOISMCTS\\AgentTierListSOISMCTS.cs",
+            "namespaceName": "SOISMCTS",
+            "kind": "class",
+            "typeName": "AgentTierSOISMCTS",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "GameStrategySOISMCTS.cs",
+            "path": "Assets\\Scripts\\AI\\SOISMCTS\\GameStrategySOISMCTS.cs",
+            "namespaceName": "SOISMCTS",
+            "kind": "class",
+            "typeName": "GameStrategySOISMCTS",
+            "methods": [
+                "public double Heuristic(SeededGameState gameState)",
+                "public double CardEvaluation(UniqueCard card, SeededGameState gameState)",
+                "public double enemyCardEvaluation(UniqueCard card, SeededGameState gameState)"
+            ],
+            "fields": []
+        },
+        {
+            "fileName": "GameStrategySOISMCTS.cs",
+            "path": "Assets\\Scripts\\AI\\SOISMCTS\\GameStrategySOISMCTS.cs",
+            "namespaceName": "SOISMCTS",
+            "kind": "enum",
+            "typeName": "GamePhase",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "GameStrategySOISMCTS.cs",
+            "path": "Assets\\Scripts\\AI\\SOISMCTS\\GameStrategySOISMCTS.cs",
+            "namespaceName": "SOISMCTS",
+            "kind": "enum",
+            "typeName": "Param",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "HandTierListSOISMCTS.cs",
+            "path": "Assets\\Scripts\\AI\\SOISMCTS\\HandTierListSOISMCTS.cs",
+            "namespaceName": "SOISMCTS",
+            "kind": "class",
+            "typeName": "HandTierListSOISMCTS",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "InstantPlayCards.cs",
+            "path": "Assets\\Scripts\\AI\\SOISMCTS\\InstantPlayCards.cs",
+            "namespaceName": "SOISMCTS",
+            "kind": "class",
+            "typeName": "InstantPlayCards",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "PatronTierList.cs",
+            "path": "Assets\\Scripts\\AI\\SOISMCTS\\PatronTierList.cs",
+            "namespaceName": "SOISMCTS",
+            "kind": "struct",
+            "typeName": "PatronTier",
+            "methods": [],
+            "fields": [
+                "public int favoured;",
+                "public int neutral;",
+                "public int unfavoured;"
+            ]
+        },
+        {
+            "fileName": "PatronTierList.cs",
+            "path": "Assets\\Scripts\\AI\\SOISMCTS\\PatronTierList.cs",
+            "namespaceName": "SOISMCTS",
+            "kind": "class",
+            "typeName": "PatronTierList",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "SOISMCTS.cs",
+            "path": "Assets\\Scripts\\AI\\SOISMCTS\\SOISMCTS.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "names",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "SOISMCTS.cs",
+            "path": "Assets\\Scripts\\AI\\SOISMCTS\\SOISMCTS.cs",
+            "namespaceName": "SOISMCTS",
+            "kind": "enum",
+            "typeName": "TierEnum",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "SOISMCTS.cs",
+            "path": "Assets\\Scripts\\AI\\SOISMCTS\\SOISMCTS.cs",
+            "namespaceName": "SOISMCTS",
+            "kind": "class",
+            "typeName": "CardTier",
+            "methods": [],
+            "fields": [
+                "public string Name;",
+                "public PatronId Deck;",
+                "public TierEnum Tier;"
+            ]
+        },
+        {
+            "fileName": "SOISMCTS.cs",
+            "path": "Assets\\Scripts\\AI\\SOISMCTS\\SOISMCTS.cs",
+            "namespaceName": "SOISMCTS",
+            "kind": "class",
+            "typeName": "CardTierList",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "SOISMCTS.cs",
+            "path": "Assets\\Scripts\\AI\\SOISMCTS\\SOISMCTS.cs",
+            "namespaceName": "SOISMCTS",
+            "kind": "class",
+            "typeName": "PairOnlySecond",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "SOISMCTS.cs",
+            "path": "Assets\\Scripts\\AI\\SOISMCTS\\SOISMCTS.cs",
+            "namespaceName": "SOISMCTS",
+            "kind": "class",
+            "typeName": "MoveComparer",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "SOISMCTS.cs",
+            "path": "Assets\\Scripts\\AI\\SOISMCTS\\SOISMCTS.cs",
+            "namespaceName": "SOISMCTS",
+            "kind": "class",
+            "typeName": "to",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "SOISMCTS.cs",
+            "path": "Assets\\Scripts\\AI\\SOISMCTS\\SOISMCTS.cs",
+            "namespaceName": "SOISMCTS",
+            "kind": "class",
+            "typeName": "SOISMCTS",
+            "methods": [
+                "private void PrepareForGame()",
+                "public InfosetNode prepareRootNodeForNextIteration(Move move, InfosetNode node)",
+                "private InfosetNode Expand(InfosetNode selectedNode, List<Move> selectedUVD, List<InfosetNode> pathThroughTree)",
+                "public double Rollout(InfosetNode startNode)",
+                "private Move selectNextMoveUsingMAST(List<Move> moveList)",
+                "private void BackPropagation(double finalPayout, List<InfosetNode> pathThroughTree)",
+                "private List<Move> NotEndTurnPossibleMoves(List<Move> possibleMoves)",
+                "private List<Move> FilterMoves(List<Move> moves, SeededGameState gameState)",
+                "public double HeuristicFromMCTSBot(SeededGameState gameState)",
+                "private double NormalizeHeuristic(int value)"
+            ],
+            "fields": [
+                "private bool _treeReuse = false;",
+                "private bool _randomDeterminisations = false;",
+                "private int _noSimsPerRandomisation = 150;",
+                "private bool _useMAST = false;",
+                "private double _temperature = 1.0; //parameter for gibbs distribution",
+                "private double _thresholdForRandomMoves = 0.1; //parameter to choose a random move instead of move from Gibbs distribution",
+                "private bool _filterMoves = true;",
+                "private bool _useMCTSBotHeuristic = false;",
+                "private bool _useMaxReward = true;",
+                "private bool _timeAllocation = false;",
+                "private TimeSpan _usedTimeInTurn = TimeSpan.FromSeconds(0); //tracks how long we are spending on current turn",
+                "private TimeSpan _timeForMoveComputation; //time limit for current move",
+                "private SeededRandom _intRng; //this is used for random integers",
+                "private Random _doubleRng;// this is used for random doubles",
+                "private Logger _log;",
+                "private bool _outputTreeStructureToLogFile = false;",
+                "private int _noIterationsPerLog = 100; //how often to output tree structure as we progress through MC loop",
+                "private bool _logChosenMove = false;",
+                "private bool _startOfTurn = true;",
+                "private int _simsCounter; // total number of MCTS simulations for a single game",
+                "private int _turnCounter; // total number of turns for a single game",
+                "private int _moveCounter; // total number of moves for a single game",
+                "private int _movesWithSimsCounter; //total number of moves for a single game which use MCTS simulation loop",
+                "private TimeSpan _totalTimeForGame; //time taken for this game",
+                "private GameStrategySOISMCTS _strategy = new(10, GamePhase.EarlyGame);"
+            ]
+        },
+        {
+            "fileName": "SOISMCTS.cs",
+            "path": "Assets\\Scripts\\AI\\SOISMCTS\\SOISMCTS.cs",
+            "namespaceName": "SOISMCTS",
+            "kind": "class",
+            "typeName": "InfosetNode",
+            "methods": [
+                "public int GetRefMoveHistoryLength()",
+                "public void clearRefHistory()",
+                "public void removeMovesFromChildrenMoveHistory(int layer)",
+                "private ulong calcHashCode(List<Move> moveHistory)",
+                "public void SetCurrentDeterminisationAndMoveHistory(Determinisation? d, List<Move>? currentMoveHistory)",
+                "public Move GetCurrentMoveFromParent()",
+                "public double UCB(double K)",
+                "public InfosetNode CreateChild(Move? parentMove, Determinisation newd)",
+                "private bool CheckEquivalence(List<Move>? moveHistory)",
+                "private bool checkMovesListAreEqual(List<Move> list1, List<Move> list2)"
+            ],
+            "fields": [
+                "public HashSet<InfosetNode> Children; //list of all children that have been visited from this node irrespective of the determinisation",
+                "public double TotalReward;",
+                "public double MaxReward;",
+                "public int VisitCount;",
+                "public int AvailabilityCount;",
+                "public double AvgReward;",
+                "public double UCBExploration;",
+                "public List<Move> _refMoveHistory;",
+                "public bool _endTurn;",
+                "private ulong _hashCode;"
+            ]
+        },
+        {
+            "fileName": "SOISMCTS.cs",
+            "path": "Assets\\Scripts\\AI\\SOISMCTS\\SOISMCTS.cs",
+            "namespaceName": "SOISMCTS",
+            "kind": "struct",
+            "typeName": "to",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "SOISMCTS.cs",
+            "path": "Assets\\Scripts\\AI\\SOISMCTS\\SOISMCTS.cs",
+            "namespaceName": "SOISMCTS",
+            "kind": "class",
+            "typeName": "Determinisation",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "SOISMCTS.cs",
+            "path": "Assets\\Scripts\\AI\\SOISMCTS\\SOISMCTS.cs",
+            "namespaceName": "SOISMCTS",
+            "kind": "class",
+            "typeName": "MASTMoveKey",
+            "methods": [
+                "public Move GetMove()"
+            ],
+            "fields": [
+                "private Move _mv;",
+                "private int _hashCode;"
+            ]
+        },
+        {
+            "fileName": "TierList.cs",
+            "path": "Assets\\Scripts\\AI\\SOISMCTS\\TierList.cs",
+            "namespaceName": "SOISMCTS",
+            "kind": "class",
+            "typeName": "GPCardTierList",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "TreeReporterSOISMCTS.cs",
+            "path": "Assets\\Scripts\\AI\\SOISMCTS\\TreeReporterSOISMCTS.cs",
+            "namespaceName": "SOISMCTS",
+            "kind": "class",
+            "typeName": "TreeReporterSOISMCTS",
+            "methods": [],
+            "fields": []
+        },
+        {
             "fileName": "AutoVerticalCenter.cs",
             "path": "Assets\\Scripts\\UI\\ChoicePanel\\AutoVerticalCenter.cs",
             "namespaceName": "",
@@ -929,6 +1397,8 @@
             "typeName": "CardChoicePanelController",
             "methods": [
                 "private void Awake()",
+                "private void StartFade(bool show)",
+                "private IEnumerator FadeCoroutine(bool show)",
                 "public void ShowCardChoice(SerializedChoice choice)",
                 "private void OnCardClicked(UniqueCard card)",
                 "public void OnConfirmCardChoice()",
@@ -939,7 +1409,10 @@
                 "[Header(\"UI Elements\")] [SerializeField] private GameObject cardChoicePanel; [SerializeField] private TextMeshProUGUI cardChoiceTitle; [SerializeField] private Transform cardContentParent; [SerializeField] private GameObject cardChoiceButtonPrefab; [SerializeField] private ChoiceProgressSlider progressSlider; [SerializeField] private Button confirmButton; private SerializedChoice currentChoice;",
                 "private List<UniqueCard> selectedCards = new();",
                 "private int minChoices;",
-                "private int maxChoices;"
+                "private int maxChoices;",
+                "private CanvasGroup canvasGroup;",
+                "private Coroutine fadeRoutine;",
+                "private bool spaceHeld = false;"
             ]
         },
         {
@@ -983,13 +1456,18 @@
             "typeName": "EffectChoicePanelController",
             "methods": [
                 "private void Awake()",
+                "private void StartFade(bool show)",
+                "private IEnumerator FadeCoroutine(bool show)",
                 "public void ShowEffectChoice(SerializedChoice choice)",
                 "private void OnEffectClicked(UniqueEffect effect)",
                 "public void HideEffectChoice()",
                 "private string ToDisplayString(ChoiceFollowUp followUp)"
             ],
             "fields": [
-                "[Header(\"UI Elements\")] [SerializeField] private GameObject effectChoicePanel; [SerializeField] private TextMeshProUGUI effectChoiceTitle; [SerializeField] private Transform effectContentParent; [SerializeField] private GameObject effectChoiceButtonPrefab; private SerializedChoice currentChoice;"
+                "[Header(\"UI Elements\")] [SerializeField] private GameObject effectChoicePanel; [SerializeField] private TextMeshProUGUI effectChoiceTitle; [SerializeField] private Transform effectContentParent; [SerializeField] private GameObject effectChoiceButtonPrefab; private SerializedChoice currentChoice;",
+                "private CanvasGroup canvasGroup;",
+                "private Coroutine fadeRoutine;",
+                "private bool spaceHeld = false;"
             ]
         },
         {
@@ -1128,6 +1606,198 @@
             ],
             "fields": [
                 "[Header(\"UI References\")] [SerializeField] private TextMeshProUGUI seedText; [SerializeField] private Button copyButton; private ulong currentSeed;"
+            ]
+        },
+        {
+            "fileName": "BotFrameDisplay.cs",
+            "path": "Assets\\Scripts\\UI\\GameSetupUI\\BotFrameDisplay.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "BotFrameDisplay",
+            "methods": [
+                "public void Setup(BotData data, GameSetupPanelController setupController)",
+                "public void OnPointerClick(PointerEventData eventData)",
+                "public void Select()",
+                "public void Deselect()"
+            ],
+            "fields": [
+                "[Header(\"UI Elementy\")] [SerializeField] private TextMeshProUGUI nameText; [SerializeField] private TextMeshProUGUI shortDescriptionText; [SerializeField] private TextMeshProUGUI longDescriptionText; [SerializeField] private Image avatar; [SerializeField] private GameObject selectionHighlight; private GameSetupPanelController controller;"
+            ]
+        },
+        {
+            "fileName": "GameSetupPanelController.cs",
+            "path": "Assets\\Scripts\\UI\\GameSetupUI\\GameSetupPanelController.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "BotData",
+            "methods": [],
+            "fields": [
+                "public string Name;",
+                "public string ShortDescription;",
+                "public string LongDescription;",
+                "public Sprite Avatar;",
+                "public string TypeName;",
+                "[NonSerialized] public Type AIClass;"
+            ]
+        },
+        {
+            "fileName": "GameSetupPanelController.cs",
+            "path": "Assets\\Scripts\\UI\\GameSetupUI\\GameSetupPanelController.cs",
+            "namespaceName": "",
+            "kind": "enum",
+            "typeName": "PlayerSideSelection",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "GameSetupPanelController.cs",
+            "path": "Assets\\Scripts\\UI\\GameSetupUI\\GameSetupPanelController.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "GameSetupPanelController",
+            "methods": [
+                "public void StartSetup()",
+                "private List<BotData> GetBuiltinBots()",
+                "private List<BotData> LoadExternalBots()",
+                "public void SelectBot(BotFrameDisplay frame)",
+                "private void SelectSide(PlayerSideSelection side)",
+                "private void HighlightButton(Button button, bool active)",
+                "private IEnumerator FadeOutAndDisable(CanvasGroup canvasGroup, float duration)"
+            ],
+            "fields": [
+                "[Header(\"Prefab and container\")] [SerializeField] private GameObject mainPanel; [SerializeField] private GameObject botFramePrefab; [SerializeField] private Transform botListContainer; [Header(\"UI elements\")] [SerializeField] private TMP_InputField seedInputField; [SerializeField] private Button confirmButton; [SerializeField] private SwitchButton debugModeButton; [SerializeField] private CanvasGroup canvasGroup; [Header(\"Built-in bots\")] [SerializeField] private Sprite bestMCTS3AvatarSprite; [SerializeField] private Sprite SOISMCTSAvatarSprite; [SerializeField] private Sprite maxPrestigeBotAvatarSprite; [Header(\"Side selection\")] [SerializeField] private Button player1Button; [SerializeField] private Button player2Button; [SerializeField] private Button randomButton; private BotFrameDisplay selectedBot;",
+                "private List<BotFrameDisplay> allBotFrames = new();",
+                "private PlayerSideSelection selectedSide = PlayerSideSelection.Random;"
+            ]
+        },
+        {
+            "fileName": "SwitchButton.cs",
+            "path": "Assets\\Scripts\\UI\\GameSetupUI\\SwitchButton.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "SwitchButton",
+            "methods": [
+                "private void Awake()",
+                "private void OnDestroy()",
+                "private void Toggle()",
+                "public void SetState(bool value)",
+                "public bool GetState() => isOn;"
+            ],
+            "fields": [
+                "[SerializeField] private Button button; [SerializeField] private GameObject onView; [SerializeField] private GameObject offView; [SerializeField] private bool startOn = false; private bool isOn;"
+            ]
+        },
+        {
+            "fileName": "MainMenuController.cs",
+            "path": "Assets\\Scripts\\UI\\MainMenuUI\\MainMenuController.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "MainMenuController",
+            "methods": [
+                "[Header(\"Panele\")] [SerializeField] private CanvasGroup mainMenuPanel; [SerializeField] private CanvasGroup deckBrowserPanel; [SerializeField] private CanvasGroup settingsPanel; [SerializeField] private CanvasGroup creditsPanel; [SerializeField] private CanvasGroup cardsCarouselPanel; [Header(\"Ustawienia animacji\")] [SerializeField] private float fadeDuration = 0.3f; [Header(\"External links\")] [SerializeField] private string discordUrl = \"https://discord.gg/\"; [SerializeField] private string githubUrl = \"https://github.com/ScriptsOfTribute\"; [SerializeField] private string websiteUrl = \"https://cog2025.inesc-id.pt/tales-of-tribute/\"; [SerializeField] private string esoHubUrl = \"https://eso-hub.com/en/tales-of-tribute-card-game\"; private void Start()",
+                "public void OnPlayVsBotClicked()",
+                "public void OnDeckBrowserClicked()",
+                "public void OnSettingsClicked()",
+                "public void OnCreditsClicked()",
+                "public void OnExitClicked()",
+                "public void OpenDiscord()",
+                "public void OpenGithub()",
+                "public void OpenWebsite()",
+                "private IEnumerator FadeIn(CanvasGroup cg)",
+                "private void ShowOnly(CanvasGroup toShow)"
+            ],
+            "fields": []
+        },
+        {
+            "fileName": "SettingsManager.cs",
+            "path": "Assets\\Scripts\\UI\\MainMenuUI\\SettingsManager.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "SettingsManager",
+            "methods": [
+                "private void Awake()",
+                "public void ApplySettings()",
+                "public void SaveSettings()",
+                "public void LoadSettings()"
+            ],
+            "fields": [
+                "[Header(\"Audio\")] public float masterVolume = 1f;",
+                "public float musicVolume = 1f;",
+                "public float sfxVolume = 1f;",
+                "[Header(\"Display\")] public Resolution[] supportedResolutions;",
+                "public FullScreenMode[] supportedModes = new[] {",
+                "public int resolutionIndex = 0;",
+                "public int screenModeIndex = 0;"
+            ]
+        },
+        {
+            "fileName": "SettingsUI.cs",
+            "path": "Assets\\Scripts\\UI\\MainMenuUI\\SettingsUI.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "SettingsUI",
+            "methods": [
+                "private void Start()",
+                "private void OnEnable()",
+                "public void OnMasterVolumeChanged(float value)",
+                "public void OnMusicVolumeChanged(float value)",
+                "public void OnSFXVolumeChanged(float value)",
+                "public void OnResolutionLeft() => ShiftResolution(-1);",
+                "public void OnResolutionRight() => ShiftResolution(+1);",
+                "private void ShiftResolution(int dir)",
+                "public void OnScreenModeLeft() => ShiftScreenMode(-1);",
+                "public void OnScreenModeRight() => ShiftScreenMode(+1);",
+                "private void ShiftScreenMode(int dir)",
+                "private void UpdateResolutionLabel()",
+                "private void UpdateScreenModeLabel()",
+                "public void OnApplyClicked()",
+                "public void OnExitClicked()",
+                "private IEnumerator FadeOut(GameObject panel)",
+                "private IEnumerator FadeIn(GameObject panel)"
+            ],
+            "fields": [
+                "[Header(\"Audio Sliders\")] public Slider masterSlider;",
+                "public Slider musicSlider;",
+                "public Slider sfxSlider;",
+                "[Header(\"Resolution Selector\")] public TextMeshProUGUI resolutionText;",
+                "[Header(\"Screen Mode Selector\")] public TextMeshProUGUI screenModeText;",
+                "[Header(\"Panels\")] public GameObject settingsPanel;",
+                "private float originalMaster;",
+                "private float originalMusic;",
+                "private float originalSFX;"
+            ]
+        },
+        {
+            "fileName": "UICardCarousel.cs",
+            "path": "Assets\\Scripts\\UI\\MainMenuUI\\UICardCarousel.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "UICardCarouselSprite",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "UICardCarousel.cs",
+            "path": "Assets\\Scripts\\UI\\MainMenuUI\\UICardCarousel.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "CarouselSlot",
+            "methods": [],
+            "fields": [
+                "public Vector3 position;",
+                "public Vector3 scale;",
+                "public float alpha;",
+                "public int sortingOrder;",
+                "public List<GameObject> cards;",
+                "public List<CarouselSlot> slots;",
+                "public List<Sprite> cardSprites;",
+                "public float transitionTime = 0.5f;",
+                "public float delayBetweenCycles = 2f;",
+                "private Coroutine currentAnim;",
+                "private int currentSpriteIndex = 0;",
+                "private List<Vector3> startPos = new();",
+                "private List<Vector3> startScale = new();",
+                "private List<float> startAlpha = new();"
             ]
         },
         {
