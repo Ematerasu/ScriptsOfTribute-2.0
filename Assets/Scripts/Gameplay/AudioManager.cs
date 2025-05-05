@@ -85,7 +85,7 @@ public class AudioManager : MonoBehaviour
     }
     public void PlayProjectileSound()
     {
-        PlaySound(projectileSound);
+        PlaySound(projectileSound, 0.6f);
     }
     
     public void SwapMusic(AudioClip newClip, float fadeDuration = 0.5f)

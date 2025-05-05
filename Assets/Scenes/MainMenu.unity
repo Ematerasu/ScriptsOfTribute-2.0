@@ -855,7 +855,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Version 1.0 First release
+  m_text: Version v0.1 Alpha release
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bbf71d8a58305463e9d91aeaca31eaa0, type: 2}
   m_sharedMaterial: {fileID: -4171563015097924827, guid: bbf71d8a58305463e9d91aeaca31eaa0, type: 2}
@@ -6057,7 +6057,7 @@ MonoBehaviour:
   patronActivate: {fileID: 8300000, guid: 795d4a7fcc3ee8c47812d7130a0ede7f, type: 3}
   mainMenuMusic: {fileID: 8300000, guid: 58dad86a5ee57db49a5eb28996e658d9, type: 3}
   gameMusic: {fileID: 8300000, guid: 639e9b7b8d1c9494f8148c5754ecbc49, type: 3}
-  projectileSound: {fileID: 8300000, guid: bc4308e498a9edd4bb02b454ce2b197d, type: 3}
+  projectileSound: {fileID: 8300000, guid: 946108348fd3f0a488416627c19ea24a, type: 3}
   endTurnSound: {fileID: 8300000, guid: f0f71890d92499641a61bb14e9f5e4f5, type: 3}
   defeatSound: {fileID: 8300000, guid: 6fa7af4b093eb458d8d9d834175fd56c, type: 3}
   victorySound: {fileID: 8300000, guid: 4d298d62c4c7f4509b1d7f883e137b46, type: 3}

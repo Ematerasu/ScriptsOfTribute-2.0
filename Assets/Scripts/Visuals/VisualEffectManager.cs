@@ -27,7 +27,7 @@ public class VisualEffectsManager : MonoBehaviour
             moveScript.accuracy = 100f;
             moveScript.rotate = true;
             moveScript.bounce = false;
-
+            AudioManager.Instance.PlayProjectileSound();
             moveScript.SetTargetPosition(targetPosition, onComplete);
         }
     }

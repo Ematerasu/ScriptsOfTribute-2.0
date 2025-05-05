@@ -92,6 +92,7 @@ public class SoTGameManager : MonoBehaviour
         RefreshCache(newState);
         BoardManager.Instance.UpdateBoard(newState, UpdateReason.BUY_CARD);
         completedActionProcessor.CompareAndQueueChanges(newState);
+        AudioManager.Instance.PlayCardBuySfx();
         return endGame;
     }
 
