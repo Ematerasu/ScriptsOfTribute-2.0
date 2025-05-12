@@ -51,7 +51,7 @@ public class CardLookupPanelController : MonoBehaviour
     {
         currentSide = side;
         currentPile = startingPile;
-
+        drawPileButton.interactable = side == ZoneSide.HumanPlayer;
         panelRoot.SetActive(true);
         UpdateView();
     }

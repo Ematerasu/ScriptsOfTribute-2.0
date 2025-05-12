@@ -26,10 +26,12 @@
 
 ## 🧪 Techniczne (setup, multiplayer, tutorial)
 
-- [ ] **Start menu + menu setupu gry** – wybór botów, seed, strona, decki
-- [ ] **Audio** – dzwieki kart, patronów, muzyka
+- [x] **Start menu + menu setupu gry** – wybór botów, seed, strona, decki
+- [x] **Audio** – dzwieki kart, patronów, muzyka
 - [ ] **Multiplayer fundamenty** – synchronizacja stanu, wybór modelu (host/client, peer-to-peer)
 - [ ] **Tutorial scene** – scena testowa do nauki rozgrywki
+- [ ] **Auto move** - ustaw że bot od razu się rusza sam, bez klikania guzika
+- [ ] **Delay na przycisk Choice UI** - bo mozna przypadkowo kliknac instant
 
 ## 📦 Niższy priorytet (QoL, polish)
 

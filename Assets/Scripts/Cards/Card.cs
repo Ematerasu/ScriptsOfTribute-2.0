@@ -1,17 +1,12 @@
 using ScriptsOfTribute.Board.Cards;
-using ScriptsOfTribute;
 using UnityEngine;
 using TMPro;
-using Unity.VisualScripting;
 using ScriptsOfTribute.Serializers;
 
 public class Card : MonoBehaviour
 {
     public SpriteRenderer spriteRenderer;
     public TextMeshPro hpText;
-
-    public Vector3 DefaultScale => _scale;
-    public Vector3 ShrinkedScale => _scale * 0.6f;
 
     private UniqueCard _card;
     [field: SerializeField]
@@ -20,7 +15,6 @@ public class Card : MonoBehaviour
     private bool _isVisible = true;
     private Sprite _originalSprite;
     private Material _originalMaterial;
-    private Vector3 _scale;
 
     [SerializeField] private ZoneType _zoneType;
     [SerializeField] private ZoneSide _zoneSide;
@@ -33,9 +27,10 @@ public class Card : MonoBehaviour
     public Vector3 GetLayoutPosition() => _layoutPosition;
 
     public Sprite GetOriginalSprite() => _originalSprite;
+
+
     public void Start()
     {
-        _scale = gameObject.transform.localScale;
         _originalMaterial = spriteRenderer.sharedMaterial;
     }
 
@@ -74,6 +69,11 @@ public class Card : MonoBehaviour
     {
         _isVisible = visible;
         spriteRenderer.sprite = visible ? _originalSprite : backSprite;
+        foreach (var rend in GetComponentsInChildren<Renderer>(includeInactive: true))
+        {
+            if (rend == spriteRenderer) continue;
+            rend.enabled = visible;
+        }
         hpText.enabled = visible;
     }
 
@@ -87,12 +87,11 @@ public class Card : MonoBehaviour
         _card = card;
         UniqueId = card.UniqueId.Value;
         gameObject.name = card.Name;
-        LoadCardSprite(card.Deck, card.CommonId);
-        ClearTextFields();
+
+        _originalSprite = spriteRenderer.sprite;
+
         if (_card.HP > 0)
-        {
             hpText.SetText(_card.HP.ToString());
-        }
     }
 
     public void UpdateAgentHealth(SerializedAgent agent)
@@ -101,18 +100,6 @@ public class Card : MonoBehaviour
         {
             hpText.SetText(agent.CurrentHp.ToString());
         }
-    }
-
-    private void LoadCardSprite(PatronId deck, CardId cardId)
-    {
-        Sprite sprite = CardUtils.LoadCardSprite(deck, cardId);
-        spriteRenderer.sprite = sprite;
-        _originalSprite = sprite;
-    }
-
-    private void ClearTextFields()
-    {
-        hpText.SetText("");
     }
 
     public void SetZoneInfo(ZoneType type, ZoneSide side)
@@ -159,7 +146,7 @@ public class Card : MonoBehaviour
 
             case ZoneType.PlayedPile:
             case ZoneType.CooldownPile:
-                return isPlayer1 || (isPlayer2 && debugMode);
+                return true;
             case ZoneType.DrawPile:
                 return (isPlayer1 && debugMode) || (isPlayer2 && debugMode);
 

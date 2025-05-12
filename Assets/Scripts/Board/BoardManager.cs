@@ -175,7 +175,7 @@ public class BoardManager : MonoBehaviour
 
     private GameObject CreateCardObject(UniqueCard cardData, Transform parentTransform)
     {
-        GameObject cardObj = Instantiate(cardPrefab);
+        GameObject cardObj = CardManager.Instance.CreateCardVisual(cardData);
         cardObj.transform.SetParent(parentTransform, true);
         cardObj.transform.localPosition = Vector3.zero;
 

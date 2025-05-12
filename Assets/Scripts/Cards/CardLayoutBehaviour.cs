@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 
 public class CardLayoutBehaviour : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -22,23 +23,23 @@ public class CardLayoutBehaviour : MonoBehaviour, IPointerEnterHandler, IPointer
     [SerializeField] private float scaleFactor = 1.5f;
     [SerializeField] private int hoverSortingOrder = 100;
 
-    private Card _card;
+    private SortingGroup sortingGroup;
 
-    private void Awake()
-    {
-        _card = GetComponent<Card>();
-        defaultScale = gameObject.transform.localScale;
-    }
+    private Card _card;
 
     private void Start()
     {
+        _card = GetComponent<Card>();
         _isHovered = false;
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        sortingGroup = GetComponent<SortingGroup>();
 
         if (_spriteRenderer != null)
         {
             _originalSortingOrder = _spriteRenderer.sortingOrder;
         }
+        float scale = CardManager.Instance.GetDefaultScaleForDeck(_card.GetCard().Deck);
+        defaultScale = Vector3.one * scale;
         ApplyLayout();
     }
 
@@ -122,29 +123,13 @@ public class CardLayoutBehaviour : MonoBehaviour, IPointerEnterHandler, IPointer
 
     public void SetSortingOrder(int baseOrder)
     {
-        if (_spriteRenderer != null)
-            _spriteRenderer.sortingOrder = baseOrder;
-
-        if (_hpText != null)
-        {
-            var meshRenderer = _hpText.GetComponent<MeshRenderer>();
-            if (meshRenderer != null)
-            {
-                meshRenderer.sortingOrder = baseOrder + 1;
-            }
-
-            _hpText.sortingOrder = baseOrder + 1;
-        }
+        if (sortingGroup != null)
+            sortingGroup.sortingOrder = baseOrder;
     }
 
     public void SetSortingLayer(string layerName)
     {
-        if (_spriteRenderer != null)
-            _spriteRenderer.sortingLayerName = layerName;
-
-        var meshRenderer = _hpText?.GetComponent<MeshRenderer>();
-        if (meshRenderer != null)
-            meshRenderer.sortingLayerName = layerName;
+        sortingGroup.sortingLayerName = layerName;
     }
 }
 

@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using ScriptsOfTribute.Board.Cards;
 using ScriptsOfTribute;
 using Unity.VisualScripting;
+using TMPro;
 
 public class CardChoiceButton : MonoBehaviour
 {
@@ -65,9 +66,6 @@ public class CardChoiceButton : MonoBehaviour
 
         if (selected)
         {
-            _materialInstance.EnableKeyword("GLOW_ON");
-            _materialInstance.EnableKeyword("OUTBASE_ON");
-
             _materialInstance.SetColor("_OutlineColor", selectedOutlineColor);
             _materialInstance.SetFloat("_OutlineAlpha", outlineAlpha);
             _materialInstance.SetFloat("_OutlineGlow", outlineGlow);
@@ -83,9 +81,6 @@ public class CardChoiceButton : MonoBehaviour
     private void DisableAllEffects()
     {
         if (_materialInstance == null) return;
-
-        _materialInstance.DisableKeyword("GLOW_ON");
-        _materialInstance.DisableKeyword("OUTBASE_ON");
 
         _materialInstance.SetFloat("_Glow", 0f);
         _materialInstance.SetFloat("_OutlineAlpha", 0f);
@@ -114,8 +109,6 @@ public class CardChoiceButton : MonoBehaviour
         if (_materialInstance == null) return;
 
         SetSelected(false);
-        _materialInstance.EnableKeyword("GLOW_ON");
-        _materialInstance.EnableKeyword("OUTBASE_ON");
         _materialInstance.SetColor("_OutlineColor", errorOutlineColor);
         _materialInstance.SetFloat("_OutlineAlpha", 0.4f);
         _materialInstance.SetFloat("_OutlineGlow", 55f);
