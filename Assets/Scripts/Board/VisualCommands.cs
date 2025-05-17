@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using ScriptsOfTribute;
 using UnityEngine;
 
@@ -119,3 +120,22 @@ public class ShowAgentActivationCommand : VisualCommand
         yield return null;
     }
 }
+
+public class GainEffectPopupBatchCommand : VisualCommand
+{
+    private readonly List<string> _texts;
+    private readonly ZoneSide _side;
+
+    public GainEffectPopupBatchCommand(List<string> texts, ZoneSide side)
+    {
+        _texts = texts;
+        _side = side;
+    }
+
+    public override IEnumerator Execute()
+    {
+        UIManager.Instance.EffectPopupManager.EnqueuePopupBatch(_texts, _side);
+        yield return null;
+    }
+}
+

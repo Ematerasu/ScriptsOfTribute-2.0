@@ -187,6 +187,7 @@ public class CardManager : MonoBehaviour
                 EffectType.PATRON_CALL => VisualEffectType.PATRON_CALL,
                 EffectType.CREATE_SUMMERSET_SACKING => VisualEffectType.CREATE_CARD,
                 EffectType.DONATE => VisualEffectType.DONATE,
+                EffectType.OPP_DISCARD => VisualEffectType.OPP_DISCARD,
                 _ => VisualEffectType.CHOICE
             };
         }

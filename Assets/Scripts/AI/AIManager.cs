@@ -131,6 +131,10 @@ public class AIManager : MonoBehaviour
     private IEnumerator PlaySingleMoveCoroutine()
     {
         if (!IsAITurn()) yield break;
+        while (completedActionProcessor.IsBusy)
+        {
+            yield return null;
+        }
         var fullGameState = _gameManager.GetCurrentGameState();
         if (_bot is GrpcBotAI grpcBot)
         {
@@ -149,10 +153,10 @@ public class AIManager : MonoBehaviour
                     Debug.LogWarning($"AI returned illegal or null move: {move}");
                     return;
                 }
-                GameManager.Instance.ExecuteMove(move, _aiPlayer);
-                BotIsPlaying = false;
+                StartCoroutine(ExecuteWhenReady(move));
             }
         ));
+        
     }
 
     private IEnumerator PlayFullTurnCoroutine()
@@ -161,6 +165,10 @@ public class AIManager : MonoBehaviour
         bool endTurn = false;
         while (!endTurn)
         {   
+            while (completedActionProcessor.IsBusy)
+            {
+                yield return null;
+            }
             var fullGameState = _gameManager.GetCurrentGameState();
             if (_bot is GrpcBotAI grpcBot)
             {
@@ -211,6 +219,17 @@ public class AIManager : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         BotIsPlaying = false;
         GameManager.Instance.HandleEndTurn(ZoneSide.EnemyPlayer);
+    }
+
+    private IEnumerator ExecuteWhenReady(Move move)
+    {
+        while (completedActionProcessor.IsBusy)
+            yield return null;
+
+        yield return new WaitForSeconds(0.3f);
+
+        GameManager.Instance.ExecuteMove(move, _aiPlayer);
+        BotIsPlaying = false;
     }
 
     private IEnumerator GetMoveFromBotCoroutine(GameState state, List<Move> legalMoves, Action<Move> onResult)

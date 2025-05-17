@@ -31,6 +31,8 @@ public class CompletedActionProcessor : MonoBehaviour
     public bool IsBusy => _visualQueue.Count > 0;
     public int ElementsInQueue => _visualQueue.Count;
 
+    private int _lastProcessedActionIndex = 0;
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F2))
@@ -49,7 +51,7 @@ public class CompletedActionProcessor : MonoBehaviour
         ClearProcessor();
         var humanPlayer = state.GetPlayer(GameManager.Instance.HumanPlayer);
         var aiPlayer = state.GetPlayer(GameManager.Instance.AIPlayer);
-        
+
         _prevPlayer1Hand = humanPlayer.Hand.Select(c => c.UniqueId).ToHashSet();
         _prevPlayer1Played = humanPlayer.Played.Select(c => c.UniqueId).ToHashSet();
         _prevPlayer1Cooldown = humanPlayer.CooldownPile.Select(c => c.UniqueId).ToHashSet();
@@ -67,10 +69,10 @@ public class CompletedActionProcessor : MonoBehaviour
         _prevTavernAvailable = state.TavernAvailableCards.Select(c => c.UniqueId).ToHashSet();
         _prevTavernPile = state.TavernCards.Select(c => c.UniqueId).ToHashSet();
 
-        //Debug.Log("[Snapshot] Initial snapshot set.");
+        _lastProcessedActionIndex = 0;
     }
 
-    public void CompareAndQueueChanges(FullGameState newState)
+    public void CompareAndQueueChanges(FullGameState newState, object? source = null)
     {
         var humanPlayer = newState.GetPlayer(GameManager.Instance.HumanPlayer);
         var aiPlayer = newState.GetPlayer(GameManager.Instance.AIPlayer);
@@ -80,7 +82,7 @@ public class CompletedActionProcessor : MonoBehaviour
         CompareAndQueue(_prevPlayer1Cooldown, humanPlayer.CooldownPile, ZoneType.CooldownPile, ZoneSide.HumanPlayer, _prevPlayer1Cooldown);
         CompareAndQueue(_prevPlayer1Played, humanPlayer.Played, ZoneType.PlayedPile, ZoneSide.HumanPlayer, _prevPlayer1Played);
         CompareAndQueue(_prevPlayer1Hand, humanPlayer.Hand, ZoneType.Hand, ZoneSide.HumanPlayer, _prevPlayer1Hand);
-        
+
         CompareAndQueueAgents(_prevPlayer2Agents, aiPlayer.Agents, humanPlayer.Power - _prevPlayer1Power, ZoneSide.EnemyPlayer, _prevPlayer2Agents);
         CompareAndQueue(_prevPlayer2Draw, aiPlayer.DrawPile, ZoneType.DrawPile, ZoneSide.EnemyPlayer, _prevPlayer2Draw);
         CompareAndQueue(_prevPlayer2Cooldown, aiPlayer.CooldownPile, ZoneType.CooldownPile, ZoneSide.EnemyPlayer, _prevPlayer2Cooldown);
@@ -92,6 +94,50 @@ public class CompletedActionProcessor : MonoBehaviour
 
         _prevPlayer1Power = humanPlayer.Power;
         _prevPlayer2Power = aiPlayer.Power;
+
+        var newActions = newState.CompletedActions.Skip(_lastProcessedActionIndex).ToList();
+        _lastProcessedActionIndex = newState.CompletedActions.Count;
+
+        var effects = new List<string>();
+        UniqueId? currentCard = source as UniqueId?;
+        PatronId? currentPatron = source as PatronId?;
+
+        foreach (var action in newActions)
+        {
+            bool isObviousCardEffect = currentCard != null &&
+                action.SourceCard != null &&
+                action.SourceCard.UniqueId == currentCard;
+
+            bool isObviousPatronEffect = currentPatron != null &&
+                action.SourcePatron != null &&
+                action.SourcePatron == currentPatron;
+
+            if (!InterestingPopupActions.Contains(action.Type) || isObviousCardEffect || isObviousPatronEffect)
+                continue;
+            effects.Add(action.Type switch
+            {
+                CompletedActionType.GAIN_COIN => FormatAmount(action.Amount, "Coin"),
+                CompletedActionType.GAIN_POWER => FormatAmount(action.Amount, "Power"),
+                CompletedActionType.GAIN_PRESTIGE => FormatAmount(action.Amount, "Prestige"),
+                CompletedActionType.OPP_LOSE_PRESTIGE => $"-{action.Amount} Opponent Prestige",
+                CompletedActionType.REPLACE_TAVERN => $"Replace {action.Amount} card(s) in tavern",
+                CompletedActionType.DESTROY_CARD => $"Destroy {action.Amount} card(s)",
+                CompletedActionType.DRAW => $"Draw {action.Amount} card(s)",
+                CompletedActionType.DISCARD => $"Discard {action.Amount} card(s)",
+                CompletedActionType.REFRESH => $"Refresh {action.Amount} card(s)",
+                CompletedActionType.KNOCKOUT => $"Knockout {action.Amount} agent(s)",
+                CompletedActionType.ADD_PATRON_CALLS => $"{action.Amount} Patron Call",
+                CompletedActionType.ADD_SUMMERSET_SACKING => "Create Summerset Sacking",
+                CompletedActionType.HEAL_AGENT => $"+{action.Amount} heal {action.TargetCard.Name}",
+                _ => action.Type.ToString()
+            });
+        }
+        effects = effects.Where(e => e != null).ToList();
+        if (effects.Count > 0)
+        {
+            var side = GameManager.Instance.HumanPlayer == newActions[0].Player ? ZoneSide.HumanPlayer : ZoneSide.EnemyPlayer;
+            _visualQueue.Enqueue(new GainEffectPopupBatchCommand(effects, side));
+        }
     }
 
     private void CompareAndQueue(HashSet<UniqueId> previousSet, List<UniqueCard> currentList, ZoneType zoneType, ZoneSide zoneSide, HashSet<UniqueId> storage)
@@ -219,5 +265,29 @@ public class CompletedActionProcessor : MonoBehaviour
             CardId.BEWILDERMENT => ZoneType.RAJHIN,
             _ => ZoneType.Tavern
         };
+    }
+
+    private static readonly HashSet<CompletedActionType> InterestingPopupActions = new()
+    {
+        CompletedActionType.GAIN_COIN,
+        CompletedActionType.GAIN_POWER,
+        CompletedActionType.GAIN_PRESTIGE,
+        CompletedActionType.OPP_LOSE_PRESTIGE,
+        CompletedActionType.REPLACE_TAVERN,
+        CompletedActionType.DESTROY_CARD,
+        CompletedActionType.DRAW,
+        CompletedActionType.DISCARD,
+        CompletedActionType.REFRESH,
+        CompletedActionType.KNOCKOUT,
+        CompletedActionType.ADD_PATRON_CALLS,
+        CompletedActionType.ADD_SUMMERSET_SACKING,
+        CompletedActionType.HEAL_AGENT
+    };
+    
+    private string FormatAmount(int amount, string label)
+    {
+        if (amount == 0) return null;
+        string sign = amount > 0 ? "+" : "";
+        return $"{sign}{amount} {label}";
     }
 }

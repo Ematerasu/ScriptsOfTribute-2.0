@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour
     [Header("AI Buttons")]
     [SerializeField] private Button aiMoveButton;
     [SerializeField] private Button aiMoveFullTurnButton;
+    [SerializeField] private Toggle autoPlayAIToggle;
 
     [Header("Misc buttons")]
     [SerializeField] private Button settingsButton;
@@ -34,6 +35,7 @@ public class UIManager : MonoBehaviour
 
     [Header("Text objects")]
     [SerializeField] private GameObject YourTurnImage;
+    [SerializeField] public EffectPopupManager EffectPopupManager;
 
     [Header("Patrons")]
     [SerializeField] private GameObject PatronTooltipPanel;
@@ -45,6 +47,7 @@ public class UIManager : MonoBehaviour
 
     [Header("Tooltips")]
     [SerializeField] private CardTooltip cardTooltip;
+    [SerializeField] private RightClickHintController tooltipTip;
     private Coroutine fadeCoroutine;
 
     private void Awake()
@@ -76,6 +79,25 @@ public class UIManager : MonoBehaviour
         {
             HidePatronTooltip();
         }
+
+        if (Input.GetKeyDown(SettingsManager.Instance.keyToggleAutoPlay))
+        {
+            autoPlayAIToggle.isOn = !autoPlayAIToggle.isOn;
+            OnAutoPlayAIToggleChanged();
+        }
+
+    }
+
+    public void OnAutoPlayAIToggleChanged()
+    {
+        bool value = autoPlayAIToggle.isOn;
+        GameManager.Instance.SetAutoPlayAI(value);
+
+        aiMoveButton.interactable = !value;
+        aiMoveFullTurnButton.interactable = !value;
+
+        autoPlayAIToggle.transform.Find("Off").gameObject.SetActive(!value);
+        autoPlayAIToggle.transform.Find("On").gameObject.SetActive(value);
     }
 
     public void ShowSettingsPanel()
@@ -212,6 +234,16 @@ public class UIManager : MonoBehaviour
     public void UpdateCombosPanel(ComboStates comboStates)
     {
         combosPanel.UpdateCombos(comboStates);
+    }
+
+    public void ShowHint(string text = "[RMB] Tooltip")
+    {
+        tooltipTip.Show(text);
+    }
+
+    public void HideHint()
+    {
+        tooltipTip.Hide();
     }
 
     private IEnumerator FadeTooltip(float targetAlpha, float duration)

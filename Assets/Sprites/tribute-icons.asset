@@ -36,7 +36,7 @@ MonoBehaviour:
     m_StrikethroughThickness: 0
     m_TabWidth: 0
   m_Material: {fileID: 3025345772919347685}
-  spriteSheet: {fileID: 2800000, guid: ddfcc6f89cddca343b245df68eedb004, type: 3}
+  spriteSheet: {fileID: 2800000, guid: 779bb977af076894b8d07a6f15848d48, type: 3}
   m_SpriteCharacterTable:
   - m_ElementType: 2
     m_Unicode: 65534
@@ -118,34 +118,39 @@ MonoBehaviour:
     m_GlyphIndex: 15
     m_Scale: 1
     m_Name: Destroy_icon
+  - m_ElementType: 2
+    m_Unicode: 65534
+    m_GlyphIndex: 0
+    m_Scale: 1
+    m_Name: Choice_icon
   m_GlyphTable:
   - m_Index: 0
     m_Metrics:
-      m_Width: 64
-      m_Height: 64
-      m_HorizontalBearingX: -32
-      m_HorizontalBearingY: 50
-      m_HorizontalAdvance: 37
+      m_Width: 128
+      m_Height: 128
+      m_HorizontalBearingX: 0
+      m_HorizontalBearingY: 0
+      m_HorizontalAdvance: 0
     m_GlyphRect:
       m_X: 0
-      m_Y: 192
-      m_Width: 64
-      m_Height: 64
+      m_Y: 0
+      m_Width: 128
+      m_Height: 128
     m_Scale: 1
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
     sprite: {fileID: -333720125, guid: ddfcc6f89cddca343b245df68eedb004, type: 3}
   - m_Index: 1
     m_Metrics:
-      m_Width: 64
-      m_Height: 64
-      m_HorizontalBearingX: -32
-      m_HorizontalBearingY: 50
-      m_HorizontalAdvance: 37
+      m_Width: 128
+      m_Height: 128
+      m_HorizontalBearingX: 0
+      m_HorizontalBearingY: 0
+      m_HorizontalAdvance: 0
     m_GlyphRect:
       m_X: 64
       m_Y: 192
-      m_Width: 64
+      m_Width: 128
       m_Height: 64
     m_Scale: 1
     m_AtlasIndex: 0
@@ -401,7 +406,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: ddfcc6f89cddca343b245df68eedb004, type: 3}
+        m_Texture: {fileID: 2800000, guid: 779bb977af076894b8d07a6f15848d48, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []

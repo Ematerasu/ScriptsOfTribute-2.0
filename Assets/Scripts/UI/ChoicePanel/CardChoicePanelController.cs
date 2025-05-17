@@ -24,22 +24,23 @@ public class CardChoicePanelController : MonoBehaviour
 
     private CanvasGroup canvasGroup;
     private Coroutine fadeRoutine;
-    private bool spaceHeld = false;
+    private Coroutine confirmEnableRoutine;
 
     private void Awake()
     {
         confirmButton.onClick.AddListener(OnConfirmCardChoice);
         cardChoicePanel.SetActive(false);
+        confirmButton.interactable = false;
         canvasGroup = cardChoicePanel.GetComponent<CanvasGroup>();
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.H))
         {
             StartFade(false);
         }
-        else if (Input.GetKeyUp(KeyCode.Space))
+        else if (Input.GetKeyUp(KeyCode.H))
         {
             StartFade(true);
         }
@@ -93,8 +94,11 @@ public class CardChoicePanelController : MonoBehaviour
         }
         minChoices = choice.MinChoices;
         maxChoices = choice.MaxChoices;
-        confirmButton.interactable = minChoices <= selectedCards.Count;
         cardChoicePanel.SetActive(true);
+        if (confirmEnableRoutine != null)
+            StopCoroutine(confirmEnableRoutine);
+        confirmEnableRoutine = StartCoroutine(EnableConfirmButtonAfterDelay(0.5f));
+        UIManager.Instance.ShowHint("Hold [H] to hide");
     }
 
     private void OnCardClicked(UniqueCard card)
@@ -140,10 +144,12 @@ public class CardChoicePanelController : MonoBehaviour
     {
         HideCardChoice();
         GameManager.Instance.MakeChoice(selectedCards);
+        confirmButton.interactable = false;
     }
 
     public void HideCardChoice()
     {
+        UIManager.Instance.HideHint();
         cardChoicePanel.SetActive(false);
     }
 
@@ -165,5 +171,12 @@ public class CardChoicePanelController : MonoBehaviour
             ChoiceFollowUp.COMPLETE_TREASURY => "Choose card to pay for Treasury",
             _ => "Make a choice"
         };
+    }
+
+    private IEnumerator EnableConfirmButtonAfterDelay(float delay)
+    {
+        confirmButton.interactable = false;
+        yield return new WaitForSecondsRealtime(delay);
+        confirmButton.interactable = minChoices <= selectedCards.Count;
     }
 }

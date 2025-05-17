@@ -79,6 +79,22 @@ public class PatronSelectionPanel : MonoBehaviour
         StartCoroutine(HandlePatronPickCoroutine(patron));
     }
 
+    public void OnRandomPickClicked()
+    {
+        if (pickOrder[pickIndex] != GameManager.Instance.HumanPlayer)
+            return;
+
+        if (availablePatrons.Count == 0)
+            return;
+
+        var randomPick = availablePatrons[Random.Range(0, availablePatrons.Count)];
+        foreach (var kv in patronButtons)
+        {
+            kv.Value.GetComponent<Button>().interactable = false;
+        }
+
+        StartCoroutine(HandlePatronPickCoroutine(randomPick));
+    }
     private IEnumerator HandlePatronPickCoroutine(PatronId patron)
     {
         if (!availablePatrons.Contains(patron)) yield break;
@@ -103,7 +119,7 @@ public class PatronSelectionPanel : MonoBehaviour
         if (selectedPatrons.Count == 5)
         {
             panelRoot.SetActive(false);
-            foreach(Transform child in patronButtonContainer)
+            foreach (Transform child in patronButtonContainer)
             {
                 Destroy(child.gameObject);
             }

@@ -47,6 +47,10 @@ public class GameManager : MonoBehaviour
 
     public bool IsHumanPlayersTurn => CurrentTurn == HumanPlayer;
 
+    [SerializeField] private bool autoPlayAI = false;
+    public bool AutoPlayAI => autoPlayAI;
+    public void SetAutoPlayAI(bool value) => autoPlayAI = value;
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -74,17 +78,35 @@ public class GameManager : MonoBehaviour
             Debug.Log(_soTGameManager.GetCurrentGameState().ToString());
             Debug.Log("=============");
         }
-
-        if (Input.GetKeyDown(KeyCode.F3))
+        else if (Input.GetKeyDown(KeyCode.F3))
         {
             var state = _soTGameManager.GetCurrentGameState();
             BoardManager.Instance.DebugCheckHandSync(state);
         }
-        if (Input.GetKeyDown(KeyCode.F4))
+        else if (Input.GetKeyDown(KeyCode.F4))
         {
             Debug.Log(string.Join("\n", _soTGameManager.GetCurrentGameState().CompletedActions.Select(action => action.ToString()).ToList()));
             Debug.Log("=============");
         }
+
+        var keys = SettingsManager.Instance;
+
+        if (Input.GetKeyDown(keys.keyAiMove))
+        {
+            if (_aiManager.IsAITurn())
+                PlaySingleAIMove();
+        }
+
+        if (Input.GetKeyDown(keys.keyEndTurn))
+        {
+            if (IsHumanPlayersTurn && !_soTGameManager.IsChoicePending())
+            {
+                HandleEndTurn(ZoneSide.HumanPlayer);
+            }
+        }
+
+        if (autoPlayAI && CurrentTurn == AIPlayer && !_aiManager.BotIsPlaying)
+            _aiManager.PlaySingleMove();
     }
 
     public void OnEndTurnButtonClicked()

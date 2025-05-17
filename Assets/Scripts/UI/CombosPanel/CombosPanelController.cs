@@ -154,8 +154,11 @@ public class CombosPanelController : MonoBehaviour, IPointerEnterHandler, IPoint
         foreach (var kvp in states.All)
         {
             var patronId = kvp.Key;
+            if (patronId == PatronId.TREASURY)
+                continue;
             var comboState = kvp.Value;
-
+            var column = patronColumns.Find(c => c.patronId == patronId);
+            column.comboLevel.text = comboState.CurrentCombo.ToString();
             bool hasAnyCombo = false;
             for (int i = 1; i <= 3; i++)
             {
@@ -172,8 +175,6 @@ public class CombosPanelController : MonoBehaviour, IPointerEnterHandler, IPoint
             var patronIcon = Instantiate(patronIconPrefab, hiddenView.transform);
             var iconImage = patronIcon.GetComponentInChildren<UnityEngine.UI.Image>();
             iconImage.sprite = LoadPatronSprite(patronId);
-
-            var column = patronColumns.Find(c => c.patronId == patronId);
 
             if (column.header != null)
             {
@@ -215,6 +216,8 @@ public class CombosPanelController : MonoBehaviour, IPointerEnterHandler, IPoint
         if (column.combo4Zone != null)
             foreach (Transform child in column.combo4Zone)
                 Destroy(child.gameObject);
+                
+        column.comboLevel.text = "0";
     }
 
     private Sprite GetSpriteForEffect(UniqueBaseEffect effect)

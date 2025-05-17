@@ -16,8 +16,18 @@ public class SettingsUI : MonoBehaviour
     [Header("Screen Mode Selector")]
     public TextMeshProUGUI screenModeText;
 
+    [Header("Keybindings")]
+    [SerializeField] private KeybindButton aiMoveButton;
+    [SerializeField] private KeybindButton toggleAutoButton;
+    [SerializeField] private KeybindButton endTurnButton;
+    private KeyCode keyAiMoveTemp;
+    private KeyCode keyToggleAutoPlayTemp;
+    private KeyCode keyEndTurnTemp;
+
     [Header("Panels")]
     public GameObject settingsPanel;
+    [SerializeField] private ScrollRect settingsScrollRect;
+    private const string BounceShownKey = "settings_scroll_bounce_shown";
 
     private float originalMaster;
     private float originalMusic;
@@ -40,6 +50,56 @@ public class SettingsUI : MonoBehaviour
         originalMaster = SettingsManager.Instance.masterVolume;
         originalMusic = SettingsManager.Instance.musicVolume;
         originalSFX = SettingsManager.Instance.sfxVolume;
+
+        keyAiMoveTemp = SettingsManager.Instance.keyAiMove;
+        keyToggleAutoPlayTemp = SettingsManager.Instance.keyToggleAutoPlay;
+        keyEndTurnTemp = SettingsManager.Instance.keyEndTurn;
+
+        aiMoveButton.SetKey(keyAiMoveTemp);
+        toggleAutoButton.SetKey(keyToggleAutoPlayTemp);
+        endTurnButton.SetKey(keyEndTurnTemp);
+
+        aiMoveButton.OnKeyAssigned = k => keyAiMoveTemp = k;
+        toggleAutoButton.OnKeyAssigned = k => keyToggleAutoPlayTemp = k;
+        endTurnButton.OnKeyAssigned = k => keyEndTurnTemp = k;
+
+        if (!PlayerPrefs.HasKey(BounceShownKey))
+        {
+            StartCoroutine(HintScrollBounce());
+            PlayerPrefs.SetInt(BounceShownKey, 1);
+            PlayerPrefs.Save();
+        }
+    }
+
+    private IEnumerator HintScrollBounce()
+    {
+        yield return null;
+        yield return new WaitForSeconds(0.2f);
+        float scrollTime = 0.25f;
+        float downTo = 0.85f;
+
+        yield return AnimateScrollTo(downTo, scrollTime);
+
+        yield return new WaitForSeconds(0.3f);
+
+        yield return AnimateScrollTo(1f, scrollTime);
+    }
+
+    private IEnumerator AnimateScrollTo(float target, float duration)
+    {
+        float start = settingsScrollRect.verticalNormalizedPosition;
+        float time = 0f;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            float t = time / duration;
+            float value = Mathf.Lerp(start, target, Mathf.SmoothStep(0f, 1f, t));
+            settingsScrollRect.verticalNormalizedPosition = value;
+            yield return null;
+        }
+
+        settingsScrollRect.verticalNormalizedPosition = target;
     }
 
     public void OnMasterVolumeChanged(float value)
@@ -94,21 +154,37 @@ public class SettingsUI : MonoBehaviour
 
     public void OnApplyClicked()
     {
-        SettingsManager.Instance.ApplySettings();
-        SettingsManager.Instance.SaveSettings();
+        var sm = SettingsManager.Instance;
+
+        sm.keyAiMove = keyAiMoveTemp;
+        sm.keyToggleAutoPlay = keyToggleAutoPlayTemp;
+        sm.keyEndTurn = keyEndTurnTemp;
+
+        sm.ApplySettings();
+        sm.SaveSettings();
         StartCoroutine(FadeOut(settingsPanel));
     }
 
     public void OnExitClicked()
     {
-        SettingsManager.Instance.masterVolume = originalMaster;
-        SettingsManager.Instance.musicVolume = originalMusic;
-        SettingsManager.Instance.sfxVolume = originalSFX;
+        var sm = SettingsManager.Instance;
+
+        sm.masterVolume = originalMaster;
+        sm.musicVolume = originalMusic;
+        sm.sfxVolume = originalSFX;
 
         masterSlider.value = originalMaster;
         musicSlider.value = originalMusic;
         sfxSlider.value = originalSFX;
         AudioManager.Instance.ApplyVolumes();
+
+        keyAiMoveTemp = sm.keyAiMove;
+        keyToggleAutoPlayTemp = sm.keyToggleAutoPlay;
+        keyEndTurnTemp = sm.keyEndTurn;
+
+        aiMoveButton.SetKey(keyAiMoveTemp);
+        toggleAutoButton.SetKey(keyToggleAutoPlayTemp);
+        endTurnButton.SetKey(keyEndTurnTemp);
 
         StartCoroutine(FadeOut(settingsPanel));
     }
@@ -129,7 +205,9 @@ public class SettingsUI : MonoBehaviour
 
         cg.alpha = 0f;
         cg.gameObject.SetActive(false);
+        settingsScrollRect.verticalNormalizedPosition = 1f;
     }
+
     private IEnumerator FadeIn(GameObject panel)
     {
         CanvasGroup cg = panel.GetComponent<CanvasGroup>();
@@ -146,5 +224,13 @@ public class SettingsUI : MonoBehaviour
 
         cg.alpha = 0f;
         cg.gameObject.SetActive(false);
+    }
+
+    public bool IsKeyAlreadyUsed(KeyCode key, KeybindButton.KeybindType except)
+    {
+        return
+            (key == keyAiMoveTemp && except != KeybindButton.KeybindType.AiMove) ||
+            (key == keyToggleAutoPlayTemp && except != KeybindButton.KeybindType.ToggleAutoPlay) ||
+            (key == keyEndTurnTemp && except != KeybindButton.KeybindType.EndTurn);
     }
 }

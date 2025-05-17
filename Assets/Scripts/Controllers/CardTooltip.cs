@@ -108,9 +108,9 @@ public class CardTooltip : MonoBehaviour
             case EffectType.OPP_DISCARD:
                 return Sized($"<color={baseColor}>Opponent discards {valueStr} card(s)</color>");
             case EffectType.RETURN_TOP:
-                return Sized($"<color={baseColor}>Put a card from your cooldown on top of your draw pile</color>");
+                return Sized($"<color={baseColor}>Put {valueStr} card(s) from your cooldown on top of your draw pile</color>");
             case EffectType.RETURN_AGENT_TOP:
-                return Sized($"<color={baseColor}>Put an agent from your cooldown on top of your draw pile</color>");
+                return Sized($"<color={baseColor}>Put {valueStr} agent(s) from your cooldown on top of your draw pile</color>");
             case EffectType.TOSS:
                 return Sized($"<color={baseColor}>Toss {valueStr} card(s)</color>");
             case EffectType.KNOCKOUT:

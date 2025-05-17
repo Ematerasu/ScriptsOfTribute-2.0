@@ -20,6 +20,11 @@ public class SettingsManager : MonoBehaviour
     };
     public int resolutionIndex = 0;
     public int screenModeIndex = 0;
+    
+    [Header("Keybinds")]
+    public KeyCode keyAiMove = KeyCode.A;
+    public KeyCode keyToggleAutoPlay = KeyCode.T;
+    public KeyCode keyEndTurn = KeyCode.Space;
 
     private void Awake()
     {
@@ -36,7 +41,7 @@ public class SettingsManager : MonoBehaviour
                 Mathf.Approximately((float)r.width / r.height, 16f / 9f) &&
                 r.width >= 1280 && r.height >= 720
             )
-            .DistinctBy(r => r.width*10000 + r.height)
+            .DistinctBy(r => r.width * 10000 + r.height)
             .OrderByDescending(r => r.width)
             .ToArray();
     }
@@ -58,6 +63,11 @@ public class SettingsManager : MonoBehaviour
         PlayerPrefs.SetFloat("volume_sfx", sfxVolume);
         PlayerPrefs.SetInt("resolution_index", resolutionIndex);
         PlayerPrefs.SetInt("screenmode_index", screenModeIndex);
+
+        PlayerPrefs.SetInt("key_ai_move", (int)keyAiMove);
+        PlayerPrefs.SetInt("key_toggle_autoplay", (int)keyToggleAutoPlay);
+        PlayerPrefs.SetInt("key_end_turn", (int)keyEndTurn);
+
         PlayerPrefs.Save();
     }
 
@@ -68,5 +78,9 @@ public class SettingsManager : MonoBehaviour
         sfxVolume = PlayerPrefs.GetFloat("volume_sfx", 1f);
         resolutionIndex = PlayerPrefs.GetInt("resolution_index", 0);
         screenModeIndex = PlayerPrefs.GetInt("screenmode_index", 0);
+
+        keyAiMove = (KeyCode)PlayerPrefs.GetInt("key_ai_move", (int)KeyCode.A);
+        keyToggleAutoPlay = (KeyCode)PlayerPrefs.GetInt("key_toggle_autoplay", (int)KeyCode.T);
+        keyEndTurn = (KeyCode)PlayerPrefs.GetInt("key_end_turn", (int)KeyCode.Space);
     }
 }

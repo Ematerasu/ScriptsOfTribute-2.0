@@ -3,7 +3,7 @@ using ScriptsOfTribute;
 using ScriptsOfTribute.Board.Cards;
 using UnityEngine;
 using UnityEngine.EventSystems;
-public class CardController : MonoBehaviour, IPointerClickHandler, IPointerExitHandler
+public class CardController : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, IPointerEnterHandler
 {    
     public Card card;
 
@@ -34,6 +34,12 @@ public class CardController : MonoBehaviour, IPointerClickHandler, IPointerExitH
     public void OnPointerExit(PointerEventData eventData)
     {
         UIManager.Instance.HideCardTooltip();
+        UIManager.Instance.HideHint();
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        UIManager.Instance.ShowHint("[RMB] Tooltip");
     }
 
 

@@ -177,7 +177,7 @@ MonoBehaviour:
   <UniqueId>k__BackingField: 0
   _zoneType: 0
   _zoneSide: 0
-  backSprite: {fileID: -8622259438476403829, guid: 185a04e87a3c77a4f95c5b325dd7d96a, type: 3}
+  backSprite: {fileID: 21300000, guid: 185a04e87a3c77a4f95c5b325dd7d96a, type: 3}
   activationMaterial: {fileID: 2100000, guid: c3c3ee2332a4a24488c2cac57690059d, type: 2}
 --- !u!114 &400410025059632294
 MonoBehaviour:

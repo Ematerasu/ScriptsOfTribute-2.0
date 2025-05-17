@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using ScriptsOfTribute;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameSetupManager : MonoBehaviour
 {

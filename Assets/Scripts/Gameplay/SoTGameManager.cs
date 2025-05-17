@@ -79,7 +79,7 @@ public class SoTGameManager : MonoBehaviour
         var newState = _api.GetFullGameState();
         RefreshCache(newState);            
         BoardManager.Instance.UpdateBoard(newState, UpdateReason.PLAY_CARD);
-        completedActionProcessor.CompareAndQueueChanges(newState);
+        completedActionProcessor.CompareAndQueueChanges(newState, card.UniqueId);
         return endGame;
     }
 
@@ -91,7 +91,7 @@ public class SoTGameManager : MonoBehaviour
         var newState = _api.GetFullGameState();
         RefreshCache(newState);
         BoardManager.Instance.UpdateBoard(newState, UpdateReason.BUY_CARD);
-        completedActionProcessor.CompareAndQueueChanges(newState);
+        completedActionProcessor.CompareAndQueueChanges(newState, card.UniqueId);
         AudioManager.Instance.PlayCardBuySfx();
         return endGame;
     }
@@ -104,7 +104,7 @@ public class SoTGameManager : MonoBehaviour
         var newState = _api.GetFullGameState();
         RefreshCache(newState);
         BoardManager.Instance.UpdateBoard(newState, UpdateReason.AGENT_ACTIVATION);
-        completedActionProcessor.CompareAndQueueChanges(newState);
+        completedActionProcessor.CompareAndQueueChanges(newState, agent.UniqueId);
         return endGame;
     }
 
@@ -128,7 +128,7 @@ public class SoTGameManager : MonoBehaviour
         var newState = _api.GetFullGameState();
         RefreshCache(newState);
         BoardManager.Instance.UpdateBoard(newState, UpdateReason.PATRON_ACTIVATION);
-        completedActionProcessor.CompareAndQueueChanges(newState);
+        completedActionProcessor.CompareAndQueueChanges(newState, patron);
         return endGame;
     }
 
@@ -136,11 +136,18 @@ public class SoTGameManager : MonoBehaviour
     public EndGameState? MakeChoice(List<UniqueCard> selectedCards)
 #pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     {
+        var choiceContext = _api.PendingChoice.Context;
         var endGame = _api.MakeChoice(selectedCards);
         var newState = _api.GetFullGameState();
         RefreshCache(newState);
         BoardManager.Instance.UpdateBoard(newState, UpdateReason.CHOICE_MADE);
-        completedActionProcessor.CompareAndQueueChanges(newState);
+        object? source = choiceContext.ChoiceType switch
+        {
+            ChoiceType.PATRON_ACTIVATION => choiceContext.PatronSource,
+            ChoiceType.CARD_EFFECT or ChoiceType.EFFECT_CHOICE => choiceContext.CardSource?.UniqueId,
+            _ => null
+        };
+        completedActionProcessor.CompareAndQueueChanges(newState, source);
         return endGame;
     }
 
@@ -148,11 +155,18 @@ public class SoTGameManager : MonoBehaviour
     public EndGameState? MakeChoice(UniqueEffect selectedEffect)
 #pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     {
+        var choiceContext = _api.PendingChoice.Context;
         var endGame = _api.MakeChoice(selectedEffect);
         var newState = _api.GetFullGameState();
         RefreshCache(newState);
         BoardManager.Instance.UpdateBoard(newState, UpdateReason.CHOICE_MADE);
-        completedActionProcessor.CompareAndQueueChanges(newState);
+        object? source = choiceContext.ChoiceType switch
+        {
+            ChoiceType.PATRON_ACTIVATION => choiceContext.PatronSource,
+            ChoiceType.CARD_EFFECT or ChoiceType.EFFECT_CHOICE => choiceContext.CardSource?.UniqueId,
+            _ => null
+        };
+        completedActionProcessor.CompareAndQueueChanges(newState, source);
         return endGame;
     }
 

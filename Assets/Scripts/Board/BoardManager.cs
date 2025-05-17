@@ -230,6 +230,7 @@ public class BoardManager : MonoBehaviour
                 .setEase(LeanTweenType.easeInOutSine)
                 .setOnComplete(() =>
                 {
+                    card.SetVisible(false);
                     cardObj.transform.SetParent(drawTransform, false);
                     cardObj.transform.localPosition = Vector3.zero;
                     card.SetZoneInfo(ZoneType.DrawPile, zoneSide);

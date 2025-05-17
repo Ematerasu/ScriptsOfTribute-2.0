@@ -7,6 +7,15 @@ A Unity-based graphical client for playing **Scripts of Tribute** – This tool 
 - connect to external bots over gRPC (e.g., written in Python),
 - visualize and debug matches with a rich UI.
 
+Game view:
+![](Docs\screenshots\GameView.png)
+
+Choice panel view:
+![](Docs\screenshots\ChoicePanel.png)
+
+Summary at the end of the game:
+![](Docs\screenshots\GameEnd.png)
+
 ---
 
 ## ⚠️ Note: Missing Required Assets
@@ -24,13 +33,15 @@ These are under a paid license I own and **will not be redistributed**. If you a
 
 ## 🤖 Adding Your Own Bot (C#)
 
-1. Implement a bot class inheriting from `AI`, and override all the necessery methods
+1. Implement a bot class inheriting from `AI`, and override all the necessary methods
 
 2. Compile your bot as a `.dll` file.
 
 3. Drop the DLL into the following folder: `Scripts of Tribute 2.0_Data/StreamingAssets/Bots`
 
 4. It will appear in the Unity client’s bot selection panel.
+
+![Panel](Docs\screenshots\GameSetup.png)
 
 ---
 
@@ -55,7 +66,7 @@ These are under a paid license I own and **will not be redistributed**. If you a
 
 * Visual diffs between game states for smooth updates
 
-* Manual seed control for reproducible AI matches
+* Manual seed control for reproducible AI matches (deterministic testing)
 
 ## 🧪 For Bot Developers
 * Use AI Move or AI Move Whole Turn buttons to test bot decisions.
