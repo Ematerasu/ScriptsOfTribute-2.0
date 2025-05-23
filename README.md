@@ -8,13 +8,13 @@ A Unity-based graphical client for playing **Scripts of Tribute** – This tool 
 - visualize and debug matches with a rich UI.
 
 Game view:
-![](Docs\screenshots\GameView.png)
+![](Docs/screenshots/GameView.png)
 
 Choice panel view:
-![](Docs\screenshots\ChoicePanel.png)
+![](Docs/screenshots/ChoicePanel.png)
 
 Summary at the end of the game:
-![](Docs\screenshots\GameEnd.png)
+![](Docs/screenshots/GameEnd.png)
 
 ---
 
@@ -41,7 +41,7 @@ These are under a paid license I own and **will not be redistributed**. If you a
 
 4. It will appear in the Unity client’s bot selection panel.
 
-![Panel](Docs\screenshots\GameSetup.png)
+![Panel](Docs/screenshots/GameSetup.png)
 
 ---
 
