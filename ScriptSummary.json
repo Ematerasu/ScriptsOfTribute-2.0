@@ -18,6 +18,7 @@
                 "public IEnumerator SelectPatronCoroutine(List<PatronId> availablePatrons, int round, Action<PatronId> onResult)",
                 "private IEnumerator PlaySingleMoveCoroutine()",
                 "private IEnumerator PlayFullTurnCoroutine()",
+                "private IEnumerator ExecuteWhenReady(Move move)",
                 "private IEnumerator GetMoveFromBotCoroutine(GameState state, List<Move> legalMoves, Action<Move> onResult)",
                 "public IEnumerator GameEndCoroutine(EndGameState result, FullGameState? finalBoardState)",
                 "public AI CreateBotByType(BotType botType)",
@@ -149,12 +150,13 @@
                 "private void Update()",
                 "private void ClearProcessor()",
                 "public void SetInitialSnapshot(FullGameState state)",
-                "public void CompareAndQueueChanges(FullGameState newState)",
+                "public void CompareAndQueueChanges(FullGameState newState, object? source = null)",
                 "private void CompareAndQueue(HashSet<UniqueId> previousSet, List<UniqueCard> currentList, ZoneType zoneType, ZoneSide zoneSide, HashSet<UniqueId> storage)",
                 "private void CompareAndQueueAgents(HashSet<(UniqueId, bool, int)> previousSet, List<SerializedAgent> currentAgents, int enemyPowerDiff, ZoneSide side, HashSet<(UniqueId, bool, int)> storage)",
                 "private void Start()",
                 "private IEnumerator ConsumeQueue()",
-                "private ZoneType GetSourceOfCreatedCard(UniqueCard card)"
+                "private ZoneType GetSourceOfCreatedCard(UniqueCard card)",
+                "private string FormatAmount(int amount, string label)"
             ],
             "fields": [
                 "private Queue<VisualCommand> _visualQueue = new();",
@@ -171,7 +173,8 @@
                 "private HashSet<UniqueId> _prevTavernAvailable = new();",
                 "private HashSet<UniqueId> _prevTavernPile = new();",
                 "public bool IsBusy => _visualQueue.Count > 0;",
-                "public int ElementsInQueue => _visualQueue.Count;"
+                "public int ElementsInQueue => _visualQueue.Count;",
+                "private int _lastProcessedActionIndex = 0;"
             ]
         },
         {
@@ -247,6 +250,15 @@
             ]
         },
         {
+            "fileName": "VisualCommands.cs",
+            "path": "Assets\\Scripts\\Board\\VisualCommands.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "GainEffectPopupBatchCommand",
+            "methods": [],
+            "fields": []
+        },
+        {
             "fileName": "CameraDrag.cs",
             "path": "Assets\\Scripts\\Camera\\CameraDrag.cs",
             "namespaceName": "",
@@ -280,8 +292,6 @@
                 "public bool IsVisible()",
                 "public void InitializeCard(UniqueCard card)",
                 "public void UpdateAgentHealth(SerializedAgent agent)",
-                "private void LoadCardSprite(PatronId deck, CardId cardId)",
-                "private void ClearTextFields()",
                 "public void SetZoneInfo(ZoneType type, ZoneSide side)",
                 "public bool IsInPlayerHand()",
                 "public bool IsInEnemyHand()",
@@ -294,14 +304,11 @@
             "fields": [
                 "public SpriteRenderer spriteRenderer;",
                 "public TextMeshPro hpText;",
-                "public Vector3 DefaultScale => _scale;",
-                "public Vector3 ShrinkedScale => _scale * 0.6f;",
                 "private UniqueCard _card;",
                 "[field: SerializeField] private bool _isAnimating = false;",
                 "private bool _isVisible = true;",
                 "private Sprite _originalSprite;",
                 "private Material _originalMaterial;",
-                "private Vector3 _scale;",
                 "[SerializeField] private ZoneType _zoneType; [SerializeField] private ZoneSide _zoneSide; public ZoneType ZoneType => _zoneType;",
                 "public ZoneSide ZoneSide => _zoneSide;",
                 "[SerializeField] private Sprite backSprite; [SerializeField] private Material activationMaterial; private Vector3 _layoutPosition;"
@@ -314,7 +321,6 @@
             "kind": "class",
             "typeName": "CardLayoutBehaviour",
             "methods": [
-                "private void Awake()",
                 "private void Start()",
                 "public void ApplyLayout()",
                 "public void OnPointerEnter(PointerEventData eventData)",
@@ -327,7 +333,62 @@
                 "private int _originalSortingOrder;",
                 "private bool _isHovered;",
                 "private SpriteRenderer _spriteRenderer;",
-                "[SerializeField] private TextMeshPro _hpText; [SerializeField] private float defaultPlayerRotation = 0f; [SerializeField] private float defaultEnemyRotation = 180f; [SerializeField] private float scaleFactor = 1.5f; [SerializeField] private int hoverSortingOrder = 100; private Card _card;"
+                "[SerializeField] private TextMeshPro _hpText; [SerializeField] private float defaultPlayerRotation = 0f; [SerializeField] private float defaultEnemyRotation = 180f; [SerializeField] private float scaleFactor = 1.5f; [SerializeField] private int hoverSortingOrder = 100; private SortingGroup sortingGroup;",
+                "private Card _card;"
+            ]
+        },
+        {
+            "fileName": "CardManager.cs",
+            "path": "Assets\\Scripts\\Cards\\CardManager.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "CardManager",
+            "methods": [
+                "[Header(\"Deck Card Prefabs\")] [SerializeField] private GameObject[] DeckPrefabs; // 9 prefabów, dla każdego decku [Header(\"Effect Icon Mapping\")] [SerializeField] private List<EffectPrefabPairs> EffectIconsList; [Header(\"Effect Prefab\")] [SerializeField] private GameObject BasicEffectPrefab; [SerializeField] private GameObject ComboEffectPrefab; [Header(\"Card Settings\")] [SerializeField] public float CardScale = 1.0f; [SerializeField] private List<DeckScaleOverride> deckScaleOverrides; public float GetDefaultScaleForDeck(PatronId deck) => _overrideDict.TryGetValue(deck, out var s) ? s : CardScale;",
+                "private void Awake()",
+                "private void InitializeEffectIcons()",
+                "public GameObject CreateCardVisual(UniqueCard cardData)",
+                "private void ConfigureCard(GameObject cardObject, UniqueCard cardData)",
+                "private List<UniqueBaseEffect> GetDecomposedEffects(UniqueComplexEffect?[] effects, int index)",
+                "private List<UniqueBaseEffect> GetComboEffects(UniqueComplexEffect?[] effects)",
+                "private void ConfigureEffects(Transform container, List<UniqueBaseEffect> effects, bool IsBasic=true)",
+                "private void ConfigureEffect(GameObject effectObject, UniqueBaseEffect effect)",
+                "private VisualEffectType MapEffectTypeToVisual(UniqueBaseEffect effect)",
+                "private string GetEffectText(UniqueBaseEffect effect)"
+            ],
+            "fields": []
+        },
+        {
+            "fileName": "CardManager.cs",
+            "path": "Assets\\Scripts\\Cards\\CardManager.cs",
+            "namespaceName": "",
+            "kind": "enum",
+            "typeName": "VisualEffectType",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "CardManager.cs",
+            "path": "Assets\\Scripts\\Cards\\CardManager.cs",
+            "namespaceName": "",
+            "kind": "struct",
+            "typeName": "EffectPrefabPairs",
+            "methods": [],
+            "fields": [
+                "public VisualEffectType Type;",
+                "public Sprite Icon;"
+            ]
+        },
+        {
+            "fileName": "CardManager.cs",
+            "path": "Assets\\Scripts\\Cards\\CardManager.cs",
+            "namespaceName": "",
+            "kind": "struct",
+            "typeName": "DeckScaleOverride",
+            "methods": [],
+            "fields": [
+                "public PatronId Deck;",
+                "public float    Scale;"
             ]
         },
         {
@@ -339,6 +400,7 @@
             "methods": [
                 "public void OnPointerClick(PointerEventData eventData)",
                 "public void OnPointerExit(PointerEventData eventData)",
+                "public void OnPointerEnter(PointerEventData eventData)",
                 "private bool IsInPileZone(Card card)",
                 "private void HandleLeftClick()",
                 "private void HandleRightClick()"
@@ -426,6 +488,7 @@
             "kind": "class",
             "typeName": "GameManager",
             "methods": [
+                "public void SetAutoPlayAI(bool value) => autoPlayAI = value;",
                 "private void Awake()",
                 "public void StartGameWithPatrons(PatronId[] patrons, ulong seed = 0)",
                 "private void Update()",
@@ -449,7 +512,8 @@
             "fields": [
                 "[SerializeField] private SoTGameManager _soTGameManager; [SerializeField] private UIManager _uiManager; // [SerializeField] private AudioManager _audioManager;",
                 "[SerializeField] private AIManager _aiManager; [SerializeField] private PatronManager _patronManager; [SerializeField] private PlayerEnum CurrentTurn = PlayerEnum.NO_PLAYER_SELECTED; [SerializeField] public PlayerEnum HumanPlayer = PlayerEnum.PLAYER1; [SerializeField] public PlayerEnum AIPlayer => HumanPlayer == PlayerEnum.PLAYER1 ? PlayerEnum.PLAYER2 : PlayerEnum.PLAYER1; [Header(\"Debug mode\")] [SerializeField] private bool debugMode = false; [SerializeField] private bool debugPlayerStartsFirst = true; [SerializeField] private List<CardId> debugPlayer1Hand = new(); [SerializeField] private List<CardId> debugPlayer2Hand = new(); [SerializeField] private List<CardId> debugPlayer1Agents = new(); [SerializeField] private List<CardId> debugPlayer2Agents = new(); [SerializeField] private List<CardId> debugPlayer1DrawPile = new(); [SerializeField] private List<CardId> debugPlayer2DrawPile = new(); [SerializeField] private List<CardId> debugTavernCards = new(); [SerializeField] private List<PatronId> debugPatrons = new(); [SerializeField] private int debugPlayer1Prestige = 0; [SerializeField] private int debugPlayer2Prestige = 0; [SerializeField] private int debugPlayer1Power = 0; [SerializeField] private int debugPlayer2Power = 0; [SerializeField] private int debugPlayer1Coins = 0; [SerializeField] private int debugPlayer2Coins = 0; public bool IsDebugMode => debugMode;",
-                "public bool IsHumanPlayersTurn => CurrentTurn == HumanPlayer;"
+                "public bool IsHumanPlayersTurn => CurrentTurn == HumanPlayer;",
+                "[SerializeField] private bool autoPlayAI = false; public bool AutoPlayAI => autoPlayAI;"
             ]
         },
         {
@@ -472,7 +536,8 @@
                 "[SerializeField] private bool botDebugMode = false; public bool IsBotDebugMode => botDebugMode;",
                 "private ulong _seed = 0;",
                 "private PlayerEnum _humanPlayer;",
-                "private PlayerEnum _botPlayer;"
+                "private PlayerEnum _botPlayer;",
+                "public PlayerEnum HumanPlayer => _humanPlayer;"
             ]
         },
         {
@@ -500,6 +565,15 @@
             ]
         },
         {
+            "fileName": "GlobalSceneLoader.cs",
+            "path": "Assets\\Scripts\\Infrastructure\\GlobalSceneLoader.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "GlobalSceneLoader",
+            "methods": [],
+            "fields": []
+        },
+        {
             "fileName": "PatronClickable.cs",
             "path": "Assets\\Scripts\\Patrons\\PatronClickable.cs",
             "namespaceName": "",
@@ -509,6 +583,7 @@
                 "public void Initialize(PatronId id)",
                 "public void OnPointerClick(PointerEventData eventData)",
                 "public void OnPointerExit(PointerEventData eventData)",
+                "public void OnPointerEnter(PointerEventData eventData)",
                 "public void UpdatePatronCircleRotation()",
                 "private string GetTooltipText(PatronId id)"
             ],
@@ -602,6 +677,23 @@
             ]
         },
         {
+            "fileName": "RightClickHintController.cs",
+            "path": "Assets\\Scripts\\UI\\RightClickHintController.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "RightClickHintController",
+            "methods": [
+                "public void Show(object owner, string text = \"[RMB] Tooltip\")",
+                "public void Hide(object owner)",
+                "private IEnumerator FadeCanvas(float targetAlpha, bool enableInteraction)"
+            ],
+            "fields": [
+                "[Header(\"UI References\")] [SerializeField] private CanvasGroup canvasGroup; [SerializeField] private TextMeshProUGUI label; [Header(\"Fade Settings\")] [SerializeField] private float fadeDuration = 0.2f; private Coroutine currentRoutine;",
+                "private object currentOwner = null;",
+                "private string currentText = null;"
+            ]
+        },
+        {
             "fileName": "UIManager.cs",
             "path": "Assets\\Scripts\\UI\\UIManager.cs",
             "namespaceName": "",
@@ -610,6 +702,7 @@
             "methods": [
                 "private void Awake()",
                 "private void Update()",
+                "public void OnAutoPlayAIToggleChanged()",
                 "public void ShowSettingsPanel()",
                 "public void ShowPatronDraft(List<PatronId> patrons)",
                 "public void ShowAiButtons(bool show)",
@@ -625,11 +718,13 @@
                 "public void CardLookup(ZoneSide side, PileType startingPile)",
                 "public void InitializeCombosPanel(PatronId[] patrons)",
                 "public void UpdateCombosPanel(ComboStates comboStates)",
+                "public void ShowHint(object owner, string text = \"[RMB] Tooltip\")",
+                "public void HideHint(object owner)",
                 "private IEnumerator FadeTooltip(float targetAlpha, float duration)",
                 "private IEnumerator FadeIn(GameObject panel, float fadeDuration)"
             ],
             "fields": [
-                "[Header(\"AI Buttons\")] [SerializeField] private Button aiMoveButton; [SerializeField] private Button aiMoveFullTurnButton; [Header(\"Misc buttons\")] [SerializeField] private Button settingsButton; [SerializeField] private Button homeButton; [Header(\"Choice Panels\")] [SerializeField] private CardChoicePanelController cardChoicePanel; [SerializeField] private EffectChoicePanelController effectChoicePanel; [SerializeField] private PatronSelectionPanel patronSelectionPanel; [Header(\"Normal panels\")] [SerializeField] private CardLookupPanelController cardLookupPanel; [SerializeField] private CombosPanelController combosPanel; [SerializeField] private BotLogPanelController botLogPanel; [SerializeField] private GameObject settingsPanel; [Header(\"Text objects\")] [SerializeField] private GameObject YourTurnImage; [Header(\"Patrons\")] [SerializeField] private GameObject PatronTooltipPanel; [SerializeField] private TextMeshProUGUI PatronTooltipTitle; [SerializeField] private TextMeshProUGUI PatronTooltipText; [Header(\"End game\")] [SerializeField] private EndGameController endGameController; [Header(\"Tooltips\")] [SerializeField] private CardTooltip cardTooltip; private Coroutine fadeCoroutine;"
+                "[Header(\"AI Buttons\")] [SerializeField] private Button aiMoveButton; [SerializeField] private Button aiMoveFullTurnButton; [SerializeField] private Toggle autoPlayAIToggle; [Header(\"Misc buttons\")] [SerializeField] private Button settingsButton; [SerializeField] private Button homeButton; [Header(\"Choice Panels\")] [SerializeField] private CardChoicePanelController cardChoicePanel; [SerializeField] private EffectChoicePanelController effectChoicePanel; [SerializeField] private PatronSelectionPanel patronSelectionPanel; [Header(\"Normal panels\")] [SerializeField] private CardLookupPanelController cardLookupPanel; [SerializeField] private CombosPanelController combosPanel; [SerializeField] private BotLogPanelController botLogPanel; [SerializeField] private GameObject settingsPanel; [Header(\"Text objects\")] [SerializeField] private GameObject YourTurnImage; [SerializeField] public EffectPopupManager EffectPopupManager; [Header(\"Patrons\")] [SerializeField] private GameObject PatronTooltipPanel; [SerializeField] private TextMeshProUGUI PatronTooltipTitle; [SerializeField] private TextMeshProUGUI PatronTooltipText; [Header(\"End game\")] [SerializeField] private EndGameController endGameController; [Header(\"Tooltips\")] [SerializeField] private CardTooltip cardTooltip; [SerializeField] private RightClickHintController tooltipTip; private Coroutine fadeCoroutine;"
             ]
         },
         {
@@ -639,6 +734,32 @@
             "kind": "class",
             "typeName": "CardUtils",
             "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "EffectPopupManager.cs",
+            "path": "Assets\\Scripts\\Visuals\\EffectPopupManager.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "EffectPopupManager",
+            "methods": [
+                "public void EnqueuePopupBatch(List<string> texts, ZoneSide side)",
+                "private IEnumerator ProcessQueue()"
+            ],
+            "fields": [
+                "[SerializeField] private GameObject popupPrefab; [SerializeField] private float popupLifetime = 1.3f; [SerializeField] private float delayBetweenBatches = 0.2f; [SerializeField] private float delayBetweenPopup = 0.01f; [SerializeField] private Transform playerContainer; [SerializeField] private Transform enemyContainer; private bool _isShowing = false;"
+            ]
+        },
+        {
+            "fileName": "PopupEffect.cs",
+            "path": "Assets\\Scripts\\Visuals\\PopupEffect.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "PopupEffect",
+            "methods": [
+                "[SerializeField] private TextMeshProUGUI popupText; [SerializeField] private CanvasGroup canvasGroup; public void Setup(string text)",
+                "public IEnumerator PlayQueuedAnimation(float lifetime)"
+            ],
             "fields": []
         },
         {
@@ -1377,6 +1498,7 @@
                 "[SerializeField] private Material OGMaterial; private void Awake()",
                 "public void Initialize(UniqueCard card, System.Action<UniqueCard> onClick)",
                 "private void HandleClick()",
+                "public void SetSelectedExternally(bool selected)",
                 "private void SetSelected(bool selected)",
                 "private void DisableAllEffects()",
                 "private void LoadCardSprite(PatronId deck, CardId cardId)",
@@ -1403,7 +1525,8 @@
                 "private void OnCardClicked(UniqueCard card)",
                 "public void OnConfirmCardChoice()",
                 "public void HideCardChoice()",
-                "private string ToDisplayString(ChoiceFollowUp followUp)"
+                "private string ToDisplayString(ChoiceFollowUp followUp)",
+                "private IEnumerator EnableConfirmButtonAfterDelay(float delay)"
             ],
             "fields": [
                 "[Header(\"UI Elements\")] [SerializeField] private GameObject cardChoicePanel; [SerializeField] private TextMeshProUGUI cardChoiceTitle; [SerializeField] private Transform cardContentParent; [SerializeField] private GameObject cardChoiceButtonPrefab; [SerializeField] private ChoiceProgressSlider progressSlider; [SerializeField] private Button confirmButton; private SerializedChoice currentChoice;",
@@ -1412,7 +1535,7 @@
                 "private int maxChoices;",
                 "private CanvasGroup canvasGroup;",
                 "private Coroutine fadeRoutine;",
-                "private bool spaceHeld = false;"
+                "private Coroutine confirmEnableRoutine;"
             ]
         },
         {
@@ -1534,7 +1657,8 @@
                 "public PatronId patronId;",
                 "public Transform combo2Zone;",
                 "public Transform combo3Zone;",
-                "public Transform combo4Zone;"
+                "public Transform combo4Zone;",
+                "public TextMeshProUGUI comboLevel;"
             ]
         },
         {
@@ -1618,10 +1742,16 @@
                 "public void Setup(BotData data, GameSetupPanelController setupController)",
                 "public void OnPointerClick(PointerEventData eventData)",
                 "public void Select()",
-                "public void Deselect()"
+                "public void Deselect()",
+                "private void ShowError(string message)",
+                "private void HideError()",
+                "private IEnumerator HideErrorAfterDelay(float seconds)"
             ],
             "fields": [
-                "[Header(\"UI Elementy\")] [SerializeField] private TextMeshProUGUI nameText; [SerializeField] private TextMeshProUGUI shortDescriptionText; [SerializeField] private TextMeshProUGUI longDescriptionText; [SerializeField] private Image avatar; [SerializeField] private GameObject selectionHighlight; private GameSetupPanelController controller;"
+                "[Header(\"UI Elementy\")] [SerializeField] private TextMeshProUGUI nameText; [SerializeField] private TextMeshProUGUI shortDescriptionText; [SerializeField] private TextMeshProUGUI longDescriptionText; [SerializeField] private Image avatar; [SerializeField] private GameObject selectionHighlight; [SerializeField] private GameObject ErrorGameObject; [SerializeField] private TextMeshProUGUI errorText; private GameSetupPanelController controller;",
+                "private Coroutine hideErrorCoroutine;",
+                "private bool isGrpcBot => AIClass == typeof(UnityBots.GrpcBotAI);",
+                "private string grpcHostPath => Path.Combine(Application.streamingAssetsPath, \"GrpcHost.exe\");"
             ]
         },
         {
@@ -1688,13 +1818,43 @@
             ]
         },
         {
+            "fileName": "KeybindButton.cs",
+            "path": "Assets\\Scripts\\UI\\MainMenuUI\\KeybindButton.cs",
+            "namespaceName": "",
+            "kind": "class",
+            "typeName": "KeybindButton",
+            "methods": [],
+            "fields": []
+        },
+        {
+            "fileName": "KeybindButton.cs",
+            "path": "Assets\\Scripts\\UI\\MainMenuUI\\KeybindButton.cs",
+            "namespaceName": "",
+            "kind": "enum",
+            "typeName": "KeybindType",
+            "methods": [
+                "public void OnPointerClick(PointerEventData eventData)",
+                "public void SetKey(KeyCode current)",
+                "private void Update()",
+                "private void ApplyKey(KeyCode key)",
+                "private void OnEnable()",
+                "public void RefreshLabel()"
+            ],
+            "fields": [
+                "public SettingsUI settingsUI;",
+                "public KeybindType keyType;",
+                "public TextMeshProUGUI labelText;",
+                "private bool isWaitingForKey = false;"
+            ]
+        },
+        {
             "fileName": "MainMenuController.cs",
             "path": "Assets\\Scripts\\UI\\MainMenuUI\\MainMenuController.cs",
             "namespaceName": "",
             "kind": "class",
             "typeName": "MainMenuController",
             "methods": [
-                "[Header(\"Panele\")] [SerializeField] private CanvasGroup mainMenuPanel; [SerializeField] private CanvasGroup deckBrowserPanel; [SerializeField] private CanvasGroup settingsPanel; [SerializeField] private CanvasGroup creditsPanel; [SerializeField] private CanvasGroup cardsCarouselPanel; [Header(\"Ustawienia animacji\")] [SerializeField] private float fadeDuration = 0.3f; [Header(\"External links\")] [SerializeField] private string discordUrl = \"https://discord.gg/\"; [SerializeField] private string githubUrl = \"https://github.com/ScriptsOfTribute\"; [SerializeField] private string websiteUrl = \"https://cog2025.inesc-id.pt/tales-of-tribute/\"; [SerializeField] private string esoHubUrl = \"https://eso-hub.com/en/tales-of-tribute-card-game\"; private void Start()",
+                "[Header(\"Panele\")] [SerializeField] private CanvasGroup mainMenuPanel; [SerializeField] private CanvasGroup deckBrowserPanel; [SerializeField] private CanvasGroup settingsPanel; [SerializeField] private CanvasGroup creditsPanel; [SerializeField] private CanvasGroup cardsCarouselPanel; [Header(\"Ustawienia animacji\")] [SerializeField] private float fadeDuration = 0.3f; [Header(\"External links\")] [SerializeField] private string discordUrl = \"https://discord.com/invite/RSZjNHuHGm\"; [SerializeField] private string githubUrl = \"https://github.com/ScriptsOfTribute\"; [SerializeField] private string websiteUrl = \"https://cog2025.inesc-id.pt/tales-of-tribute/\"; [SerializeField] private string esoHubUrl = \"https://eso-hub.com/en/tales-of-tribute-card-game\"; private void Start()",
                 "public void OnPlayVsBotClicked()",
                 "public void OnDeckBrowserClicked()",
                 "public void OnSettingsClicked()",
@@ -1727,7 +1887,11 @@
                 "[Header(\"Display\")] public Resolution[] supportedResolutions;",
                 "public FullScreenMode[] supportedModes = new[] {",
                 "public int resolutionIndex = 0;",
-                "public int screenModeIndex = 0;"
+                "public int screenModeIndex = 0;",
+                "[Header(\"Keybinds\")] public KeyCode keyAiMove = KeyCode.A;",
+                "public KeyCode keyAiMoveTurn = KeyCode.S;",
+                "public KeyCode keyToggleAutoPlay = KeyCode.T;",
+                "public KeyCode keyEndTurn = KeyCode.Space;"
             ]
         },
         {
@@ -1738,7 +1902,10 @@
             "typeName": "SettingsUI",
             "methods": [
                 "private void Start()",
+                "private void Update()",
                 "private void OnEnable()",
+                "private IEnumerator HintScrollBounce()",
+                "private IEnumerator AnimateScrollTo(float target, float duration)",
                 "public void OnMasterVolumeChanged(float value)",
                 "public void OnMusicVolumeChanged(float value)",
                 "public void OnSFXVolumeChanged(float value)",
@@ -1753,7 +1920,8 @@
                 "public void OnApplyClicked()",
                 "public void OnExitClicked()",
                 "private IEnumerator FadeOut(GameObject panel)",
-                "private IEnumerator FadeIn(GameObject panel)"
+                "private IEnumerator FadeIn(GameObject panel)",
+                "public bool IsKeyAlreadyUsed(KeyCode key, KeybindButton.KeybindType except)"
             ],
             "fields": [
                 "[Header(\"Audio Sliders\")] public Slider masterSlider;",
@@ -1761,8 +1929,12 @@
                 "public Slider sfxSlider;",
                 "[Header(\"Resolution Selector\")] public TextMeshProUGUI resolutionText;",
                 "[Header(\"Screen Mode Selector\")] public TextMeshProUGUI screenModeText;",
+                "[Header(\"Keybindings\")] [SerializeField] private KeybindButton aiMoveButton; [SerializeField] private KeybindButton aiMoveTurnButton; [SerializeField] private KeybindButton toggleAutoButton; [SerializeField] private KeybindButton endTurnButton; private KeyCode keyAiMoveTemp;",
+                "private KeyCode keyAiMoveTurnTemp;",
+                "private KeyCode keyToggleAutoPlayTemp;",
+                "private KeyCode keyEndTurnTemp;",
                 "[Header(\"Panels\")] public GameObject settingsPanel;",
-                "private float originalMaster;",
+                "[SerializeField] private ScrollRect settingsScrollRect; private float originalMaster;",
                 "private float originalMusic;",
                 "private float originalSFX;"
             ]
@@ -1807,14 +1979,10 @@
             "kind": "class",
             "typeName": "PatronGlowPulsing",
             "methods": [
-                "public void Initialize(Color color, float glow, float speed = 1f)"
+                "public void Initialize(Color color)"
             ],
             "fields": [
-                "private Material runtimeMat;",
-                "private float speed = 1f;",
-                "private Color targetColor;",
-                "private float targetGlow;",
-                "private float startTimeOffset;"
+                "private Material runtimeMat;"
             ]
         },
         {
@@ -1828,6 +1996,7 @@
                 "private void SetUpUI()",
                 "private void RefreshUI()",
                 "private void OnPatronClicked(PatronId patron)",
+                "public void OnRandomPickClicked()",
                 "private IEnumerator HandlePatronPickCoroutine(PatronId patron)",
                 "private Sprite LoadPatronSprite(PatronId patronId)"
             ],

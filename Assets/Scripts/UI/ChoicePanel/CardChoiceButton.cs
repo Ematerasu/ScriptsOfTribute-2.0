@@ -58,9 +58,14 @@ public class CardChoiceButton : MonoBehaviour
         SetSelected(_selected);
         _onClick?.Invoke(_card);
     }
+    
+    public void SetSelectedExternally(bool selected)
+    {
+        SetSelected(selected);
+    }
 
     private void SetSelected(bool selected)
-    {   
+    {
         _selected = selected;
         if (_materialInstance == null) return;
 

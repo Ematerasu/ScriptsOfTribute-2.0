@@ -18,9 +18,11 @@ public class SettingsUI : MonoBehaviour
 
     [Header("Keybindings")]
     [SerializeField] private KeybindButton aiMoveButton;
+    [SerializeField] private KeybindButton aiMoveTurnButton;
     [SerializeField] private KeybindButton toggleAutoButton;
     [SerializeField] private KeybindButton endTurnButton;
     private KeyCode keyAiMoveTemp;
+    private KeyCode keyAiMoveTurnTemp;
     private KeyCode keyToggleAutoPlayTemp;
     private KeyCode keyEndTurnTemp;
 
@@ -35,14 +37,20 @@ public class SettingsUI : MonoBehaviour
 
     private void Start()
     {
-        SettingsManager.Instance.LoadSettings();
-
         masterSlider.value = SettingsManager.Instance.masterVolume;
         musicSlider.value = SettingsManager.Instance.musicVolume;
         sfxSlider.value = SettingsManager.Instance.sfxVolume;
         AudioManager.Instance.ApplyVolumes();
         UpdateResolutionLabel();
         UpdateScreenModeLabel();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            OnExitClicked();
+        }
     }
 
     private void OnEnable()
@@ -52,14 +60,17 @@ public class SettingsUI : MonoBehaviour
         originalSFX = SettingsManager.Instance.sfxVolume;
 
         keyAiMoveTemp = SettingsManager.Instance.keyAiMove;
+        keyAiMoveTurnTemp = SettingsManager.Instance.keyAiMoveTurn;
         keyToggleAutoPlayTemp = SettingsManager.Instance.keyToggleAutoPlay;
         keyEndTurnTemp = SettingsManager.Instance.keyEndTurn;
 
         aiMoveButton.SetKey(keyAiMoveTemp);
+        aiMoveTurnButton.SetKey(keyAiMoveTurnTemp);
         toggleAutoButton.SetKey(keyToggleAutoPlayTemp);
         endTurnButton.SetKey(keyEndTurnTemp);
 
         aiMoveButton.OnKeyAssigned = k => keyAiMoveTemp = k;
+        aiMoveTurnButton.OnKeyAssigned = k => keyAiMoveTurnTemp = k;
         toggleAutoButton.OnKeyAssigned = k => keyToggleAutoPlayTemp = k;
         endTurnButton.OnKeyAssigned = k => keyEndTurnTemp = k;
 
@@ -157,6 +168,7 @@ public class SettingsUI : MonoBehaviour
         var sm = SettingsManager.Instance;
 
         sm.keyAiMove = keyAiMoveTemp;
+        sm.keyAiMoveTurn = keyAiMoveTurnTemp;
         sm.keyToggleAutoPlay = keyToggleAutoPlayTemp;
         sm.keyEndTurn = keyEndTurnTemp;
 
@@ -179,10 +191,12 @@ public class SettingsUI : MonoBehaviour
         AudioManager.Instance.ApplyVolumes();
 
         keyAiMoveTemp = sm.keyAiMove;
+        keyAiMoveTurnTemp = sm.keyAiMoveTurn;
         keyToggleAutoPlayTemp = sm.keyToggleAutoPlay;
         keyEndTurnTemp = sm.keyEndTurn;
 
         aiMoveButton.SetKey(keyAiMoveTemp);
+        aiMoveTurnButton.SetKey(keyAiMoveTurnTemp);
         toggleAutoButton.SetKey(keyToggleAutoPlayTemp);
         endTurnButton.SetKey(keyEndTurnTemp);
 
@@ -230,6 +244,7 @@ public class SettingsUI : MonoBehaviour
     {
         return
             (key == keyAiMoveTemp && except != KeybindButton.KeybindType.AiMove) ||
+            (key == keyAiMoveTurnTemp && except != KeybindButton.KeybindType.AiMoveTurn) ||
             (key == keyToggleAutoPlayTemp && except != KeybindButton.KeybindType.ToggleAutoPlay) ||
             (key == keyEndTurnTemp && except != KeybindButton.KeybindType.EndTurn);
     }

@@ -236,14 +236,14 @@ public class UIManager : MonoBehaviour
         combosPanel.UpdateCombos(comboStates);
     }
 
-    public void ShowHint(string text = "[RMB] Tooltip")
+    public void ShowHint(object owner, string text = "[RMB] Tooltip")
     {
-        tooltipTip.Show(text);
+        tooltipTip.Show(owner, text);
     }
 
-    public void HideHint()
+    public void HideHint(object owner)
     {
-        tooltipTip.Hide();
+        tooltipTip.Hide(owner);
     }
 
     private IEnumerator FadeTooltip(float targetAlpha, float duration)

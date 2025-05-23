@@ -32,6 +32,7 @@ public class CardLookupPanelController : MonoBehaviour
     [SerializeField] private Transform player2DrawPile;
     [SerializeField] private Transform player2PlayedPile;
     [SerializeField] private Transform player2CooldownPile;
+    [SerializeField] private Transform player2Hand;
 
     private Coroutine loadingCoroutine;
     private ZoneSide currentSide;
@@ -47,11 +48,28 @@ public class CardLookupPanelController : MonoBehaviour
         cooldownPileButton.onClick.AddListener(() => SwitchPile(PileType.Cooldown));
     }
 
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            Hide();
+        }
+    }
+
     public void Show(ZoneSide side, PileType startingPile)
     {
         currentSide = side;
         currentPile = startingPile;
-        drawPileButton.interactable = side == ZoneSide.HumanPlayer;
+        if (currentSide == ZoneSide.EnemyPlayer && !GameSetupManager.Instance.IsBotDebugMode)
+        {
+            var drawPileText = drawPileButton.GetComponentInChildren<TextMeshProUGUI>();
+            drawPileText.text = "Draw pile & Hand";
+        }
+        else
+        {
+            var drawPileText = drawPileButton.GetComponentInChildren<TextMeshProUGUI>();
+            drawPileText.text = "Draw pile";
+        }
         panelRoot.SetActive(true);
         UpdateView();
     }
@@ -82,25 +100,36 @@ public class CardLookupPanelController : MonoBehaviour
     private void UpdateView()
     {
         ClearContent();
+        
+        List<Card> cardObjects;
 
-        Transform pileTransform = GetPileTransform(currentSide, currentPile);
-
-        if (pileTransform != null)
+        if (currentSide == ZoneSide.EnemyPlayer && currentPile == PileType.Draw)
         {
-            cardContentParent.gameObject.SetActive(false);
-            List<(UniqueCard card, Sprite sprite, string hpText)> sprites = new ();
+            var drawTransform = GetPileTransform(ZoneSide.EnemyPlayer, PileType.Draw);
 
-            foreach (Transform child in pileTransform)
+            if (GameSetupManager.Instance.IsBotDebugMode)
             {
-                if (child.TryGetComponent(out Card cardScript))
-                {
-                    sprites.Add((cardScript.GetCard(), cardScript.GetOriginalSprite(), cardScript.hpText.text));
-                }
+                cardObjects = drawTransform.GetComponentsInChildren<Card>().ToList();
             }
-            if (!GameSetupManager.Instance.IsBotDebugMode)
-                sprites = sprites.OrderBy(sprite => sprite.card.Name).ToList();
-            loadingCoroutine = StartCoroutine(AddToContentCoroutine(sprites));
+            else
+            {
+                var handTransform = GetPileTransform(ZoneSide.EnemyPlayer, PileType.Hand);
+                cardObjects = drawTransform.GetComponentsInChildren<Card>()
+                    .Concat(handTransform.GetComponentsInChildren<Card>())
+                    .ToList();
+            }
         }
+        else
+        {
+            var pileTransform = GetPileTransform(currentSide, currentPile);
+            cardObjects = pileTransform.GetComponentsInChildren<Card>().ToList();
+        }
+
+        var entries = cardObjects
+            .Select(c => (c.GetCard(), c.GetOriginalSprite(), c.hpText.text))
+            .OrderBy(entry => entry.Item1.Name)
+            .ToList();
+        loadingCoroutine = StartCoroutine(AddToContentCoroutine(entries));
         UpdateButtonScales();
     }
 
@@ -130,6 +159,7 @@ public class CardLookupPanelController : MonoBehaviour
                 PileType.Draw => player2DrawPile,
                 PileType.Played => player2PlayedPile,
                 PileType.Cooldown => player2CooldownPile,
+                PileType.Hand => player2Hand,
                 _ => null
             };
         }

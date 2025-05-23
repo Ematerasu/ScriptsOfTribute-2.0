@@ -93,8 +93,14 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(keys.keyAiMove))
         {
-            if (_aiManager.IsAITurn())
+            if (_aiManager.IsAITurn() && !_aiManager.BotIsPlaying)
                 PlaySingleAIMove();
+        }
+
+        if (Input.GetKeyDown(keys.keyAiMoveTurn))
+        {
+            if (_aiManager.IsAITurn() && !_aiManager.BotIsPlaying)
+                PlayAiTurn();
         }
 
         if (Input.GetKeyDown(keys.keyEndTurn))

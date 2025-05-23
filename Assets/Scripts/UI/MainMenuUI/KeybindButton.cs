@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class KeybindButton : MonoBehaviour, IPointerClickHandler
 {
-    public enum KeybindType { AiMove, ToggleAutoPlay, EndTurn }
+    public enum KeybindType { AiMove, AiMoveTurn, ToggleAutoPlay, EndTurn }
     public SettingsUI settingsUI;
     public KeybindType keyType;
     public TextMeshProUGUI labelText;
@@ -31,6 +31,12 @@ public class KeybindButton : MonoBehaviour, IPointerClickHandler
     {
         if (!isWaitingForKey) return;
 
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            isWaitingForKey = false;
+            return;
+        }
+
         foreach (KeyCode key in System.Enum.GetValues(typeof(KeyCode)))
         {
             if (Input.GetKeyDown(key))
@@ -39,6 +45,7 @@ public class KeybindButton : MonoBehaviour, IPointerClickHandler
                 break;
             }
         }
+        
     }
 
     private void ApplyKey(KeyCode key)
@@ -49,6 +56,7 @@ public class KeybindButton : MonoBehaviour, IPointerClickHandler
             return;
         }
 
+        Debug.Log($"[ApplyKey] {keyType} => {key}");
         OnKeyAssigned?.Invoke(key);
         labelText.text = key.ToString();
         isWaitingForKey = false;
@@ -65,6 +73,7 @@ public class KeybindButton : MonoBehaviour, IPointerClickHandler
         labelText.text = keyType switch
         {
             KeybindType.AiMove => sm.keyAiMove.ToString(),
+            KeybindType.AiMoveTurn => sm.keyAiMoveTurn.ToString(),
             KeybindType.ToggleAutoPlay => sm.keyToggleAutoPlay.ToString(),
             KeybindType.EndTurn => sm.keyEndTurn.ToString(),
             _ => "?"

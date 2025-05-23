@@ -11,6 +11,7 @@ public class PatronSelectionPanel : MonoBehaviour
     [SerializeField] private TextMeshProUGUI draftText;
     [SerializeField] private Transform patronButtonContainer;
     [SerializeField] private GameObject patronButtonPrefab;
+    [SerializeField] private Button randomPickButton;
 
     private Dictionary<PatronId, GameObject> patronButtons = new();
     private List<PatronId> availablePatrons;
@@ -87,6 +88,8 @@ public class PatronSelectionPanel : MonoBehaviour
         if (availablePatrons.Count == 0)
             return;
 
+        randomPickButton.interactable = false;
+
         var randomPick = availablePatrons[Random.Range(0, availablePatrons.Count)];
         foreach (var kv in patronButtons)
         {
@@ -129,10 +132,12 @@ public class PatronSelectionPanel : MonoBehaviour
         {
             selectedPatrons.Add(PatronId.TREASURY);
             RefreshUI();
+            randomPickButton.interactable = true;
         }
         else
         {
             RefreshUI();
+            randomPickButton.interactable = true;
         }
     }
 

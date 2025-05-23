@@ -10,9 +10,6 @@ public class PileZoneClickable : MonoBehaviour
 
     public void OnClickedFromCard()
     {
-        bool IsProhibitedZone = zoneSide == ZoneSide.EnemyPlayer && pileType == PileType.Draw;
-        if (IsProhibitedZone && !GameSetupManager.Instance.IsBotDebugMode)
-            return;
         UIManager.Instance.CardLookup(zoneSide, pileType);
     }
 }
@@ -21,5 +18,6 @@ public enum PileType
 {
     Draw,
     Played,
-    Cooldown
+    Cooldown,
+    Hand,
 }

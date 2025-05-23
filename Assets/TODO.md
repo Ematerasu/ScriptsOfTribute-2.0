@@ -16,13 +16,14 @@
 
 - [x] **Animacja agenta** – zamiast texture outline dodać efekt jak przy podświetleniu patronów
 - [x] **Tooltipy** – przesunąć sprite’y w prawo (lepsza czytelność), dodać do CardLookup
-- [ ] ~~**PPM tooltip** – kliknięcie PPM ponownie powinno tooltip zamknąć~~
 - [ ] **Przyciski debugowe** – Cofanie ruchów?
 - [x] **Tryb DEBUG** – Pełny podgląd do kart przeciwnika, logi bota
 - [x] **Patron Calls notifier** – zeton z liczba patron calli dostepnych
 - [ ] **Contract agent próbuje wrócic do cooldown** - powinien isc od razu do tawerny po wyjebce, a najpierw ustawiamy ze wraca do cooldown
 - [ ] **Napisać własnego, lepszego bota** - Heura wzmocniona sieciami
 - [x] **Obsługa gRPC botów**
+- [ ] **Poprawne UI prefaby kart** - dla każdego decku trzeba by przygotować
+- [ ] **Combo panel** - niech nie tylko pokazuje combosy ale liczbę kart zagranych z danego decka
 
 ## 🧪 Techniczne (setup, multiplayer, tutorial)
 

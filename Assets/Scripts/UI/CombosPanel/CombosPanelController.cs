@@ -159,26 +159,19 @@ public class CombosPanelController : MonoBehaviour, IPointerEnterHandler, IPoint
             var comboState = kvp.Value;
             var column = patronColumns.Find(c => c.patronId == patronId);
             column.comboLevel.text = comboState.CurrentCombo.ToString();
-            bool hasAnyCombo = false;
-            for (int i = 1; i <= 3; i++)
-            {
-                if (comboState.All[i] != null && comboState.All[i].Count > 0)
-                {
-                    hasAnyCombo = true;
-                    break;
-                }
-            }
-
-            if (!hasAnyCombo)
+            if (comboState.CurrentCombo <= 0)
                 continue;
 
             var patronIcon = Instantiate(patronIconPrefab, hiddenView.transform);
             var iconImage = patronIcon.GetComponentInChildren<UnityEngine.UI.Image>();
-            iconImage.sprite = LoadPatronSprite(patronId);
+            var patronSprite = LoadPatronSprite(patronId);
+            var comboText = patronIcon.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+            comboText.text = comboState.CurrentCombo.ToString();
+            iconImage.sprite = patronSprite;
 
             if (column.header != null)
             {
-                column.header.sprite = LoadPatronSprite(patronId);
+                column.header.sprite = patronSprite;
             }
 
             FillComboZone(column.combo2Zone, comboState.All[1]);

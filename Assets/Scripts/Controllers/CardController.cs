@@ -34,12 +34,12 @@ public class CardController : MonoBehaviour, IPointerClickHandler, IPointerExitH
     public void OnPointerExit(PointerEventData eventData)
     {
         UIManager.Instance.HideCardTooltip();
-        UIManager.Instance.HideHint();
+        UIManager.Instance.HideHint(this);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        UIManager.Instance.ShowHint("[RMB] Tooltip");
+        UIManager.Instance.ShowHint(this, "[RMB] Tooltip");
     }
 
 

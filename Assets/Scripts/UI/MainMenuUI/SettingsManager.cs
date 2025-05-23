@@ -23,6 +23,7 @@ public class SettingsManager : MonoBehaviour
     
     [Header("Keybinds")]
     public KeyCode keyAiMove = KeyCode.A;
+    public KeyCode keyAiMoveTurn = KeyCode.S;
     public KeyCode keyToggleAutoPlay = KeyCode.T;
     public KeyCode keyEndTurn = KeyCode.Space;
 
@@ -35,6 +36,8 @@ public class SettingsManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        LoadSettings();
 
         supportedResolutions = Screen.resolutions
             .Where(r =>
@@ -65,6 +68,7 @@ public class SettingsManager : MonoBehaviour
         PlayerPrefs.SetInt("screenmode_index", screenModeIndex);
 
         PlayerPrefs.SetInt("key_ai_move", (int)keyAiMove);
+        PlayerPrefs.SetInt("key_ai_move_turn", (int)keyAiMoveTurn);
         PlayerPrefs.SetInt("key_toggle_autoplay", (int)keyToggleAutoPlay);
         PlayerPrefs.SetInt("key_end_turn", (int)keyEndTurn);
 
@@ -80,6 +84,7 @@ public class SettingsManager : MonoBehaviour
         screenModeIndex = PlayerPrefs.GetInt("screenmode_index", 0);
 
         keyAiMove = (KeyCode)PlayerPrefs.GetInt("key_ai_move", (int)KeyCode.A);
+        keyAiMoveTurn = (KeyCode)PlayerPrefs.GetInt("key_ai_move_turn", (int)KeyCode.S);
         keyToggleAutoPlay = (KeyCode)PlayerPrefs.GetInt("key_toggle_autoplay", (int)KeyCode.T);
         keyEndTurn = (KeyCode)PlayerPrefs.GetInt("key_end_turn", (int)KeyCode.Space);
     }

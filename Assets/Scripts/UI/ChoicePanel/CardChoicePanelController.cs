@@ -98,7 +98,7 @@ public class CardChoicePanelController : MonoBehaviour
         if (confirmEnableRoutine != null)
             StopCoroutine(confirmEnableRoutine);
         confirmEnableRoutine = StartCoroutine(EnableConfirmButtonAfterDelay(0.5f));
-        UIManager.Instance.ShowHint("Hold [H] to hide");
+        UIManager.Instance.ShowHint(this, "Hold [H] to hide");
     }
 
     private void OnCardClicked(UniqueCard card)
@@ -111,24 +111,29 @@ public class CardChoicePanelController : MonoBehaviour
             selectedCards.Remove(card);
             selectionChanged = true;
         }
-        else if (selectedCards.Count < maxChoices)
-        {
-            selectedCards.Add(card);
-            selectionChanged = true;
-        }
         else
         {
-            // Max reached
-            var allButtons = cardContentParent.GetComponentsInChildren<CardChoiceButton>();
-            foreach (var btn in allButtons)
+            if (selectedCards.Count >= maxChoices)
             {
-                if (btn.Card == card)
+                // 🔁 Usuń najstarszą i odznacz ją wizualnie
+                var oldest = selectedCards[0];
+                selectedCards.RemoveAt(0);
+                selectionChanged = true;
+
+                // Odznacz ją na UI
+                var allButtons = cardContentParent.GetComponentsInChildren<CardChoiceButton>();
+                foreach (var btn in allButtons)
                 {
-                    btn.FlashRedOutline();
-                    break;
+                    if (btn.Card == oldest)
+                    {
+                        btn.SetSelectedExternally(false);
+                        break;
+                    }
                 }
             }
-            return;
+
+            selectedCards.Add(card);
+            selectionChanged = true;
         }
 
         if (selectionChanged)
@@ -149,7 +154,7 @@ public class CardChoicePanelController : MonoBehaviour
 
     public void HideCardChoice()
     {
-        UIManager.Instance.HideHint();
+        UIManager.Instance.HideHint(this);
         cardChoicePanel.SetActive(false);
     }
 

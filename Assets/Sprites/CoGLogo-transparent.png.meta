@@ -1,0 +1,1768 @@
+fileFormatVersion: 2
+guid: 7b32429f49a4ead4e9d72370924e5ecd
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 812307175147175966
+    second: CoGLogo-transparent_0
+  - first:
+      213: -4661807656723993414
+    second: CoGLogo-transparent_1
+  - first:
+      213: 5423244839675781885
+    second: CoGLogo-transparent_2
+  - first:
+      213: 3672598081554471000
+    second: CoGLogo-transparent_3
+  - first:
+      213: -6101569807735584403
+    second: CoGLogo-transparent_4
+  - first:
+      213: 6686636482152380426
+    second: CoGLogo-transparent_5
+  - first:
+      213: -4064179376958968834
+    second: CoGLogo-transparent_6
+  - first:
+      213: 2382343404964387961
+    second: CoGLogo-transparent_7
+  - first:
+      213: -3701587467625146393
+    second: CoGLogo-transparent_8
+  - first:
+      213: 3681398261456043302
+    second: CoGLogo-transparent_9
+  - first:
+      213: -3445086261359343136
+    second: CoGLogo-transparent_10
+  - first:
+      213: -479881602525926111
+    second: CoGLogo-transparent_11
+  - first:
+      213: 414283507695121933
+    second: CoGLogo-transparent_12
+  - first:
+      213: 960803754644941150
+    second: CoGLogo-transparent_13
+  - first:
+      213: -7844107555055973450
+    second: CoGLogo-transparent_14
+  - first:
+      213: 6047162044144803597
+    second: CoGLogo-transparent_15
+  - first:
+      213: 8338844540488278441
+    second: CoGLogo-transparent_16
+  - first:
+      213: 8638073281614228506
+    second: CoGLogo-transparent_17
+  - first:
+      213: 477270820119732284
+    second: CoGLogo-transparent_18
+  - first:
+      213: 4635205255612849452
+    second: CoGLogo-transparent_19
+  - first:
+      213: -4882595660136093079
+    second: CoGLogo-transparent_20
+  - first:
+      213: 6682282769206471342
+    second: CoGLogo-transparent_21
+  - first:
+      213: -5265626337615756606
+    second: CoGLogo-transparent_22
+  - first:
+      213: 6698657397624480166
+    second: CoGLogo-transparent_23
+  - first:
+      213: -3299956313797831927
+    second: CoGLogo-transparent_24
+  - first:
+      213: -6080370599439386079
+    second: CoGLogo-transparent_25
+  - first:
+      213: 6406343615329814943
+    second: CoGLogo-transparent_26
+  - first:
+      213: 5849816371957922440
+    second: CoGLogo-transparent_27
+  - first:
+      213: 7084327244299779335
+    second: CoGLogo-transparent_28
+  - first:
+      213: -8572845376398273911
+    second: CoGLogo-transparent_29
+  - first:
+      213: -2859743394550721522
+    second: CoGLogo-transparent_30
+  - first:
+      213: -5200381662660698852
+    second: CoGLogo-transparent_31
+  - first:
+      213: 7214488844503684101
+    second: CoGLogo-transparent_32
+  - first:
+      213: -8980314228797719627
+    second: CoGLogo-transparent_33
+  - first:
+      213: -9084509503335199906
+    second: CoGLogo-transparent_34
+  - first:
+      213: 745207571701363511
+    second: CoGLogo-transparent_35
+  - first:
+      213: 7786435469107646000
+    second: CoGLogo-transparent_36
+  - first:
+      213: 324393406220835456
+    second: CoGLogo-transparent_37
+  - first:
+      213: 9017150795728613454
+    second: CoGLogo-transparent_38
+  - first:
+      213: -3488454503742581728
+    second: CoGLogo-transparent_39
+  - first:
+      213: -4905947550712307262
+    second: CoGLogo-transparent_40
+  - first:
+      213: -4451167272875697499
+    second: CoGLogo-transparent_41
+  - first:
+      213: 5342894601417614462
+    second: CoGLogo-transparent_42
+  - first:
+      213: 3102579025297546509
+    second: CoGLogo-transparent_43
+  - first:
+      213: -1538466956296172011
+    second: CoGLogo-transparent_44
+  - first:
+      213: -5748746285337328081
+    second: CoGLogo-transparent_45
+  - first:
+      213: 1778948937805481272
+    second: CoGLogo-transparent_46
+  - first:
+      213: 4792001444850712422
+    second: CoGLogo-transparent_47
+  - first:
+      213: -418358977564324975
+    second: CoGLogo-transparent_48
+  - first:
+      213: 4192548923465461488
+    second: CoGLogo-transparent_49
+  - first:
+      213: 8556856653698964084
+    second: CoGLogo-transparent_50
+  - first:
+      213: 1121322500707522512
+    second: CoGLogo-transparent_51
+  - first:
+      213: -7855349568132986358
+    second: CoGLogo-transparent_52
+  - first:
+      213: -575695311943278862
+    second: CoGLogo-transparent_53
+  - first:
+      213: -6806687076134054285
+    second: CoGLogo-transparent_54
+  - first:
+      213: 4753087573667084661
+    second: CoGLogo-transparent_55
+  - first:
+      213: -1770569789018532452
+    second: CoGLogo-transparent_56
+  - first:
+      213: 3800192161014246995
+    second: CoGLogo-transparent_57
+  - first:
+      213: -492040559602842443
+    second: CoGLogo-transparent_58
+  - first:
+      213: -2414013043330852529
+    second: CoGLogo-transparent_59
+  - first:
+      213: 5281828211370997967
+    second: CoGLogo-transparent_60
+  - first:
+      213: 4382035446366144010
+    second: CoGLogo-transparent_61
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Win64
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Linux64
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: CoGLogo-transparent_0
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 343
+        width: 386
+        height: 452
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e10062f6215e54b00800000000000000
+      internalID: 812307175147175966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_1
+      rect:
+        serializedVersion: 2
+        x: 460
+        y: 341
+        width: 449
+        height: 454
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: abc25c1b2aeed4fb0800000000000000
+      internalID: -4661807656723993414
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_2
+      rect:
+        serializedVersion: 2
+        x: 956
+        y: 344
+        width: 450
+        height: 452
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df268d6b27c334b40800000000000000
+      internalID: 5423244839675781885
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_3
+      rect:
+        serializedVersion: 2
+        x: 1276
+        y: 598
+        width: 131
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 858d5d53f70b7f230800000000000000
+      internalID: 3672598081554471000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_4
+      rect:
+        serializedVersion: 2
+        x: 1424
+        y: 596
+        width: 135
+        height: 198
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d690cad569ed25ba0800000000000000
+      internalID: -6101569807735584403
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_5
+      rect:
+        serializedVersion: 2
+        x: 1671
+        y: 695
+        width: 12
+        height: 102
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a083cd40474bbcc50800000000000000
+      internalID: 6686636482152380426
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_6
+      rect:
+        serializedVersion: 2
+        x: 1703
+        y: 695
+        width: 65
+        height: 102
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: efb64ecb3622997c0800000000000000
+      internalID: -4064179376958968834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_7
+      rect:
+        serializedVersion: 2
+        x: 1785
+        y: 695
+        width: 65
+        height: 102
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97c95e164b8cf0120800000000000000
+      internalID: 2382343404964387961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_8
+      rect:
+        serializedVersion: 2
+        x: 1866
+        y: 695
+        width: 65
+        height: 102
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e75a2f5fc151acc0800000000000000
+      internalID: -3701587467625146393
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_9
+      rect:
+        serializedVersion: 2
+        x: 1972
+        y: 696
+        width: 68
+        height: 103
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62df3d2c634f61330800000000000000
+      internalID: 3681398261456043302
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_10
+      rect:
+        serializedVersion: 2
+        x: 2049
+        y: 694
+        width: 77
+        height: 104
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0e909135c489030d0800000000000000
+      internalID: -3445086261359343136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_11
+      rect:
+        serializedVersion: 2
+        x: 2134
+        y: 695
+        width: 69
+        height: 104
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12d623b993e1759f0800000000000000
+      internalID: -479881602525926111
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_12
+      rect:
+        serializedVersion: 2
+        x: 2209
+        y: 693
+        width: 70
+        height: 104
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d067870c7a4dfb500800000000000000
+      internalID: 414283507695121933
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_13
+      rect:
+        serializedVersion: 2
+        x: 1676
+        y: 515
+        width: 92
+        height: 106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e59297e9ce5755d00800000000000000
+      internalID: 960803754644941150
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_14
+      rect:
+        serializedVersion: 2
+        x: 1772
+        y: 515
+        width: 99
+        height: 106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6bb4ee01db1242390800000000000000
+      internalID: -7844107555055973450
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_15
+      rect:
+        serializedVersion: 2
+        x: 1882
+        y: 517
+        width: 85
+        height: 102
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0fd97407d5dbe350800000000000000
+      internalID: 6047162044144803597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_16
+      rect:
+        serializedVersion: 2
+        x: 1984
+        y: 517
+        width: 67
+        height: 102
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a16201bde689b370800000000000000
+      internalID: 8338844540488278441
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_17
+      rect:
+        serializedVersion: 2
+        x: 2060
+        y: 517
+        width: 69
+        height: 102
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1ca86612e990e770800000000000000
+      internalID: 8638073281614228506
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_18
+      rect:
+        serializedVersion: 2
+        x: 2141
+        y: 517
+        width: 76
+        height: 102
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3065ee384b9f9600800000000000000
+      internalID: 477270820119732284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_19
+      rect:
+        serializedVersion: 2
+        x: 2226
+        y: 517
+        width: 69
+        height: 102
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2dd3d12f9e835040800000000000000
+      internalID: 4635205255612849452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_20
+      rect:
+        serializedVersion: 2
+        x: 2307
+        y: 517
+        width: 85
+        height: 102
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 96a69bfbd198d3cb0800000000000000
+      internalID: -4882595660136093079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_21
+      rect:
+        serializedVersion: 2
+        x: 2404
+        y: 515
+        width: 91
+        height: 106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eaae34b36cc3cbc50800000000000000
+      internalID: 6682282769206471342
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_22
+      rect:
+        serializedVersion: 2
+        x: 2506
+        y: 517
+        width: 70
+        height: 102
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c2c8729ebcbce6b0800000000000000
+      internalID: -5265626337615756606
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_23
+      rect:
+        serializedVersion: 2
+        x: 1676
+        y: 349
+        width: 98
+        height: 106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a12371896966fc50800000000000000
+      internalID: 6698657397624480166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_24
+      rect:
+        serializedVersion: 2
+        x: 1785
+        y: 352
+        width: 85
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 903d5cd67333432d0800000000000000
+      internalID: -3299956313797831927
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_25
+      rect:
+        serializedVersion: 2
+        x: 1916
+        y: 349
+        width: 95
+        height: 106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12abfada72f2e9ba0800000000000000
+      internalID: -6080370599439386079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_26
+      rect:
+        serializedVersion: 2
+        x: 2015
+        y: 352
+        width: 94
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f9943dc6397e7e850800000000000000
+      internalID: 6406343615329814943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_27
+      rect:
+        serializedVersion: 2
+        x: 2115
+        y: 351
+        width: 108
+        height: 102
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88af0d32ff8be2150800000000000000
+      internalID: 5849816371957922440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_28
+      rect:
+        serializedVersion: 2
+        x: 2240
+        y: 352
+        width: 69
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 70d3c152816905260800000000000000
+      internalID: 7084327244299779335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_29
+      rect:
+        serializedVersion: 2
+        x: 2314
+        y: 349
+        width: 80
+        height: 106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9825e611d82270980800000000000000
+      internalID: -8572845376398273911
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_30
+      rect:
+        serializedVersion: 2
+        x: 123
+        y: 151
+        width: 49
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e04d803c8862058d0800000000000000
+      internalID: -2859743394550721522
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_31
+      rect:
+        serializedVersion: 2
+        x: 179
+        y: 218
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1d57ac3e6884d7b0800000000000000
+      internalID: -5200381662660698852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_32
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 151
+        width: 55
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50419ac41630f1460800000000000000
+      internalID: 7214488844503684101
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_33
+      rect:
+        serializedVersion: 2
+        x: 488
+        y: 151
+        width: 51
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5bb3025e9c38f5380800000000000000
+      internalID: -8980314228797719627
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_34
+      rect:
+        serializedVersion: 2
+        x: 609
+        y: 151
+        width: 66
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e5b8b0f0db65de180800000000000000
+      internalID: -9084509503335199906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_35
+      rect:
+        serializedVersion: 2
+        x: 740
+        y: 130
+        width: 53
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 733f0339652875a00800000000000000
+      internalID: 745207571701363511
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_36
+      rect:
+        serializedVersion: 2
+        x: 860
+        y: 151
+        width: 9
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03ec9aa0ec9fe0c60800000000000000
+      internalID: 7786435469107646000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_37
+      rect:
+        serializedVersion: 2
+        x: 965
+        y: 137
+        width: 10
+        height: 103
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 08a9541951a708400800000000000000
+      internalID: 324393406220835456
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_38
+      rect:
+        serializedVersion: 2
+        x: 1058
+        y: 151
+        width: 54
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e40f881bfda532d70800000000000000
+      internalID: 9017150795728613454
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_39
+      rect:
+        serializedVersion: 2
+        x: 1118
+        y: 151
+        width: 56
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 024df498c15869fc0800000000000000
+      internalID: -3488454503742581728
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_40
+      rect:
+        serializedVersion: 2
+        x: 1278
+        y: 151
+        width: 54
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c1681902b29aebb0800000000000000
+      internalID: -4905947550712307262
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_41
+      rect:
+        serializedVersion: 2
+        x: 1338
+        y: 151
+        width: 57
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5aa5668d2f64a32c0800000000000000
+      internalID: -4451167272875697499
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_42
+      rect:
+        serializedVersion: 2
+        x: 1421
+        y: 150
+        width: 67
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7469d50556c52a40800000000000000
+      internalID: 5342894601417614462
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_43
+      rect:
+        serializedVersion: 2
+        x: 1552
+        y: 130
+        width: 53
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0d10727f239e0b20800000000000000
+      internalID: 3102579025297546509
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_44
+      rect:
+        serializedVersion: 2
+        x: 1715
+        y: 151
+        width: 36
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51e4a43547446aae0800000000000000
+      internalID: -1538466956296172011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_45
+      rect:
+        serializedVersion: 2
+        x: 1806
+        y: 151
+        width: 54
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f264f9e26b95830b0800000000000000
+      internalID: -5748746285337328081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_46
+      rect:
+        serializedVersion: 2
+        x: 1867
+        y: 151
+        width: 59
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 835447732a810b810800000000000000
+      internalID: 1778948937805481272
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_47
+      rect:
+        serializedVersion: 2
+        x: 1931
+        y: 151
+        width: 54
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 66f3c7bcceb908240800000000000000
+      internalID: 4792001444850712422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_48
+      rect:
+        serializedVersion: 2
+        x: 1991
+        y: 151
+        width: 53
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19bcea9f9b0b13af0800000000000000
+      internalID: -418358977564324975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_49
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 151
+        width: 9
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0feea96680dee2a30800000000000000
+      internalID: 4192548923465461488
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_50
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 151
+        width: 44
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47a1aa55acf00c670800000000000000
+      internalID: 8556856653698964084
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_51
+      rect:
+        serializedVersion: 2
+        x: 315
+        y: 151
+        width: 55
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d713559fdcbf8f00800000000000000
+      internalID: 1121322500707522512
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_52
+      rect:
+        serializedVersion: 2
+        x: 377
+        y: 151
+        width: 47
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a0a4aecef213cf290800000000000000
+      internalID: -7855349568132986358
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_53
+      rect:
+        serializedVersion: 2
+        x: 543
+        y: 151
+        width: 55
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2fe53c8f928b208f0800000000000000
+      internalID: -575695311943278862
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_54
+      rect:
+        serializedVersion: 2
+        x: 683
+        y: 150
+        width: 48
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37699c9ea2ac981a0800000000000000
+      internalID: -6806687076134054285
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_55
+      rect:
+        serializedVersion: 2
+        x: 797
+        y: 151
+        width: 48
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 579ffbe17fb56f140800000000000000
+      internalID: 4753087573667084661
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_56
+      rect:
+        serializedVersion: 2
+        x: 1205
+        y: 180
+        width: 42
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c951383682cad67e0800000000000000
+      internalID: -1770569789018532452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_57
+      rect:
+        serializedVersion: 2
+        x: 1495
+        y: 151
+        width: 48
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35e6a7bd2aefcb430800000000000000
+      internalID: 3800192161014246995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_58
+      rect:
+        serializedVersion: 2
+        x: 1612
+        y: 151
+        width: 48
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b4c9cdc7bbeb29f0800000000000000
+      internalID: -492040559602842443
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_59
+      rect:
+        serializedVersion: 2
+        x: 1669
+        y: 151
+        width: 44
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f49da155de3bf7ed0800000000000000
+      internalID: -2414013043330852529
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_60
+      rect:
+        serializedVersion: 2
+        x: 436
+        y: 140
+        width: 15
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc8b76f16c2dc4940800000000000000
+      internalID: 5281828211370997967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoGLogo-transparent_61
+      rect:
+        serializedVersion: 2
+        x: 1760
+        y: 139
+        width: 15
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a0603dd750e10dc30800000000000000
+      internalID: 4382035446366144010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      CoGLogo-transparent_0: 812307175147175966
+      CoGLogo-transparent_1: -4661807656723993414
+      CoGLogo-transparent_10: -3445086261359343136
+      CoGLogo-transparent_11: -479881602525926111
+      CoGLogo-transparent_12: 414283507695121933
+      CoGLogo-transparent_13: 960803754644941150
+      CoGLogo-transparent_14: -7844107555055973450
+      CoGLogo-transparent_15: 6047162044144803597
+      CoGLogo-transparent_16: 8338844540488278441
+      CoGLogo-transparent_17: 8638073281614228506
+      CoGLogo-transparent_18: 477270820119732284
+      CoGLogo-transparent_19: 4635205255612849452
+      CoGLogo-transparent_2: 5423244839675781885
+      CoGLogo-transparent_20: -4882595660136093079
+      CoGLogo-transparent_21: 6682282769206471342
+      CoGLogo-transparent_22: -5265626337615756606
+      CoGLogo-transparent_23: 6698657397624480166
+      CoGLogo-transparent_24: -3299956313797831927
+      CoGLogo-transparent_25: -6080370599439386079
+      CoGLogo-transparent_26: 6406343615329814943
+      CoGLogo-transparent_27: 5849816371957922440
+      CoGLogo-transparent_28: 7084327244299779335
+      CoGLogo-transparent_29: -8572845376398273911
+      CoGLogo-transparent_3: 3672598081554471000
+      CoGLogo-transparent_30: -2859743394550721522
+      CoGLogo-transparent_31: -5200381662660698852
+      CoGLogo-transparent_32: 7214488844503684101
+      CoGLogo-transparent_33: -8980314228797719627
+      CoGLogo-transparent_34: -9084509503335199906
+      CoGLogo-transparent_35: 745207571701363511
+      CoGLogo-transparent_36: 7786435469107646000
+      CoGLogo-transparent_37: 324393406220835456
+      CoGLogo-transparent_38: 9017150795728613454
+      CoGLogo-transparent_39: -3488454503742581728
+      CoGLogo-transparent_4: -6101569807735584403
+      CoGLogo-transparent_40: -4905947550712307262
+      CoGLogo-transparent_41: -4451167272875697499
+      CoGLogo-transparent_42: 5342894601417614462
+      CoGLogo-transparent_43: 3102579025297546509
+      CoGLogo-transparent_44: -1538466956296172011
+      CoGLogo-transparent_45: -5748746285337328081
+      CoGLogo-transparent_46: 1778948937805481272
+      CoGLogo-transparent_47: 4792001444850712422
+      CoGLogo-transparent_48: -418358977564324975
+      CoGLogo-transparent_49: 4192548923465461488
+      CoGLogo-transparent_5: 6686636482152380426
+      CoGLogo-transparent_50: 8556856653698964084
+      CoGLogo-transparent_51: 1121322500707522512
+      CoGLogo-transparent_52: -7855349568132986358
+      CoGLogo-transparent_53: -575695311943278862
+      CoGLogo-transparent_54: -6806687076134054285
+      CoGLogo-transparent_55: 4753087573667084661
+      CoGLogo-transparent_56: -1770569789018532452
+      CoGLogo-transparent_57: 3800192161014246995
+      CoGLogo-transparent_58: -492040559602842443
+      CoGLogo-transparent_59: -2414013043330852529
+      CoGLogo-transparent_6: -4064179376958968834
+      CoGLogo-transparent_60: 5281828211370997967
+      CoGLogo-transparent_61: 4382035446366144010
+      CoGLogo-transparent_7: 2382343404964387961
+      CoGLogo-transparent_8: -3701587467625146393
+      CoGLogo-transparent_9: 3681398261456043302
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

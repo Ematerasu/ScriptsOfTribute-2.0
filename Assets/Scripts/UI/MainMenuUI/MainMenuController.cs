@@ -8,13 +8,12 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private CanvasGroup deckBrowserPanel;
     [SerializeField] private CanvasGroup settingsPanel;
     [SerializeField] private CanvasGroup creditsPanel;
-    [SerializeField] private CanvasGroup cardsCarouselPanel;
 
     [Header("Ustawienia animacji")]
     [SerializeField] private float fadeDuration = 0.3f;
 
     [Header("External links")]
-    [SerializeField] private string discordUrl = "https://discord.gg/";
+    [SerializeField] private string discordUrl = "https://discord.com/invite/RSZjNHuHGm";
     [SerializeField] private string githubUrl = "https://github.com/ScriptsOfTribute";
     [SerializeField] private string websiteUrl = "https://cog2025.inesc-id.pt/tales-of-tribute/";
     [SerializeField] private string esoHubUrl = "https://eso-hub.com/en/tales-of-tribute-card-game";
@@ -22,7 +21,6 @@ public class MainMenuController : MonoBehaviour
     private void Start()
     {
         ShowOnly(mainMenuPanel);
-        StartCoroutine(FadeIn(cardsCarouselPanel));
     }
 
     public void OnPlayVsBotClicked()
